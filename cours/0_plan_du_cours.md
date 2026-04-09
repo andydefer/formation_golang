@@ -344,4 +344,4 @@ Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfac
 
 ---
 
-
+**Fin du plan de cours**
