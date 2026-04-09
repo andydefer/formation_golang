@@ -1,0 +1,47 @@
+Tu es un expert en revue de code et en conventions de commits (Conventional Commits).
+
+A partir du diff Git ci-dessous, fais les choses suivantes :
+
+1. Propose un nom de commit clair et concis en anglais
+   avec le format <type>(<scope>): <description>,
+   en respectant les Conventional Commits
+   (ex: feat:, fix:, refactor:, test:, chore:, docs:).
+
+2. Redige un resume du travail effectue en quelques phrases,
+   oriente metier et technique.
+
+3. Donne une liste d'exemples concrets de changements, en t'appuyant sur le diff :
+   - methodes ajoutees, modifiees ou supprimees
+   - responsabilites deplacees ou clarifiees
+   - ameliorations de validation, de logique ou de structure
+   - impacts fonctionnels eventuels
+
+Contraintes :
+   - Ne decris que ce qui est reellement visible dans le diff
+   - Sois precis, factuel et structure
+   - Evite les suppositions
+   - Utilise un ton professionnel
+
+4. SI et SEULEMENT SI les changements sont cassants (breaking changes) :
+   - Genere une entree de CHANGELOG conforme a Keep a Changelog et SemVer.
+   - Le changelog doit apparaître APRES les recommandations ci-dessus.
+   - Utilise STRICTEMENT la structure suivante :
+
+     ## [X.0.0] - YYYY-MM-DD
+     ### Changed
+     - Description claire du changement cassant
+
+     ### Removed (si applicable)
+     - API, methode ou comportement supprime
+
+     ### Security (si applicable)
+     - Impact securite lie au changement
+
+   - Ne genere PAS de changelog si aucun breaking change n'est detecte.
+   - N'invente PAS de version.
+
+Voici le diff :
+
+diff --git a/test b/test
+new file mode 100644
+index 0000000..e69de29
