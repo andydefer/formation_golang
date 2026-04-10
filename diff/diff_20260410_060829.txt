@@ -1,0 +1,3823 @@
+Tu es un expert en revue de code et en conventions de commits (Conventional Commits).
+
+À partir du diff Git ci-dessous, fais les choses suivantes :
+
+1. Propose un nom de commit clair et concis en anglais
+   avec le format <type>(<scope>): <description>,
+   en respectant les Conventional Commits
+   (ex: feat:, fix:, refactor:, test:, chore:, docs:).
+
+2. Rédige un résumé du travail effectué en quelques phrases,
+   orienté métier et technique.
+
+3. Donne une liste d'exemples concrets de changements, en t'appuyant sur le diff :
+   - méthodes ajoutées, modifiées ou supprimées
+   - responsabilités déplacées ou clarifiées
+   - améliorations de validation, de logique ou de structure
+   - impacts fonctionnels éventuels
+
+Contraintes :
+   - Ne décris que ce qui est réellement visible dans le diff
+   - Sois précis, factuel et structuré
+   - Évite les suppositions
+   - Utilise un ton professionnel
+
+4. SI et SEULEMENT SI les changements sont cassants (breaking changes) :
+   - Génère une entrée de CHANGELOG conforme à Keep a Changelog et SemVer.
+   - Le changelog doit apparaître APRES les recommandations ci-dessus.
+   - Utilise STRICTEMENT la structure suivante :
+
+     ## [X.0.0] - YYYY-MM-DD
+     ### Changed
+     - Description claire du changement cassant
+
+     ### Removed (si applicable)
+     - API, méthode ou comportement supprimé
+
+     ### Security (si applicable)
+     - Impact sécurité lié au changement
+
+   - Ne génère PAS de changelog si aucun breaking change n'est détecté.
+   - N'invente PAS de version.
+
+Voici le diff :
+
+diff --git a/README.md b/README.md
+index 0bda280..ba61a9c 100644
+--- a/README.md
++++ b/README.md
+@@ -1,4 +1,3 @@
+-
+ # 🚀 Formation Go - Cours complet du langage Golang
+ 
+ [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://go.dev/)
+@@ -7,27 +6,36 @@
+ 
+ Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dépôt contient un plan de cours structuré, des modules progressifs et des travaux pratiques pour maîtriser Go, de zéro à un niveau avancé.
+ 
++---
++
+ ## 📋 Table des matières
+ 
+ - [À propos](#-à-propos)
+ - [Prérequis](#-prérequis)
+ - [Structure du cours](#-structure-du-cours)
+-- [Modules](#-modules)
++- [Modules (1 à 5)](#-modules-1-à-5)
++- [Modules suivants (aperçu)](#-modules-suivants-à-perçu)
+ - [Projet final](#-projet-final)
+ - [Installation](#-installation)
+ - [Comment utiliser ce cours](#-comment-utiliser-ce-cours)
++- [TP par module](#-tp-par-module)
+ - [Ressources complémentaires](#-ressources-complémentaires)
+ 
++---
++
+ ## 🎯 À propos
+ 
+ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique. Chaque module combine :
+ 
+ - **Concepts théoriques** expliqués simplement
+ - **Exemples concrets** et bonnes pratiques
+-- **Travaux pratiques** (TP) avec corrigés
++- **Travaux pratiques (TP)** avec corrigés
+ - **Pièges à éviter** et astuces
+ 
+-Le cours couvre les fondamentaux jusqu'aux concepts avancés comme la concurrence, les API REST, les tests et les génériques.
++**Contenu actuel :** Modules 1 à 5 (fondamentaux et approfondissement)
++**À venir :** Modules 6 à 16 (avancé à professionnel)
++
++---
+ 
+ ## 📚 Prérequis
+ 
+@@ -35,78 +43,144 @@ Le cours couvre les fondamentaux jusqu'aux concepts avancés comme la concurrenc
+ - Un ordinateur avec accès à Internet
+ - Aucune connaissance préalable de Go n'est requise
+ 
++---
++
+ ## 🏗️ Structure du cours
+ 
+ Le cours est découpé en **16 modules progressifs** + un **projet final intégrateur** :
+ 
+ ```
+-cours/
+-├── 0_plan_du_cours.md          # Plan détaillé du cours
+-├── 1_introduction_et_mise_en_place.md
+-├── 2_types_et_variables.md
+-├── 3_controle_des_flux.md
+-├── 4_fonctions_et_methodes.md
+-├── 5_structures_et_pointeurs.md
+-├── 6_packages_et_modularite.md
+-├── 7_gestion_des_erreurs.md
+-├── 8_interfaces_et_polymorphisme.md
+-├── 9_concurrence_base.md
+-├── 10_entrees_sorties_fichiers.md
+-├── 11_concurrence_avancee.md
+-├── 12_package_context.md
+-├── 13_web_et_api.md
+-├── 14_tests_et_bonnes_pratiques.md
+-├── 15_generiques.md
+-└── 16_organisation_projet.md
++formation_golang/
++├── README.md                          # Ce fichier
++├── 01_introduction_et_mise_en_place.md
++├── 02_types_et_variables.md
++├── 03_controle_de_flux.md
++├── 04_fonctions_et_methodes.md
++├── 05_structures_et_collections.md
++├── 06_packages_et_modularite.md        # À venir
++├── 07_gestion_des_erreurs.md           # À venir
++├── 08_interfaces_et_polymorphisme.md   # À venir
++├── 09_concurrence_base.md              # À venir
++├── 10_entrees_sorties_fichiers.md      # À venir
++├── 11_concurrence_avancee.md           # À venir
++├── 12_package_context.md               # À venir
++├── 13_web_et_api.md                    # À venir
++├── 14_tests_et_bonnes_pratiques.md     # À venir
++├── 15_generiques.md                    # À venir
++└── 16_organisation_projet.md           # À venir
+ ```
+ 
+-## 📖 Modules
+-
+-### Fondamentaux (Modules 1-3)
+-| Module | Description |
+-|--------|-------------|
+-| **Module 1** | Introduction, installation et premier programme "Hello, World!" |
+-| **Module 2** | Types de base, variables, constantes et conversions |
+-| **Module 3** | Conditions (if/switch) et boucles (for) |
+-
+-### Approfondissement (Modules 4-7)
+-| Module | Description |
+-|--------|-------------|
+-| **Module 4** | Fonctions, paramètres, retours multiples, méthodes sur struct |
+-| **Module 5** | Structures, pointeurs, slices, maps |
+-| **Module 6** | Packages, modularité et organisation du code |
+-| **Module 7** | Gestion d'erreurs, panic/recover, logging |
+-
+-### Avancé (Modules 8-12)
+-| Module | Description |
+-|--------|-------------|
+-| **Module 8** | Interfaces, polymorphisme implicite, assertions de type |
+-| **Module 9** | Goroutines, channels, WaitGroup |
+-| **Module 10** | Lecture/écriture fichiers, CSV, arguments CLI |
+-| **Module 11** | Canaux bufferisés, Mutex, patterns de concurrence |
+-| **Module 12** | Package context, timeouts, annulation |
+-
+-### Professionnel (Modules 13-16)
+-| Module | Description |
+-|--------|-------------|
+-| **Module 13** | Serveur HTTP, API REST, JSON |
+-| **Module 14** | Tests unitaires, benchmarks, documentation |
+-| **Module 15** | Génériques (Go 1.18+) |
+-| **Module 16** | Organisation de projet, outils, compilation croisée |
++---
++
++## 📖 Modules (1 à 5)
++
++### Module 1 – Introduction et mise en place
++**Objectif** : Installer Go, écrire et exécuter son premier programme.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 1.1 | Historique et caractéristiques de Go |
++| 1.2 | Domaines d'utilisation (backend, CLI, cloud, outils) |
++| 2 | Installation et configuration (Linux/Windows/Mac/Termux) |
++| 3 | Structure d'un programme Go (`package main`, `import`, `func main()`) |
++| 4 | Premier programme : Hello, World! |
++| 5 | Compilation et exécution (`go run` vs `go build`) |
++
++**TP** : Afficher prénom et âge → exécuter avec `go run`, puis `go build`
++
++---
++
++### Module 2 – Types et variables
++**Objectif** : Déclarer des variables et manipuler les types de base.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 1 | Types de base : `int`, `float64`, `string`, `bool` |
++| 2 | Déclaration de variables (`var`, `:=`, multiples) |
++| 3 | Constantes (`const`) et `iota` pour les énumérations |
++| 4 | Conversion de types (`int(x)`, `float64(x)`) |
++
++**Pièges à éviter** : Division entière (`5/2 = 2`), conversion `float64` → `int` (troncature)
++
++**TP** : Mini-calculateur (somme, différence, produit, quotient)
++
++---
++
++### Module 3 – Contrôle de flux
++**Objectif** : Maîtriser les conditions, les boucles et la gestion d'erreurs simple.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 0 | Packages standards : `fmt`, `errors`, `strconv`, `math/rand`, `time` |
++| 1 | Conditions : `if`, `else if`, `else`, `switch` |
++| 2 | Boucles : `for` classique, `for` comme `while`, `break`, `continue`, `for range` |
++| 3 | Gestion d'erreurs : `errors.New()`, `if err != nil`, `strconv.Atoi()` |
++
++**TP** : Jeu de devinette (nombre secret, 5 essais, indices "trop petit/grand")
++
++---
++
++### Module 4 – Fonctions et méthodes
++**Objectif** : Structurer le code avec des fonctions réutilisables.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 1 | Définition de fonctions (paramètres, retour, retour multiple, retour nommé) |
++| 2 | Paramètres variadiques (`...int`) |
++| 3 | Fonctions anonymes et closures |
++| 4 | Structures (`struct`) et méthodes (receiver par valeur ou par pointeur) |
++
++**TP** : Calcul d'IMC (fonction `IMC()`, structure `Personne`, méthode `AfficherIMC()`)
++
++---
++
++### Module 5 – Structures et collections
++**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 1 | Structures avancées (struct imbriqué, tags JSON) |
++| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence) |
++| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()` |
++| 4 | Maps (dictionnaires) – création, ajout, lecture, suppression, vérification |
++
++**TP** : Gestion de contacts (structure `Contact`, slice, `ajouterContact()`, `afficherTous()`)
++
++---
++
++## 📖 Modules suivants (aperçu)
++
++| Module | Titre | Description |
++|--------|-------|-------------|
++| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
++| 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
++| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
++| 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
++| 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args` |
++| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex` |
++| 12 | Package `context` | Annulation, timeout |
++| 13 | Web et API | Serveur HTTP, JSON, routes |
++| 14 | Tests et bonnes pratiques | `testing`, benchmarks |
++| 15 | Génériques (Go 1.18+) | `[T any]`, contraintes |
++| 16 | Organisation de projet | `cmd/`, `pkg/`, `go fmt`, compilation croisée |
++
++---
+ 
+ ## 🎓 Projet final
+ 
+ **Outil CLI de téléchargement parallèle**
+ 
+-À la fin du cours, vous développerez un outil complet qui combine toutes les compétences acquises :
++À la fin du cours (module 16), vous développerez un outil complet qui combine toutes les compétences acquises :
+ 
+ - ✅ Lecture d'URLs depuis un fichier CSV
+-- ✅ Téléchargement concurrent de fichiers
+-- ✅ Annulation globale avec context (timeout/Ctrl+C)
++- ✅ Téléchargement concurrent de fichiers (goroutines)
++- ✅ Annulation globale avec `context` (timeout ou Ctrl+C)
+ - ✅ Barre de progression
+-- ✅ Logs des téléchargements
++- ✅ Logs des téléchargements (succès/échec)
+ - ✅ Tests unitaires
+-- ✅ Organisation professionnelle (cmd/, pkg/)
++- ✅ Organisation professionnelle (`cmd/`, `pkg/`)
++
++---
+ 
+ ## 🔧 Installation
+ 
+@@ -144,10 +218,12 @@ git clone https://github.com/andydefer/formation_golang.git
+ cd formation_golang
+ ```
+ 
++---
++
+ ## 💡 Comment utiliser ce cours
+ 
+-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 16)
+-2. **Pratiquez** : Faites chaque TP sans regarder la correction
++1. **Par module** : Suivez l'ordre recommandé (Module 1 → 5, puis la suite)
++2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
+ 3. **Expérimentez** : Modifiez les exemples, testez vos idées
+ 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
+ 
+@@ -166,35 +242,44 @@ go fmt ./...
+ # Vérifier les erreurs potentielles
+ go vet ./...
+ 
+-# Lancer les tests
++# Lancer les tests (modules 14+)
+ go test ./...
+ 
+ # Télécharger les dépendances
+ go mod tidy
+ ```
+ 
+-## 📚 TP par module
+-
+-Chaque module contient un TP pratique :
+-
+-| Module | TP |
+-|--------|-----|
+-| 1 | Afficher prénom et âge |
+-| 2 | Mini-calculateur |
+-| 3 | Jeu de devinette |
+-| 4 | Calcul d'IMC avec structure Personne |
+-| 5 | Gestion de contacts |
+-| 6 | Création d'un package mathutil |
+-| 7 | Lecture de fichier avec gestion d'erreur |
+-| 8 | Interface Animal (Chien/Chat) |
+-| 9 | Téléchargement parallèle simulé |
+-| 10 | Stockage de notes en CSV |
+-| 11 | Producteur-consommateur |
+-| 12 | Timeout sur recherche longue |
+-| 13 | API REST de tâches |
+-| 14 | Tests unitaires sur le calculateur |
+-| 15 | Fonction générique InverseSlice |
+-| 16 | Restructuration du gestionnaire de contacts |
++---
++
++## 📚 TP par module (Modules 1 à 5)
++
++| Module | TP | Concepts clés |
++|--------|-----|---------------|
++| **1** | Afficher prénom et âge | `package main`, `fmt.Println()`, `go run` / `go build` |
++| **2** | Mini-calculateur | Variables, constantes, conversion de types (`float64()`) |
++| **3** | Jeu de devinette | `if`/`else`, boucle `for`, `fmt.Scanln()`, `break` |
++| **4** | Calcul d'IMC | Fonctions, `struct`, méthodes, receiver |
++| **5** | Gestion de contacts | Slices, `append()`, maps, pointeurs |
++
++### Exemple de réalisation (Module 5)
++
++```go
++type Contact struct {
++    Nom    string
++    Numero string
++}
++
++func ajouterContact(contacts []Contact) []Contact {
++    var nom, numero string
++    fmt.Print("Nom : ")
++    fmt.Scanln(&nom)
++    fmt.Print("Numéro : ")
++    fmt.Scanln(&numero)
++    return append(contacts, Contact{Nom: nom, Numero: numero})
++}
++```
++
++---
+ 
+ ## 🔗 Ressources complémentaires
+ 
+@@ -219,16 +304,22 @@ Chaque module contient un TP pratique :
+ - [r/golang](https://www.reddit.com/r/golang/)
+ - [Go Discord](https://discord.gg/golang)
+ 
++---
++
+ ## 📈 Progression recommandée
+ 
+ ```
+-Semaine 1-2  : Modules 1-3 (Fondamentaux)
+-Semaine 3-4  : Modules 4-7 (Approfondissement)
+-Semaine 5-6  : Modules 8-12 (Avancé)
+-Semaine 7-8  : Modules 13-16 (Professionnel)
+-Semaine 9-10 : Projet final
++Semaine 1   : Module 1 (Introduction) + Module 2 (Types et variables)
++Semaine 2   : Module 3 (Contrôle de flux)
++Semaine 3   : Module 4 (Fonctions et méthodes)
++Semaine 4   : Module 5 (Structures et collections)
++Semaine 5-6 : Modules 6-10 (Packages à Fichiers)
++Semaine 7-8 : Modules 11-16 (Concurrence avancée à Organisation)
++Semaine 9-10: Projet final
+ ```
+ 
++---
++
+ ## 🤝 Contribution
+ 
+ Les corrections, suggestions et améliorations sont les bienvenues !
+@@ -239,10 +330,14 @@ Les corrections, suggestions et améliorations sont les bienvenues !
+ 4. Poussez vers la branche (`git push origin amelioration/ma-modification`)
+ 5. Ouvrez une Pull Request
+ 
++---
++
+ ## 📝 Licence
+ 
+ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+ 
++---
++
+ ## ✨ Remerciements
+ 
+ - L'équipe Go pour ce langage exceptionnel
+@@ -256,13 +351,3 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
+ N'hésitez pas à ouvrir une issue si vous avez des questions ou des suggestions.
+ 
+ *Dernière mise à jour : Avril 2026*
+-
+-
+-Ce README.md est conçu pour :
+-
+-1. **Présenter clairement** le contenu et la structure du cours
+-2. **Guider l'apprenant** de l'installation à la réalisation du projet final
+-3. **Être visuellement attractif** avec des badges, tableaux et émojis
+-4. **Fournir des ressources** pour approfondir
+-5. **Encourager la pratique** avec la liste des TP par module
+-6. **Être professionnel** tout en restant accessible aux débutants
+diff --git a/cours/0_plan_du_cours.md b/cours/0_plan_du_cours.md
+index 6063081..94baadc 100755
+--- a/cours/0_plan_du_cours.md
++++ b/cours/0_plan_du_cours.md
+@@ -1,25 +1,25 @@
+-# Plan de cours complet - Langage Go (Golang)
++# Plan de cours complet – Langage Go (Golang)
+ 
+ ## Module 1 – Introduction et mise en place
+ **Objectif** : Installer Go, écrire et exécuter son premier programme.
+ 
+ 1. Historique et caractéristiques de Go
+    1.1. Pourquoi Go a été créé
+-   1.2. Domaines d’utilisation (backend, CLI, cloud, outils)
++   1.2. Domaines d'utilisation (backend, CLI, cloud, outils)
+ 2. Installation et configuration
+    2.1. Sur Linux / Windows / Mac / Termux (téléphone)
+    2.2. Vérification avec `go version`
+-3. Structure d’un programme Go
++3. Structure d'un programme Go
+    3.1. `package main`
+    3.2. `import "fmt"`
+    3.3. `func main()`
+ 4. Premier programme : Hello, World!
+ 5. Compilation et exécution
+    5.1. `go run` (exécution directe)
+-   5.2. `go build` (génération d’exécutable)
++   5.2. `go build` (génération d'exécutable)
+ 
+-**TP final** :  
+-> Écris un programme qui affiche ton prénom et ton âge (valeurs écrites en dur dans le code).  
++**TP final** :
++> Écris un programme qui affiche ton prénom et ton âge (valeurs écrites en dur dans le code).
+ > Exécute-le avec `go run`, puis génère un exécutable avec `go build` et lance-le.
+ 
+ ---
+@@ -28,44 +28,56 @@
+ **Objectif** : Déclarer des variables et manipuler les types de base.
+ 
+ 1. Types de base
+-   1.1. `int`, `float64`, `string`, `bool`
++   1.1. `int` – nombres entiers
++   1.2. `float64` – nombres décimaux
++   1.3. `string` – texte
++   1.4. `bool` – vrai/faux
+ 2. Déclaration de variables
+-   2.1. `var nom type`
+-   2.2. `:=` (inférence de type)
++   2.1. `var nom type` (déclaration complète)
++   2.2. `:=` (inférence de type, déclaration courte)
+    2.3. Variables multiples
+ 3. Constantes et `iota`
+-   3.1. `const`
+-   3.2. Utilisation simple de `iota` pour des énumérations
++   3.1. `const` – valeurs immuables
++   3.2. `iota` – énumérations simples
+ 4. Conversion de types
+-   4.1. `int(variable)`, `float64(variable)`, etc.
++   4.1. `int(variable)`, `float64(variable)`
++   4.2. Piège de la division entière
+ 
+-**TP final** :  
+-> Crée un mini-calculateur qui :  
+-> - Déclare deux variables `a` et `b` (ex : `10`, `3`)  
+-> - Affiche leur somme, différence, produit et quotient (division en `float64`)  
++**TP final** :
++> Crée un mini-calculateur qui :
++> - Déclare deux variables `a` et `b` (ex : `10`, `3`)
++> - Affiche leur somme, différence, produit et quotient (division en `float64`)
+ > - Utilise une constante pour le nom du programme.
+ 
+ ---
+ 
+ ## Module 3 – Contrôle de flux
+-**Objectif** : Maîtriser les conditions et les boucles.
++**Objectif** : Maîtriser les conditions, les boucles et la gestion d'erreurs simple.
+ 
++0. Les packages en Go (rappel sur `import`)
++   - Packages standards : `fmt`, `errors`, `strconv`, `math/rand`, `time`
++   - Documentation (`go doc`, pkg.go.dev)
+ 1. Instructions conditionnelles
+    1.1. `if`, `else if`, `else`
+-   1.2. `switch` simple
++   1.2. `switch` (avec et sans expression)
+ 2. Boucles
+-   2.1. `for` classique (comme un `while`)
+-   2.2. `for range` sur une slice (vue rapidement)
+-3. Gestion d’erreurs simple
+-   3.1. Retourner une erreur avec `errors.New()`
+-   3.2. Vérifier `if err != nil`
+-
+-**TP final** :  
+-> Jeu de devinette :  
+-> - Un nombre secret est fixé dans le code (ex: `42`)  
+-> - L’utilisateur entre un nombre via `fmt.Scanln()`  
+-> - Le programme lui dit si c’est trop petit, trop grand ou gagné  
+-> - Il a droit à 5 essais maximum (boucle `for`).
++   2.1. `for` classique (initialisation; condition; post-itération)
++   2.2. `for` comme un `while`
++   2.3. Boucle infinie
++   2.4. `break` et `continue`
++   2.5. `for range` (aperçu sur les slices)
++3. Gestion d'erreurs simple
++   3.1. Créer une erreur avec `errors.New()`
++   3.2. Vérifier `if err != nil` (pattern standard)
++   3.3. Conversion `string` → `int` avec `strconv.Atoi()`
++
++**TP final** :
++> Jeu de devinette :
++> - Nombre secret fixé dans le code (ex: `42`)
++> - L'utilisateur entre un nombre via `fmt.Scanln()`
++> - Le programme indique "trop petit", "trop grand" ou "gagné"
++> - Limite de 5 essais maximum (boucle `for`)
++> - Si échec après 5 essais, afficher le nombre secret
+ 
+ ---
+ 
+@@ -75,273 +87,90 @@
+ 1. Définition de fonctions
+    1.1. Paramètres et retour de valeurs
+    1.2. Retour multiple (ex: `(int, error)`)
++   1.3. Retour nommé
+ 2. Paramètres variadiques (`...int`)
+ 3. Fonctions anonymes et closures
+    3.1. Assigner une fonction à une variable
+    3.2. Closure simple (compteur)
+-4. Méthodes sur `struct`
+-   4.1. Déclarer un `struct`
+-   4.2. Ajouter une méthode avec un *receiver*
++4. Structures (`struct`) et méthodes
++   4.1. Déclarer un `struct` avec des champs
++   4.2. Ajouter une méthode avec un *receiver* (par valeur ou par pointeur)
+ 
+-**TP final** :  
+-> Écris une fonction `IMC(poids float64, taille float64) float64` qui retourne l’IMC.  
+-> Crée une structure `Personne` avec `Nom`, `Poids`, `Taille`.  
+-> Ajoute une méthode `AfficherIMC()` à `Personne` qui calcule et affiche l’IMC.  
+-> Dans `main()`, crée une personne et appelle sa méthode.
++**TP final** :
++> Calcul d'IMC :
++> - Fonction `IMC(poids float64, taille float64) float64`
++> - Structure `Personne` avec `Nom`, `Poids`, `Taille`
++> - Méthode `AfficherIMC()` qui calcule et affiche l'IMC avec son interprétation
++> - Dans `main()`, créer une personne et appeler sa méthode
+ 
+ ---
+ 
+-## Module 5 – Structures et pointeurs
+-**Objectif** : Manipuler des données complexes et comprendre la mémoire.
++## Module 5 – Structures et collections
++**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
+ 
+-1. `struct` avancé
+-   1.1. Struct imbriqué
++1. Structures avancées (`struct`)
++   1.1. Struct imbriqué (une structure dans une autre)
++   1.2. Tags JSON (`json:"nom"`)
+ 2. Pointeurs
+-   2.1. `*T` et `&variable`
+-   2.2. Passage par référence vs par valeur
++   2.1. `*T` et `&variable` (adresses mémoire)
++   2.2. Passage par valeur vs par référence
++   2.3. `new()` pour créer un pointeur vers une valeur zéro
+ 3. Tableaux et slices
+-   3.1. Différence tableau fixe / slice dynamique
+-   3.2. `append()`, `len()`, `cap()`
+-4. Maps
+-   4.1. Création `make(map[K]V)`
+-   4.2. Ajout, lecture, suppression
+-
+-**TP final** :  
+-> Gestion de contacts :  
+-> - Structure `Contact` avec `Nom`, `Numero`  
+-> - Une slice de contacts  
+-> - Fonctions : `ajouterContact()`, `afficherTous()`  
+-> - Le programme demande à l’utilisateur d’ajouter 2 contacts, puis les affiche.
+-
+----
+-
+-## Module 6 – Packages et modularité
+-**Objectif** : Organiser son code en plusieurs fichiers / packages.
+-
+-1. Packages standards
+-   1.1. `fmt`, `os`, `strings`, `math/rand`
+-2. Création d’un package personnalisé
+-   2.1. Structure d’un package (dossier + fichiers)
+-   2.2. Exporter avec majuscule
+-3. Import et alias
+-   3.1. `import "monpackage"`
+-   3.2. Alias : `import m "monpackage"`
+-
+-**TP final** :  
+-> Crée un dossier `mathutil` avec un fichier `mathutil.go` :  
+-> - Une fonction `Addition(a, b int) int`  
+-> - Une fonction `Multiplication(a, b int) int`  
+-> Dans `main.go`, importe ton package et affiche `Addition(5,3)` et `Multiplication(4,2)`.
+-
+----
+-
+-## Module 7 – Gestion des erreurs (niveau 1)
+-**Objectif** : Rendre les programmes robustes face aux erreurs.
+-
+-1. Convention d’erreur en Go
+-   1.1. Retourner `error`
+-   1.2. Vérifier `if err != nil`
+-2. `panic` et `recover`
+-   2.1. Quand utiliser `panic` (cas exceptionnel)
+-   2.2. `defer` + `recover` pour rattraper une panique
+-3. Logging simple
+-   3.1. `log.Println()` et `log.Fatal()`
+-
+-**TP final** :  
+-> Programme qui lit un fichier texte :  
+-> - Demande le nom du fichier à l’utilisateur  
+-> - Essaie d’ouvrir le fichier avec `os.Open`  
+-> - Si le fichier n’existe pas, affiche une erreur claire (pas de `panic`)  
+-> - Si le fichier existe, affiche son contenu.
+-
+----
+-
+-## Module 8 – Interfaces et polymorphisme
+-**Objectif** : Comprendre et utiliser les interfaces implicites.
+-
+-1. Déclaration d’une interface
+-   1.1. Définir un ensemble de méthodes
+-2. Implémentation implicite
+-   2.1. Un type implémente une interface s’il a les méthodes
+-3. Interface vide `interface{}` / `any`
+-4. Assertion de type et type switch
+-   4.1. `v, ok := x.(T)`
+-   4.2. `switch x.(type)`
+-
+-**TP final** :  
+-> Interface `Animal` avec `Parler() string`.  
+-> Deux structs : `Chien` et `Chat`.  
+-> Implémente `Parler()` pour chacun.  
+-> Crée une slice d’`Animal` et fais parler chaque animal dans une boucle.
+-
+----
+-
+-## Module 9 – Concurrence de base
+-**Objectif** : Lancer des fonctions en parallèle avec goroutines et channels.
+-
+-1. Goroutines
+-   1.1. Lancer une fonction avec `go`
+-   1.2. Attention : le programme principal ne les attend pas
+-2. Channels (non bufferisés)
+-   2.1. Créer un canal avec `make(chan T)`
+-   2.2. Envoyer `ch <- valeur`
+-   2.3. Recevoir `<-ch`
+-3. `select` et synchronisation simple
+-4. `sync.WaitGroup` pour attendre plusieurs goroutines
+-
+-**TP final** :  
+-> Simule le téléchargement de 3 fichiers :  
+-> - Une fonction `telecharger(nom string, duree int)` qui attend `duree` secondes (time.Sleep) puis affiche "Téléchargé : X"  
+-> - Lance chaque téléchargement dans une goroutine  
+-> - Utilise `WaitGroup` pour attendre la fin des 3.
+-
+----
+-
+-## Module 10 – Entrées/Sorties et fichiers
+-**Objectif** : Lire/écrire des fichiers et gérer des arguments CLI.
+-
+-1. Lecture/écriture de fichiers texte
+-   1.1. `os.ReadFile()` / `os.WriteFile()`
+-   1.2. `bufio.Scanner` pour lire ligne par ligne
+-2. Fichiers CSV
+-   2.1. Package `encoding/csv`
+-3. Arguments en ligne de commande
+-   3.1. `os.Args`
+-4. Buffers et scanner
+-
+-**TP final** :  
+-> Programme qui stocke des notes dans un fichier CSV :  
+-> - Lit `notes.csv` au démarrage (s’il existe)  
+-> - Demande à l’utilisateur une note (texte)  
+-> - Ajoute la note au fichier  
+-> - Affiche toutes les notes.
+-
+----
+-
+-## Module 11 – Concurrence avancée
+-**Objectif** : Maîtriser canaux bufferisés et synchronisation fine.
+-
+-1. Canaux bufferisés
+-   1.1. `make(chan T, capacité)`
+-2. Fermeture de canal
+-   2.1. `close(ch)`
+-   2.2. Tester avec `v, ok := <-ch`
+-3. `for range` sur un canal
+-4. `sync.Mutex` et `sync.RWMutex`
+-
+-**TP final** :  
+-> Producteur‑consommateur :  
+-> - Canal bufferisé de taille 3  
+-> - Une goroutine produit 5 nombres (0 à 4)  
+-> - Deux goroutines consomment et affichent ce qu’elles reçoivent  
+-> - Utilise `WaitGroup` et ferme le canal quand la production est finie.
+-
+----
+-
+-## Module 12 – Package `context`
+-**Objectif** : Annuler des opérations longues ou imposer un timeout.
+-
+-1. Création d’un contexte
+-   1.1. `context.Background()`
+-   1.2. `context.WithCancel()`, `context.WithTimeout()`
+-2. Annulation manuelle avec `cancel()`
+-3. Timeout et deadline
+-4. Passage de valeurs (notion simple)
+-
+-**TP final** :  
+-> Simule une recherche longue (3 secondes de `time.Sleep`).  
+-> L’utilisateur entre un timeout en secondes.  
+-> Lance la recherche dans une goroutine.  
+-> Si le timeout est dépassé, annule et affiche "Trop long".
+-
+----
+-
+-## Module 13 – Web et API
+-**Objectif** : Créer un serveur HTTP et une API REST simple.
+-
+-1. Serveur HTTP avec `net/http`
+-   1.1. `http.HandleFunc()`
+-   1.2. `http.ListenAndServe()`
+-2. Routes et handlers
+-3. JSON
+-   3.1. `json.Marshal()` / `json.Unmarshal()`
+-   3.2. Struct tags (`json:"nom"`)
+-
+-**TP final** :  
+-> API REST pour gérer une liste de tâches (en mémoire) :  
+-> - `GET /tasks` → liste des tâches  
+-> - `POST /tasks` → ajouter une tâche (JSON reçu)  
+-> - `GET /tasks/{id}` → détail d’une tâche  
+-> - `DELETE /tasks/{id}` → supprimer
+-
+----
+-
+-## Module 14 – Tests et bonnes pratiques (niveau 1)
+-**Objectif** : Écrire des tests unitaires et benchmarks.
+-
+-1. Package `testing`
+-   1.1. Fichiers `_test.go`
+-   1.2. Fonctions `TestXxx(t *testing.T)`
+-2. Benchmarks
+-   2.1. `BenchmarkXxx(b *testing.B)`
+-3. Documentation GoDoc
+-   3.1. Commentaires avant une fonction / package
+-
+-**TP final** :  
+-> Ajoute des tests unitaires au mini‑calculateur (Module 2) :  
+-> - Teste `Addition`, `Multiplication`  
+-> - Vérifie que 2+2=4, 3×4=12
+-
+----
+-
+-## Module 15 – Génériques (Go 1.18+)
+-**Objectif** : Écrire des fonctions et structures réutilisables sans interface vide.
+-
+-1. Syntaxe `[T any]`
+-2. Contraintes avec interfaces
+-3. Fonction générique simple (`Max`, `Somme`)
+-4. Structure générique (`Pile[T]`)
+-
+-**TP final** :  
+-> Implémente une fonction `InverseSlice[T any](s []T) []T` qui retourne une slice inversée.  
+-> Teste avec `[]int`, `[]string`, `[]float64`.
+-
+----
+-
+-## Module 16 – Bonnes pratiques, outils et organisation de projet
+-**Objectif** : Structurer un projet Go professionnel.
+-
+-1. Organisation de dossiers
+-   1.1. `cmd/`, `internal/`, `pkg/`
+-2. Outils essentiels
+-   2.1. `go fmt`, `go vet`, `go mod tidy`
+-3. Compilation croisée
+-   3.1. `GOOS=linux GOARCH=amd64 go build`
+-4. Profiling basique (`pprof`)
+-
+-**TP final** :  
+-> Restructure le gestionnaire de contacts (Module 5) :  
+-> - Place `main.go` dans `cmd/contacts/`  
+-> - Place les fonctions métier dans `pkg/contacts/`  
+-> - Formate le code avec `go fmt` et exécute `go vet`
++   3.1. Tableaux (taille fixe) – usage rare
++   3.2. Slices (taille dynamique) – usage quotidien
++   3.3. `append()` pour ajouter des éléments
++   3.4. `len()` et `cap()` (longueur et capacité)
++   3.5. Découpage (slicing) : `[debut:fin]`
++   3.6. `copy()` pour une vraie copie
++4. Maps (dictionnaires)
++   4.1. Création avec `make(map[K]V)` ou littérale
++   4.2. Ajout, lecture, suppression (`delete()`)
++   4.3. Vérification d'existence avec `valeur, ok := map["clé"]`
++   4.4. Parcourir une map avec `for range`
++
++**TP final** :
++> Gestion de contacts :
++> - Structure `Contact` avec `Nom`, `Numero`
++> - Une slice de contacts pour stocker les données
++> - Fonction `ajouterContact()` qui demande les infos et ajoute à la slice
++> - Fonction `afficherTous()` qui affiche tous les contacts
++> - Dans `main()`, demander à l'utilisateur d'ajouter 2 contacts, puis les afficher
++
++---
++
++## Modules suivants (aperçu)
++
++| Module | Titre | Contenu principal |
++|--------|-------|-------------------|
++| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
++| 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
++| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
++| 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
++| 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args` |
++| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex` |
++| 12 | Package `context` | Annulation, timeout |
++| 13 | Web et API | Serveur HTTP, JSON, routes |
++| 14 | Tests et bonnes pratiques | `testing`, benchmarks |
++| 15 | Génériques (Go 1.18+) | `[T any]`, contraintes |
++| 16 | Organisation de projet | `cmd/`, `pkg/`, `go fmt`, compilation croisée |
+ 
+ ---
+ 
+ ## Projet final intégrateur (après le module 16)
+ 
+-**Capacités requises** :  
++**Capacités requises** :
+ Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfaces, concurrence, context, web, tests, génériques, organisation).
+ 
+-**Énoncé** :  
+-> Développe un **outil CLI de téléchargement parallèle** avec :  
+-> - Lecture d’une liste d’URLs depuis un fichier CSV  
+-> - Téléchargement concurrent des fichiers (goroutines + channel de progression)  
+-> - Annulation globale possible via `context` (timeout ou Ctrl+C)  
+-> - Affichage d’une barre de progression simple  
+-> - Sauvegarde d’un log des téléchargements (succès/échec)  
+-> - Tests unitaires sur la fonction qui écrit le log  
++**Énoncé** :
++> Développe un **outil CLI de téléchargement parallèle** avec :
++> - Lecture d'une liste d'URLs depuis un fichier CSV
++> - Téléchargement concurrent des fichiers (goroutines + channel de progression)
++> - Annulation globale possible via `context` (timeout ou Ctrl+C)
++> - Affichage d'une barre de progression simple
++> - Sauvegarde d'un log des téléchargements (succès/échec)
++> - Tests unitaires sur la fonction qui écrit le log
+ > - Organisation du projet en `cmd/`, `pkg/`
+ 
+ ---
+ 
+-**Fin du plan de cours**
+\ No newline at end of file
++**Fin du plan de cours**
+diff --git a/cours/1_introduction_et_mise_en_place.md b/cours/1_introduction_et_mise_en_place.md
+index 94d1825..b7ba4f7 100755
+--- a/cours/1_introduction_et_mise_en_place.md
++++ b/cours/1_introduction_et_mise_en_place.md
+@@ -1,57 +1,55 @@
++# Module 1 – Introduction et mise en place
+ 
+-Module 1 – Introduction et mise en place
+-
+-Bienvenue dans ce cours Go !
+-À la fin de ce module, vous aurez installé Go sur votre machine, vous comprendrez la structure d’un programme Go, et vous écrirez votre premier programme fonctionnel.
++Bienvenue dans ce cours Go ! À la fin de ce module, vous aurez installé Go sur votre machine, vous comprendrez la structure d'un programme Go, et vous écrirez votre premier programme fonctionnel.
+ 
+ ---
+ 
+-1. Historique et caractéristiques de Go
+-
+-1.1. Pourquoi Go a été créé
+-
+-Go (appelé aussi Golang) a été créé en 2007 chez Google par Robert Griesemer, Rob Pike et Ken Thompson (ce dernier a participé à la création d’Unix et du langage C).
++## 1. Historique et caractéristiques de Go
+ 
+-À l’époque, les développeurs Google étaient frustrés par :
++### 1.1. Pourquoi Go a été créé
+ 
+-· La lenteur des compilations en C++
+-· La complexité des programmes concurrents
+-· Le manque d’outils modernes (gestionnaire de dépendances, formatage automatique)
++Go (appelé aussi Golang) a été créé en **2007 chez Google** par Robert Griesemer, Rob Pike et Ken Thompson (ce dernier a participé à la création d'Unix et du langage C).
+ 
+-Objectif de Go :
++À l'époque, les développeurs Google étaient frustrés par :
++- La lenteur des compilations en C++
++- La complexité des programmes concurrents
++- Le manque d'outils modernes (gestionnaire de dépendances, formatage automatique)
+ 
+-Un langage simple, rapide à compiler, performant en exécution, avec une gestion native de la concurrence.
++**Objectif de Go :** Un langage **simple**, **rapide à compiler**, **performant en exécution**, avec une gestion native de la concurrence.
+ 
+-Caractéristiques principales :
++### Caractéristiques principales
+ 
+-· Typage statique fort → moins d’erreurs inattendues
+-· Compilation rapide → un gros projet compile en quelques secondes
+-· Garbage collector efficace → pas de gestion manuelle de la mémoire
+-· Goroutines → des “micro‑threads” très légers pour le parallélisme
+-· Syntaxe simple et minimaliste → on peut lire et comprendre un programme Go rapidement
++| Caractéristique | Description |
++|----------------|-------------|
++| **Typage statique fort** | Moins d'erreurs inattendues |
++| **Compilation rapide** | Un gros projet compile en quelques secondes |
++| **Garbage collector efficace** | Pas de gestion manuelle de la mémoire |
++| **Goroutines** | Des "micro-threads" très légers pour le parallélisme |
++| **Syntaxe simple** | On peut lire et comprendre un programme Go rapidement |
+ 
+-💡 Piège à éviter : Ne confondez pas Go et Python. Go est compilé, statiquement typé, et très efficace pour les systèmes backend. Python est interprété, dynamique, plus lent.
++💡 **Piège à éviter :** Ne confondez pas Go et Python. Go est **compilé**, statiquement typé, et très efficace pour les systèmes backend. Python est interprété, dynamique, plus lent.
+ 
+-1.2. Domaines d’utilisation
++### 1.2. Domaines d'utilisation
+ 
+-Go est utilisé partout dans l’industrie, notamment pour :
++Go est utilisé partout dans l'industrie :
+ 
+-Domaine Exemples concrets
+-Backend / API Docker, Kubernetes, Traefik
+-CLI (outils en ligne de commande) Hugo (générateur de sites), Terraform
+-Cloud et microservices Uber, Dropbox, Netflix (certains services)
+-Outils réseau Serveurs, proxies, bases de temps réel
+-DevOps et SRE Prometheus, Etcd, Consul
++| Domaine | Exemples concrets |
++|---------|-------------------|
++| Backend / API | Docker, Kubernetes, Traefik |
++| CLI (outils en ligne de commande) | Hugo, Terraform |
++| Cloud et microservices | Uber, Dropbox, Netflix |
++| Outils réseau | Serveurs, proxies |
++| DevOps et SRE | Prometheus, Etcd, Consul |
+ 
+ ✅ Si vous voulez faire du web, des API, ou des outils système, Go est un excellent choix.
+ 
+ ---
+ 
+-2. Installation et configuration
++## 2. Installation et configuration
+ 
+-2.1. Sur Linux / Windows / Mac / Termux (téléphone)
++### 2.1. Installation selon votre système
+ 
+-Linux (Ubuntu/Debian)
++**Linux (Ubuntu/Debian)**
+ 
+ ```bash
+ sudo apt update
+@@ -67,30 +65,30 @@ export PATH=$PATH:/usr/local/go/bin
+ echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+ ```
+ 
+-Windows
++**Windows**
+ 
+-· Téléchargez le fichier .msi depuis go.dev/dl
+-· Lancez l’installateur (case à cocher : "Add to PATH")
+-· Redémarrez votre terminal
++- Téléchargez le fichier `.msi` depuis [go.dev/dl](https://go.dev/dl)
++- Lancez l'installateur (case à cocher : "Add to PATH")
++- Redémarrez votre terminal
+ 
+-Mac
++**Mac**
+ 
+ ```bash
+ brew install go
+ ```
+ 
+-ou téléchargez le .pkg officiel.
++Ou téléchargez le `.pkg` officiel.
+ 
+-Termux (Android)
++**Termux (Android)**
+ 
+ ```bash
+ pkg update
+ pkg install golang
+ ```
+ 
+-📱 Astuce : Avec Termux + Acode (éditeur de code), vous pouvez coder en Go sur votre téléphone.
++📱 **Astuce :** Avec Termux + Acode (éditeur de code), vous pouvez coder en Go sur votre téléphone.
+ 
+-2.2. Vérification avec go version
++### 2.2. Vérification de l'installation
+ 
+ Ouvrez un terminal et tapez :
+ 
+@@ -104,13 +102,13 @@ Vous devriez voir :
+ go version go1.22.0 linux/amd64
+ ```
+ 
+-⚠️ Si la commande n’est pas reconnue, vérifiez votre variable d’environnement PATH.
++⚠️ Si la commande n'est pas reconnue, vérifiez votre variable d'environnement `PATH`.
+ 
+ ---
+ 
+-3. Structure d’un programme Go
++## 3. Structure d'un programme Go
+ 
+-Un fichier Go (extension .go) suit toujours cette base :
++Un fichier Go (extension `.go`) suit toujours cette base :
+ 
+ ```go
+ package main
+@@ -118,21 +116,21 @@ package main
+ import "fmt"
+ 
+ func main() {
+-    // Le code s’écrit ici
++    // Le code s'écrit ici
+ }
+ ```
+ 
+-3.1. package main
++### 3.1. `package main`
+ 
+-· Un programme Go est organisé en paquets (packages)
+-· package main est spécial : il indique que ce fichier est le point d’entrée du programme exécutable
+-· Si vous écrivez une bibliothèque (réutilisable), vous utiliserez un autre nom comme package maths
++- Un programme Go est organisé en **paquets** (packages)
++- `package main` est spécial : il indique que ce fichier est le **point d'entrée** du programme exécutable
++- Si vous écrivez une bibliothèque (réutilisable), vous utiliserez un autre nom comme `package maths`
+ 
+-3.2. import "fmt"
++### 3.2. `import "fmt"`
+ 
+-· import sert à inclure d’autres paquets
+-· fmt est le paquet standard pour les entrées/sorties formatées (afficher, lire)
+-· On peut importer plusieurs paquets :
++- `import` sert à inclure d'autres paquets
++- `fmt` est le paquet standard pour les entrées/sorties formatées (afficher, lire)
++- On peut importer plusieurs paquets :
+ 
+ ```go
+ import (
+@@ -141,17 +139,17 @@ import (
+ )
+ ```
+ 
+-3.3. func main()
++### 3.3. `func main()`
+ 
+-· C’est la fonction principale : tout programme commence ici
+-· Elle ne prend aucun paramètre et ne retourne rien
+-· Si vous oubliez func main(), Go compilera mais ne produira rien (bibliothèque)
++- C'est la **fonction principale** : tout programme commence ici
++- Elle ne prend aucun paramètre et ne retourne rien
++- Si vous oubliez `func main()`, Go compilera mais ne produira rien (bibliothèque)
+ 
+ ---
+ 
+-4. Premier programme : Hello, World!
++## 4. Premier programme : "Hello, World!"
+ 
+-Créez un fichier main.go et écrivez :
++Créez un fichier `main.go` et écrivez :
+ 
+ ```go
+ package main
+@@ -163,43 +161,43 @@ func main() {
+ }
+ ```
+ 
+-Explication ligne par ligne :
++### Explication ligne par ligne
+ 
+-1. package main → ce programme peut être exécuté
+-2. import "fmt" → on utilise le paquet pour afficher du texte
+-3. func main() → point d’entrée
+-4. fmt.Println() → affiche une ligne et passe à la ligne suivante
++| Ligne | Explication |
++|-------|-------------|
++| `package main` | Ce programme peut être exécuté |
++| `import "fmt"` | On utilise le paquet pour afficher du texte |
++| `func main()` | Point d'entrée du programme |
++| `fmt.Println()` | Affiche une ligne et passe à la ligne suivante |
+ 
+-🧪 Testez : Vous pouvez aussi afficher fmt.Print("Hello") (sans retour à la ligne).
++🧪 **Testez :** Vous pouvez aussi afficher avec `fmt.Print("Hello")` (sans retour à la ligne).
+ 
+ ---
+ 
+-5. Compilation et exécution
++## 5. Compilation et exécution
+ 
+-5.1. go run (exécution directe)
++### 5.1. `go run` – Exécution directe
+ 
+ ```bash
+ go run main.go
+ ```
+ 
+-Ceci :
++Cette commande :
++- compile le code en mémoire
++- l'exécute immédiatement
++- ne laisse aucun fichier exécutable sur le disque
+ 
+-· compile le code en mémoire
+-· l’exécute immédiatement
+-· ne laisse aucun fichier exécutable sur le disque
++✅ Idéal pour **tester rapidement** pendant le développement.
+ 
+-✅ Idéal pour tester rapidement pendant le développement.
+-
+-5.2. go build (génération d’exécutable)
++### 5.2. `go build` – Génération d'un exécutable
+ 
+ ```bash
+ go build main.go
+ ```
+ 
+ Cela produit :
+-
+-· Linux/Mac : un fichier main (sans extension)
+-· Windows : main.exe
++- Linux/Mac : un fichier `main` (sans extension)
++- Windows : `main.exe`
+ 
+ Ensuite, lancez-le :
+ 
+@@ -208,38 +206,86 @@ Ensuite, lancez-le :
+ main.exe      # Windows
+ ```
+ 
+-✅ Idéal pour distribuer ou utiliser le programme sans avoir Go installé.
++✅ Idéal pour **distribuer** ou utiliser le programme sans avoir Go installé.
+ 
+-💡 Différence :
+-go run = compile + exécute (fichier temporaire)
+-go build = crée un fichier exécutable permanent
++### Différence résumée
++
++| Commande | Effet | Usage |
++|----------|-------|-------|
++| `go run` | Compile + exécute (fichier temporaire) | Développement, tests rapides |
++| `go build` | Crée un fichier exécutable permanent | Distribution, production |
+ 
+ ---
+ 
+-TP final – Module 1
++## TP final – Présentation personnelle
+ 
+-Énoncé
++### Énoncé
+ 
+ Écrivez un programme Go qui affiche votre prénom et votre âge (valeurs écrites en dur dans le code).
+ 
+-Exemple de sortie :
++**Exemple de sortie :**
+ 
+ ```
+ Prénom : Aline
+ Âge : 28 ans
+ ```
+ 
+-Étapes à suivre
++### Étapes à suivre
++
++**Étape 1 – Créer le dossier et le fichier**
+ 
+-1. Créez un dossier monPremierProjet
+-2. Dans ce dossier, créez un fichier presentation.go
+-3. Écrivez le code avec :
+-   · package main
+-   · import "fmt"
+-   · une fonction main()
+-   · deux appels à fmt.Println() ou un seul avec fmt.Printf()
++```bash
++mkdir monPremierProjet
++cd monPremierProjet
++touch presentation.go
++```
+ 
+-Correction possible
++**Étape 2 – Structure de base**
++
++```go
++package main
++
++import "fmt"
++
++func main() {
++    // Votre code ici
++}
++```
++
++**Étape 3 – Déclarer les variables**
++
++```go
++prenom := "Aline"
++age := 28
++```
++
++**Étape 4 – Afficher le résultat**
++
++```go
++fmt.Println("Prénom :", prenom)
++fmt.Println("Âge :", age, "ans")
++```
++
++### À vous de jouer !
++
++Codez la solution par vous-même avant de regarder la correction.
++
++---
++
++.
++.
++.
++.
++.
++.
++.
++.
++.
++.
++
++---
++
++### Proposition de correction
+ 
+ ```go
+ package main
+@@ -249,37 +295,97 @@ import "fmt"
+ func main() {
+     prenom := "Aline"
+     age := 28
++
+     fmt.Println("Prénom :", prenom)
+     fmt.Println("Âge :", age, "ans")
+ }
+ ```
+ 
+-Ou plus concis :
++**Version plus concise avec `fmt.Printf` :**
+ 
+ ```go
+-fmt.Printf("Prénom : %s\nÂge : %d ans\n", prenom, age)
++package main
++
++import "fmt"
++
++func main() {
++    prenom := "Aline"
++    age := 28
++
++    fmt.Printf("Prénom : %s\nÂge : %d ans\n", prenom, age)
++}
++```
++
++### Tests à effectuer
++
++```bash
++# Exécution directe
++go run presentation.go
++
++# Génération d'un exécutable
++go build presentation.go
++
++# Lancement de l'exécutable
++./presentation        # Linux/Mac
++presentation.exe      # Windows
++```
++
++**Testez les modifications :**
++- Changez les valeurs de `prenom` et `age`
++- Recompilez et vérifiez que l'affichage change
++- Essayez d'afficher une phrase entière : `fmt.Printf("Je m'appelle %s et j'ai %d ans.\n", prenom, age)`
++
++### Pour aller plus loin (optionnel)
++
++**1. Ajouter une ville**
++
++```go
++prenom := "Aline"
++age := 28
++ville := "Paris"
++
++fmt.Printf("%s, %d ans, habite à %s\n", prenom, age, ville)
+ ```
+ 
+-Exécution et validation
++**2. Demander les informations à l'utilisateur**
++
++```go
++var prenom string
++var age int
++
++fmt.Print("Entrez votre prénom : ")
++fmt.Scanln(&prenom)
++fmt.Print("Entrez votre âge : ")
++fmt.Scanln(&age)
++
++fmt.Printf("Bonjour %s, vous avez %d ans.\n", prenom, age)
++```
++
++**3. Afficher la date de naissance**
++
++```go
++import "time"
++
++anneeActuelle := time.Now().Year()
++anneeNaissance := anneeActuelle - age
++fmt.Printf("Vous êtes né(e) en %d.\n", anneeNaissance)
++```
++
++---
+ 
+-1. Exécutez directement :
+-   ```bash
+-   go run presentation.go
+-   ```
+-2. Générez un exécutable :
+-   ```bash
+-   go build presentation.go
+-   ```
+-3. Lancez l’exécutable généré
++## Récapitulatif des acquis
+ 
+-Suggestions pour tester que tout fonctionne
++À la fin de ce module, vous savez :
+ 
+-· Modifiez les valeurs de prenom et age → recompilez → vérifiez que l’affichage change.
+-· Essayez d’afficher une phrase entière (ex: Je m'appelle Aline et j'ai 28 ans.)
+-· Testez avec go run puis go build sur un autre ordinateur sans Go installé (l’exécutable doit fonctionner).
++- ✅ Comprendre l'histoire et les caractéristiques de Go
++- ✅ Installer Go sur Linux, Windows, Mac ou Termux
++- ✅ Vérifier l'installation avec `go version`
++- ✅ Connaître la structure d'un programme Go (`package main`, `import`, `func main()`)
++- ✅ Écrire, compiler et exécuter votre premier programme
++- ✅ Différence entre `go run` et `go build`
+ 
+ ---
+ 
+-Félicitations ! Vous avez écrit, compilé et exécuté votre premier programme Go.
++➡️ **Module 2 :** Nous apprendrons à manipuler les types et les variables plus en détail.
+ 
+-➡️ Dans le Module 2, nous apprendrons à manipuler les types et les variables plus en détail.
+\ No newline at end of file
++**Félicitations !** Vous avez écrit, compilé et exécuté votre premier programme Go. 🚀
+diff --git a/cours/2_types_et_variables.md b/cours/2_types_et_variables.md
+index 6887293..5f63118 100755
+--- a/cours/2_types_et_variables.md
++++ b/cours/2_types_et_variables.md
+@@ -1,69 +1,66 @@
++# Module 2 – Types et variables
+ 
+-Module 2 – Types et variables
+-
+-Bienvenue dans ce deuxième module !
+-À la fin de ce module, vous saurez déclarer des variables, utiliser les types de base de Go, créer des constantes, convertir des types, et vous écrirez un mini-calculateur fonctionnel.
++Bienvenue dans ce deuxième module ! À la fin de ce module, vous saurez déclarer des variables, utiliser les types de base de Go, créer des constantes, convertir des types, et vous écrirez un mini-calculateur fonctionnel.
+ 
+ ---
+ 
+-1. Types de base
+-
+-En Go, chaque donnée a un type. Le type indique à l’ordinateur :
++## 1. Les types de base
+ 
+-· quelle taille de mémoire réserver
+-· quelles opérations sont autorisées (+, -, /, *, etc.)
++En Go, chaque donnée a un **type**. Le type indique à l'ordinateur :
++- quelle taille de mémoire réserver
++- quelles opérations sont autorisées (`+`, `-`, `/`, `*`, etc.)
+ 
+-1.1. int – les nombres entiers
++### 1.1. `int` – les nombres entiers
+ 
+-int représente un nombre entier (positif ou négatif).
++`int` représente un nombre entier (positif ou négatif).
+ 
+ ```go
+ var age int = 28
+ var temperature int = -5
+ ```
+ 
+-💡 Go a aussi des variantes plus précises : int8, int16, int32, int64 (pour économiser de la mémoire). Mais pour débuter, int est parfait.
++💡 Go a aussi des variantes plus précises : `int8`, `int16`, `int32`, `int64` (pour économiser de la mémoire). Mais pour débuter, `int` est parfait.
+ 
+-1.2. float64 – les nombres décimaux
++### 1.2. `float64` – les nombres décimaux
+ 
+-float64 sert à stocker des nombres avec une virgule.
++`float64` sert à stocker des nombres avec une virgule.
+ 
+ ```go
+ var prix float64 = 19.99
+ var pi float64 = 3.14159
+ ```
+ 
+-⚠️ Piège fréquent : En Go, 5 / 2 donne 2 (division entière). Pour obtenir 2.5, il faut écrire 5.0 / 2 ou utiliser des float64.
++⚠️ **Piège fréquent :** En Go, `5 / 2` donne `2` (division entière). Pour obtenir `2.5`, il faut écrire `5.0 / 2` ou utiliser des `float64`.
+ 
+-1.3. string – le texte
++### 1.3. `string` – le texte
+ 
+-string représente une chaîne de caractères (texte), toujours entre guillemets doubles.
++`string` représente une chaîne de caractères (texte), toujours entre **guillemets doubles**.
+ 
+ ```go
+ var nom string = "Aline"
+ var message string = "Bonjour tout le monde !"
+ ```
+ 
+-1.4. bool – les booléens (vrai / faux)
++### 1.4. `bool` – les booléens (vrai / faux)
+ 
+-bool ne prend que deux valeurs : true ou false.
++`bool` ne prend que deux valeurs : `true` ou `false`.
+ 
+ ```go
+ var estMajeur bool = true
+ var estPret bool = false
+ ```
+ 
+-✅ Les booléens sont très utiles dans les conditions (if, for).
++✅ Les booléens sont très utiles dans les conditions (`if`, `for`).
+ 
+ ---
+ 
+-2. Déclaration des variables
++## 2. Déclaration des variables
+ 
+ Il existe plusieurs façons de déclarer une variable en Go. Chacune a son usage.
+ 
+-2.1. var nom type – déclaration complète
++### 2.1. `var nom type` – déclaration complète
+ 
+-C’est la forme la plus explicite.
++C'est la forme la plus explicite.
+ 
+ ```go
+ var prenom string
+@@ -72,11 +69,10 @@ prenom = "Aline"
+ var age int = 28
+ ```
+ 
+-On peut aussi déclarer sans initialiser : Go mettra une valeur zéro :
+-
+-· 0 pour les nombres
+-· "" (chaîne vide) pour les string
+-· false pour les bool
++On peut aussi déclarer **sans initialiser** : Go mettra une **valeur zéro** :
++- `0` pour les nombres
++- `""` (chaîne vide) pour les `string`
++- `false` pour les `bool`
+ 
+ ```go
+ var x int        // x = 0
+@@ -84,10 +80,9 @@ var texte string // texte = ""
+ var actif bool   // actif = false
+ ```
+ 
+-2.2. := – inférence de type (déclaration courte)
++### 2.2. `:=` – inférence de type (déclaration courte)
+ 
+-C’est la façon la plus pratique et la plus utilisée en Go.
+-Go devine le type automatiquement à partir de la valeur.
++C'est la façon la plus pratique et la plus utilisée en Go. Go **devine le type** automatiquement à partir de la valeur.
+ 
+ ```go
+ prenom := "Aline"   // Go comprend que c'est un string
+@@ -96,10 +91,9 @@ prix := 19.99       // Go comprend que c'est un float64
+ estMajeur := true   // Go comprend que c'est un bool
+ ```
+ 
+-⚠️ Règle importante : := ne peut être utilisé qu’à l’intérieur d’une fonction (pas au niveau global).
+-À l’extérieur d’une fonction, utilisez var.
++⚠️ **Règle importante :** `:=` ne peut être utilisé qu'**à l'intérieur d'une fonction** (pas au niveau global). À l'extérieur d'une fonction, utilisez `var`.
+ 
+-2.3. Variables multiples
++### 2.3. Variables multiples
+ 
+ On peut déclarer plusieurs variables sur une seule ligne.
+ 
+@@ -114,15 +108,15 @@ x, y := 10, "bonjour"
+ nom, age, actif := "Aline", 28, true
+ ```
+ 
+-💡 Conseil : La déclaration multiple est très pratique pour les retours de fonctions (ex: resultat, err := maFonction()).
++💡 **Conseil :** La déclaration multiple est très pratique pour les retours de fonctions (ex: `resultat, err := maFonction()`).
+ 
+ ---
+ 
+-3. Constantes et iota
++## 3. Constantes et `iota`
+ 
+-3.1. const – une valeur qui ne change jamais
++### 3.1. `const` – une valeur qui ne change jamais
+ 
+-Une constante se déclare avec const. Elle ne peut pas être modifiée après sa création.
++Une constante se déclare avec `const`. Elle ne peut pas être modifiée après sa création.
+ 
+ ```go
+ const Pi = 3.14159
+@@ -130,44 +124,42 @@ const NomProgramme = "MonCalculateur"
+ 
+ // Déclaration multiple
+ const (
+-    HeuresParJour = 24
++    HeuresParJour   = 24
+     JoursParSemaine = 7
+ )
+ ```
+ 
+-✅ Quand utiliser const ?
+-Pour des valeurs qui ne varient jamais : nombre de secondes dans une minute, taux de TVA, nom d’un programme, etc.
++✅ **Quand utiliser `const` ?** Pour des valeurs qui ne varient jamais : nombre de secondes dans une minute, taux de TVA, nom d'un programme, etc.
+ 
+-3.2. iota – pour créer des énumérations simples
++### 3.2. `iota` – pour créer des énumérations simples
+ 
+-iota est un générateur automatique de constantes consécutives.
+-Il est réinitialisé à 0 à chaque nouveau bloc const.
++`iota` est un générateur automatique de constantes consécutives. Il est réinitialisé à `0` à chaque nouveau bloc `const`.
+ 
+ ```go
+ const (
+-    Lundi = iota     // 0
+-    Mardi            // 1
+-    Mercredi         // 2
+-    Jeudi            // 3
+-    Vendredi         // 4
++    Lundi    = iota     // 0
++    Mardi               // 1
++    Mercredi            // 2
++    Jeudi               // 3
++    Vendredi            // 4
+ )
+ 
+ const (
+-    Un = iota + 1    // 1
+-    Deux             // 2
+-    Trois            // 3
++    Un   = iota + 1     // 1
++    Deux                // 2
++    Trois               // 3
+ )
+ ```
+ 
+-💡 iota évite d’écrire manuellement 0, 1, 2, 3... pour des énumérations.
++💡 `iota` évite d'écrire manuellement `0, 1, 2, 3...` pour des énumérations.
+ 
+ ---
+ 
+-4. Conversion de types
++## 4. Conversion de types
+ 
+-En Go, on ne peut pas mélanger deux types différents sans conversion explicite.
++En Go, on ne peut pas mélanger deux types différents **sans conversion explicite**.
+ 
+-❌ Ceci ne fonctionne PAS :
++❌ Ceci ne fonctionne **PAS** :
+ 
+ ```go
+ var a int = 10
+@@ -175,7 +167,7 @@ var b float64 = 3.5
+ var c = a + b  // Erreur ! (int + float64 interdit)
+ ```
+ 
+-✅ Il faut convertir :
++✅ Il faut **convertir** :
+ 
+ ```go
+ var a int = 10
+@@ -188,7 +180,7 @@ var somme1 float64 = float64(a) + b   // 13.5
+ var somme2 int = a + int(b)           // 13 (car 3.5 → 3)
+ ```
+ 
+-Conversions courantes
++### Conversions courantes
+ 
+ ```go
+ var x int = 42
+@@ -197,25 +189,24 @@ var z int = int(y)           // float64 → int (troncature)
+ 
+ var texte string = "123"
+ // Pour convertir string → int, il faut un package spécial (strconv)
+-// Nous verrons cela plus tard.
++// Nous verrons cela au module 3
+ ```
+ 
+-⚠️ Piège : Convertir un float64 en int perd les décimales (troncature, pas d’arrondi).
+-Exemple : int(3.999) donne 3, pas 4.
++⚠️ **Piège :** Convertir un `float64` en `int` **perd les décimales** (troncature, pas d'arrondi). Exemple : `int(3.999)` donne `3`, pas `4`.
+ 
+ ---
+ 
+-TP final – Module 2
++## TP final – Mini-calculateur
+ 
+-Énoncé
++### Énoncé
+ 
+ Créez un mini-calculateur qui :
+ 
+-1. Déclare deux variables a et b avec les valeurs 10 et 3
+-2. Affiche leur somme, différence, produit et quotient (division en float64)
+-3. Utilise une constante pour stocker le nom du programme
++1. Déclare deux variables `a` et `b` avec les valeurs `10` et `3`
++2. Affiche leur **somme**, **différence**, **produit** et **quotient** (division en float64)
++3. Utilise une **constante** pour stocker le nom du programme
+ 
+-Exemple de sortie attendue :
++**Exemple de sortie attendue :**
+ 
+ ```
+ === MonMiniCalculateur ===
+@@ -226,15 +217,13 @@ Produit : 10 * 3 = 30
+ Quotient : 10 / 3 = 3.3333333333333335
+ ```
+ 
+----
+-
+-Étapes à suivre
++### Étapes à suivre
+ 
+-Étape 1 – Créer le fichier
++**Étape 1 – Créer le fichier**
+ 
+-Créez un dossier module2 et un fichier calculateur.go.
++Créez un dossier `module2` et un fichier `calculateur.go`.
+ 
+-Étape 2 – Structure de base
++**Étape 2 – Structure de base**
+ 
+ ```go
+ package main
+@@ -246,7 +235,7 @@ func main() {
+ }
+ ```
+ 
+-Étape 3 – Déclarer les variables et la constante
++**Étape 3 – Déclarer les variables et la constante**
+ 
+ ```go
+ const NomProgramme = "MonMiniCalculateur"
+@@ -255,7 +244,7 @@ a := 10
+ b := 3
+ ```
+ 
+-Étape 4 – Calculs
++**Étape 4 – Effectuer les calculs**
+ 
+ ```go
+ somme := a + b
+@@ -264,7 +253,7 @@ produit := a * b
+ quotient := float64(a) / float64(b)  // Conversion importante !
+ ```
+ 
+-Étape 5 – Affichage
++**Étape 5 – Afficher les résultats**
+ 
+ ```go
+ fmt.Println("===", NomProgramme, "===")
+@@ -275,9 +264,26 @@ fmt.Println("Produit :", a, "*", b, "=", produit)
+ fmt.Println("Quotient :", a, "/", b, "=", quotient)
+ ```
+ 
++### À vous de jouer !
++
++Codez la solution par vous-même avant de regarder la correction.
++
++---
++
++.
++.
++.
++.
++.
++.
++.
++.
++.
++.
++
+ ---
+ 
+-Code complet corrigé
++### Proposition de correction
+ 
+ ```go
+ package main
+@@ -304,38 +310,72 @@ func main() {
+ }
+ ```
+ 
+----
++### Tests à effectuer
++
++```bash
++# Exécution directe
++go run calculateur.go
++
++# Génération d'un exécutable
++go build calculateur.go
++./calculateur        # Linux/Mac
++calculateur.exe      # Windows
++```
++
++**Testez les modifications :**
++- Changez `a := 10` en `a := 15`
++- Changez `b := 3` en `b := 4`
++- Re-exécutez et vérifiez que tous les résultats sont mis à jour
++
++**Testez les conversions :**
++- Supprimez `float64(a)` et laissez `a / b` → observez l'erreur de compilation
++- Comprenez pourquoi Go vous oblige à être explicite
+ 
+-Comment tester votre programme
+-
+-1. Exécution directe :
+-   ```bash
+-   go run calculateur.go
+-   ```
+-2. Génération d’un exécutable :
+-   ```bash
+-   go build calculateur.go
+-   ./calculateur        # Linux/Mac
+-   calculateur.exe      # Windows
+-   ```
+-3. Modifiez les valeurs :
+-   · Changez a := 10 en a := 15
+-   · Changez b := 3 en b := 4
+-   · Re-exécutez et vérifiez que tous les résultats sont mis à jour
+-4. Testez les conversions :
+-   · Supprimez float64(a) et laissez a / b → observez l’erreur de compilation
+-   · Comprenez pourquoi Go vous oblige à être explicite
++### Pour aller plus loin (optionnel)
++
++**1. Ajouter le reste de la division (%)**
++
++```go
++reste := a % b
++fmt.Println("Reste :", a, "%", b, "=", reste)  // 10 % 3 = 1
++```
++
++**2. Demander les valeurs à l'utilisateur**
++
++```go
++var a, b int
++fmt.Print("Entrez le premier nombre : ")
++fmt.Scanln(&a)
++fmt.Print("Entrez le deuxième nombre : ")
++fmt.Scanln(&b)
++```
++
++**3. Gérer la division par zéro**
++
++```go
++if b == 0 {
++    fmt.Println("Erreur : division par zéro impossible")
++} else {
++    quotient := float64(a) / float64(b)
++    fmt.Println("Quotient :", a, "/", b, "=", quotient)
++}
++```
+ 
+ ---
+ 
+-Pour aller plus loin (optionnel)
++## Récapitulatif des acquis
++
++À la fin de ce module, vous savez :
+ 
+-· Ajoutez le reste de la division (%), ex: 10 % 3 = 1
+-· Demandez les valeurs à l’utilisateur avec fmt.Scanln() au lieu de les écrire en dur
+-· Gérez la division par zéro (si b devient 0)
++- ✅ Utiliser les types de base (`int`, `float64`, `string`, `bool`)
++- ✅ Déclarer des variables avec `var` et `:=`
++- ✅ Déclarer des constantes avec `const`
++- ✅ Utiliser `iota` pour des énumérations
++- ✅ Convertir explicitement entre types (`int(x)`, `float64(x)`)
++- ✅ Éviter les pièges de la division entière
+ 
+ ---
+ 
+-Félicitations ! Vous maîtrisez maintenant les types, les variables, les constantes et les conversions en Go.
++➡️ **Module 3 :** Nous apprendrons à contrôler le flux d'un programme avec `if`, `switch` et les boucles `for`.
+ 
+-➡️ Dans le Module 3, nous apprendrons à contrôler le flux d’un programme avec if, switch et les boucles for.
+\ No newline at end of file
++**Félicitations !** Vous maîtrisez maintenant les bases des variables et types en Go. 🚀
+diff --git a/cours/3_controle_des_flux.md b/cours/3_controle_des_flux.md
+index f52dafc..8e93681 100755
+--- a/cours/3_controle_des_flux.md
++++ b/cours/3_controle_des_flux.md
+@@ -1,97 +1,76 @@
+-Module 3 – Contrôle de flux
++# Module 3 – Contrôle de flux
+ 
+ Bienvenue dans ce troisième module ! À la fin de ce module, vous saurez prendre des décisions dans votre programme (conditions), répéter des actions (boucles), et gérer des erreurs simples. Vous écrirez un jeu de devinette complet.
+ 
+-0. Parenthèse – Les packages en Go (imports)
+-
+-Avant de commencer, comprenons comment Go organise son code. Un package est un ensemble de fonctionnalités regroupées. Pour les utiliser, on les importe.
+-
+-Les packages que nous utilisons déjà et allons utiliser
++---
+ 
+-```go
+-package main
++## 0. Les packages en Go
+ 
+-import "fmt"      // Pour afficher (Println, Printf) et lire (Scanln)
+-import "errors"   // Pour créer des erreurs (errors.New)
+-import "strconv"  // Pour convertir texte ↔ nombres (Atoi, Itoa)
+-import "math/rand"// Pour générer des nombres aléatoires (optionnel)
+-import "time"     // Pour le temps (nécessaire avec rand)
+-```
++Avant de commencer, comprenons comment Go organise son code. Un **package** est un ensemble de fonctionnalités regroupées. Pour les utiliser, on les importe.
+ 
+-Version raccourcie (recommandée) :
++### Packages couramment utilisés
+ 
+ ```go
+ import (
+-    "fmt"
+-    "errors"
+-    "strconv"
+-    "math/rand"
+-    "time"
++    "fmt"       // Entrées/sorties (Println, Scanln, Printf)
++    "errors"    // Création d'erreurs (errors.New)
++    "strconv"   // Conversion texte ↔ nombres (Atoi, Itoa)
++    "math/rand" // Nombres aléatoires (rand.Intn)
++    "time"      // Temps (pour initialiser le hasard)
+ )
+ ```
+ 
+-Que fait chaque package ?
++| Package | Utilité | Exemple |
++|---------|---------|---------|
++| `fmt` | Entrées/sorties basiques | `fmt.Println("texte")`, `fmt.Scanln(&var)` |
++| `errors` | Créer des erreurs | `errors.New("message")` |
++| `strconv` | Convertir string ↔ nombres | `strconv.Atoi("42")`, `strconv.Itoa(42)` |
++| `math/rand` | Nombres aléatoires | `rand.Intn(100)` (0 à 99) |
++| `time` | Temps (pour le hasard) | `time.Now().UnixNano()` |
+ 
+-Package Utilité Exemple
+-fmt Entrées/sorties basiques fmt.Println("texte") fmt.Scanln(&variable) fmt.Printf("%.2f", prix)
+-errors Créer des erreurs errors.New("message d'erreur")
+-strconv Convertir string ↔ nombres strconv.Atoi("42") (string → int) strconv.Itoa(42) (int → string) strconv.ParseFloat("3.14", 64)
+-math/rand Nombres aléatoires rand.Intn(100) (0 à 99)
+-time Temps (pour initialiser le hasard) time.Now().UnixNano()
++### Pourquoi `strconv` existe ?
+ 
+-Pourquoi strconv existe ?
+-
+-En Go, on ne peut pas faire int("42") comme dans certains langages. Il faut passer par strconv.Atoi() (ASCII to Integer).
++En Go, on ne peut pas faire `int("42")` comme dans certains langages :
+ 
+ ```go
+-// ❌ Ceci ne fonctionne PAS
++// ❌ Ne fonctionne pas
+ nombre := int("42")  // Erreur de compilation !
+ 
+-// ✅ Il faut faire :
++// ✅ Il faut utiliser strconv
+ import "strconv"
+ nombre, err := strconv.Atoi("42")  // nombre = 42, err = nil
+ ```
+ 
+-⚠️ Atoi retourne toujours deux valeurs : le nombre converti ET une éventuelle erreur.
++⚠️ **Important :** `strconv.Atoi()` retourne **toujours deux valeurs** : le nombre converti ET une éventuelle erreur.
+ 
+ ```go
+ valeur, err := strconv.Atoi("abc")
+ if err != nil {
+-    fmt.Println("Erreur :", err)  // Erreur : strconv.Atoi: parsing "abc": invalid syntax
++    fmt.Println("Erreur :", err)  // Erreur : invalid syntax
+ }
+ ```
+ 
+-Où trouver la documentation ?
++### Où trouver la documentation ?
+ 
+-· En ligne : pkg.go.dev (ex: pkg.go.dev/fmt)
+-· Dans le terminal : go doc fmt.Println
+-· Votre éditeur de code affiche souvent les informations au survol
++- En ligne : [pkg.go.dev](https://pkg.go.dev)
++- Dans le terminal : `go doc fmt.Println`
++- Votre éditeur de code (affichage au survol)
+ 
+-💡 Conseil : Vous n'avez pas besoin de mémoriser tous les packages. Apprenez à chercher la documentation quand vous en avez besoin.
++💡 **Conseil :** Vous n'avez pas besoin de mémoriser tous les packages. Apprenez à chercher la documentation quand vous en avez besoin.
+ 
+ ---
+ 
+-1. Instructions conditionnelles
++## 1. Instructions conditionnelles
+ 
+ Les conditions permettent d'exécuter du code seulement si une certaine situation est vraie.
+ 
+-1.1. if, else if, else
++### 1.1. `if`, `else if`, `else`
+ 
+-La structure if est la plus basique. Elle s'utilise sans parenthèses autour de la condition.
++La structure `if` s'utilise **sans parenthèses** autour de la condition.
+ 
+ ```go
+ age := 18
+ 
+-if age >= 18 {
+-    fmt.Println("Vous êtes majeur")
+-}
+-```
+-
+-Avec une alternative :
+-
+-```go
+-age := 16
+-
+ if age >= 18 {
+     fmt.Println("Vous êtes majeur")
+ } else {
+@@ -115,19 +94,18 @@ if note >= 90 {
+ }
+ ```
+ 
+-💡 Particularité de Go : On peut exécuter une petite instruction avant la condition :
++💡 **Particularité de Go :** On peut exécuter une instruction avant la condition :
+ 
+ ```go
+-// age n'existe qu'à l'intérieur du if/else
+ if age := 20; age >= 18 {
+     fmt.Println("Majeur")
+ }
+ // age n'est plus accessible ici
+ ```
+ 
+-1.2. switch – alternative élégante au if/else chaîné
++### 1.2. `switch` – pour les cas multiples
+ 
+-Quand vous avez beaucoup de cas à vérifier, switch est plus lisible.
++Quand vous avez beaucoup de cas à vérifier, `switch` est plus lisible.
+ 
+ ```go
+ jour := "mardi"
+@@ -144,10 +122,11 @@ default:
+ }
+ ```
+ 
+-⚠️ Particularité importante : En Go, les case n'ont pas besoin de break . Le switch s'arrête automatiquement après le premier cas correspondant.
++⚠️ **Particularité importante :** En Go, les `case` n'ont pas besoin de `break`. Le `switch` s'arrête automatiquement après le premier cas correspondant.
++
++**Switch sans expression** (équivalent à `if`/`else` amélioré) :
+ 
+ ```go
+-// Switch sans expression = if/else amélioré
+ note := 85
+ 
+ switch {
+@@ -162,24 +141,24 @@ default:
+ }
+ ```
+ 
+-2. Boucles
++---
++
++## 2. Boucles
+ 
+-En Go, il n'y a qu'un seul mot-clé pour les boucles : for . Pas de while ni de do...while.
++En Go, il n'y a qu'un seul mot-clé pour les boucles : **`for`**. Pas de `while` ni de `do...while`.
+ 
+-2.1. for classique – comme en C/Java
++### 2.1. `for` classique
+ 
+ ```go
+-// for initialisation; condition; post-iteration
+ for i := 0; i < 5; i++ {
+     fmt.Println("Tour numéro", i)
+ }
+ // Affiche 0, 1, 2, 3, 4
+ ```
+ 
+-Le for comme un while :
++### 2.2. `for` comme un `while`
+ 
+ ```go
+-// Tant que compteur < 3
+ compteur := 0
+ for compteur < 3 {
+     fmt.Println("Encore...")
+@@ -187,56 +166,55 @@ for compteur < 3 {
+ }
+ ```
+ 
+-Boucle infinie (utile avec break) :
++### 2.3. Boucle infinie
+ 
+ ```go
+ for {
+     fmt.Println("Tourne en rond")
+-    break   // sans ça, c'est infini !
++    break   // sans break, c'est infini !
+ }
+ ```
+ 
+-break et continue :
++### 2.4. `break` et `continue`
+ 
+ ```go
+ for i := 0; i < 10; i++ {
+     if i == 3 {
+-        continue   // saute i=3, passe au suivant
++        continue   // Saute i=3, passe au suivant
+     }
+     if i == 7 {
+-        break      // s'arrête complètement à i=7
++        break      // S'arrête complètement à i=7
+     }
+     fmt.Println(i) // 0,1,2,4,5,6
+ }
+ ```
+ 
+-2.2. for range – pour parcourir des collections
++### 2.5. `for range` – parcourir des collections
+ 
+-range permet d'itérer facilement sur des slices, tableaux, maps ou chaînes.
++`range` permet d'itérer facilement sur des slices, tableaux, maps ou chaînes.
+ 
+ ```go
+-// Avec une slice
+ nombres := []int{10, 20, 30, 40}
+ 
+ for index, valeur := range nombres {
+     fmt.Println("Position", index, "=", valeur)
+ }
+-```
+ 
+-```go
+ // Si l'index ne vous intéresse pas, utilisez _
+ for _, valeur := range nombres {
+     fmt.Println("Valeur :", valeur)
+ }
+ ```
+ 
+-💡 Nous verrons range plus en détail dans le module sur les collections.
++💡 Nous verrons `range` plus en détail dans le module sur les collections.
++
++---
+ 
+-3. Gestion d'erreurs simple
++## 3. Gestion d'erreurs
+ 
+-En Go, la gestion d'erreur est explicite. Pas d'exceptions comme en Python/Java. Une fonction "qui peut échouer" retourne souvent un résultat et une erreur.
++En Go, la gestion d'erreur est **explicite**. Pas d'exceptions comme en Python ou Java. Une fonction "qui peut échouer" retourne souvent un résultat et une erreur.
+ 
+-3.1. Créer une erreur avec errors.New()
++### 3.1. Créer une erreur avec `errors.New()`
+ 
+ ```go
+ import "errors"
+@@ -249,9 +227,9 @@ func diviser(a, b float64) (float64, error) {
+ }
+ ```
+ 
+-3.2. Vérifier if err != nil
++### 3.2. Vérifier avec `if err != nil`
+ 
+-C'est le motif le plus fréquent en Go :
++C'est le **motif le plus fréquent** en Go :
+ 
+ ```go
+ resultat, err := diviser(10, 0)
+@@ -262,12 +240,12 @@ if err != nil {
+ }
+ ```
+ 
+-✅ À retenir : Si err != nil, gérez l'erreur. Si err == nil, tout va bien.
++✅ **À retenir :**
++- Si `err != nil` → gérez l'erreur
++- Si `err == nil` → tout va bien, utilisez le résultat
+ 
+ ```go
+-// Exemple avec conversion string → int (package strconv)
+-import "strconv"
+-
++// Exemple avec conversion string → int
+ nombreStr := "42"
+ valeur, err := strconv.Atoi(nombreStr)
+ if err != nil {
+@@ -279,20 +257,19 @@ if err != nil {
+ 
+ ---
+ 
+-TP final – Module 3 – Jeu de devinette
++## TP final – Jeu de devinette
+ 
+-Énoncé
++### Énoncé
+ 
+ Créez un jeu où l'ordinateur choisit un nombre secret (fixé dans le code). Le joueur doit le deviner en 5 essais maximum.
+ 
+-Règles :
++**Règles :**
++- Nombre secret : 42 (vous pourrez changer plus tard)
++- Le programme indique "trop petit", "trop grand" ou "gagné"
++- Limite de 5 tentatives
++- Si échec après 5 essais, afficher le nombre secret
+ 
+-· Nombre secret : 42 (vous pourrez changer plus tard)
+-· Le programme indique "trop petit", "trop grand" ou "gagné"
+-· Limite de 5 tentatives
+-· Si échec après 5 essais, afficher le nombre secret
+-
+-Exemple de sortie attendue :
++**Exemple de sortie :**
+ 
+ ```
+ === Jeu de Devinette ===
+@@ -304,40 +281,46 @@ Devinez le nombre secret (entre 1 et 100) : 42
+ Bravo ! Vous avez trouvé en 3 essais.
+ ```
+ 
+-Étapes à suivre
++### Étapes à suivre
+ 
+-Étape 1 – Créer le fichier
++**Étape 1 – Créer le fichier**
+ 
+-Créez un dossier module3 et un fichier devinette.go.
++Créez un dossier `module3` et un fichier `devinette.go`.
+ 
+-Étape 2 – Structure de base avec les imports
++**Étape 2 – Structure de base**
+ 
+ ```go
+ package main
+ 
+-import "fmt"   // Pour Println, Printf, Scanln
++import "fmt"
+ 
+ func main() {
+     // Votre code ici
+ }
+ ```
+ 
+-Étape 3 – Déclarez les constantes
++**Étape 3 – Déclarez les constantes**
+ 
+-Déclarez une constante pour le nombre secret et une pour le nombre maximum d'essais.
++```go
++const (
++    NombreSecret = 42
++    MaxEssais    = 5
++)
++```
+ 
+-Étape 4 – Créez une variable pour suivre si le joueur a gagné
++**Étape 4 – Créez une variable pour suivre la victoire**
+ 
+-Une variable bool sera utile pour savoir si le joueur a trouvé avant la fin des essais.
++```go
++gagne := false
++```
+ 
+-Étape 5 – Écrivez une boucle for pour les 5 essais
++**Étape 5 – Écrivez une boucle `for` pour les essais**
+ 
+ Deux approches possibles :
++- `for i := 1; i <= MaxEssais; i++`
++- `for essaisRestants := MaxEssais; essaisRestants > 0; essaisRestants--`
+ 
+-· Un for i := 1; i <= 5; i++ où i représente le numéro de l'essai
+-· Un for essaisRestants := 5; essaisRestants > 0; essaisRestants--
+-
+-Étape 6 – À chaque tour : lisez la tentative de l'utilisateur avec fmt.Scanln()
++**Étape 6 – Lisez la tentative de l'utilisateur**
+ 
+ ```go
+ var tentative int
+@@ -345,23 +328,21 @@ fmt.Print("Devinez le nombre : ")
+ fmt.Scanln(&tentative)
+ ```
+ 
+-Étape 7 – Comparez avec if et affichez l'indice
+-
+-· Si égal → gagne = true et break (on sort de la boucle)
+-· Si trop petit → affichez "Trop petit !"
+-· Si trop grand → affichez "Trop grand !"
+-· N'oubliez pas d'afficher le nombre d'essais restants
++**Étape 7 – Comparez avec `if` et affichez l'indice**
+ 
+-Étape 8 – Après la boucle, affichez le résultat final
++- Si égal → `gagne = true` et `break`
++- Si trop petit → "Trop petit !"
++- Si trop grand → "Trop grand !"
++- Affichez le nombre d'essais restants
+ 
+-· Si gagne est true → message de victoire
+-· Sinon → message de défaite avec révélation du nombre secret
++**Étape 8 – Affichez le résultat final**
+ 
+-À vous de jouer !
++- Si `gagne` est `true` → message de victoire
++- Sinon → message de défaite avec révélation du nombre secret
+ 
+-Essayez de coder la solution par vous-même avant de regarder la proposition ci-dessous.
++### À vous de jouer !
+ 
+-L'important est que votre programme produise le comportement attendu. Il n'y a pas une seule façon correcte de le faire. Tant que votre jeu fonctionne comme décrit, c'est une bonne solution.
++Codez la solution par vous-même avant de regarder la correction.
+ 
+ ---
+ 
+@@ -378,16 +359,12 @@ L'important est que votre programme produise le comportement attendu. Il n'y a p
+ 
+ ---
+ 
+-Proposition de correction
+-
+-Voici une solution possible. La vôtre peut être différente et tout à fait valable !
++### Proposition de correction
+ 
+ ```go
+ package main
+ 
+-import (
+-    "fmt"
+-)
++import "fmt"
+ 
+ func main() {
+     const (
+@@ -421,10 +398,9 @@ func main() {
+ }
+ ```
+ 
+-Variante possible avec une autre structure de boucle :
++**Variante avec compteur d'essais :**
+ 
+ ```go
+-// Version avec i pour compter les essais
+ gagne := false
+ for i := 1; i <= MaxEssais; i++ {
+     var tentative int
+@@ -447,25 +423,22 @@ if !gagne {
+ }
+ ```
+ 
+-Comment tester votre programme
+-
+-Exécution directe :
++### Tests à effectuer
+ 
+ ```bash
+ go run devinette.go
+ ```
+ 
+-Testez les différents cas :
+-
+-· ✅ Devinez correctement du premier coup
+-· ✅ Devinez après plusieurs essais
+-· ✅ Épuisez les 5 essais sans trouver
+-· ✅ Changez NombreSecret en 10 et rejouez
+-· ✅ Changez MaxEssais en 3 pour plus de difficulté
++Testez ces cas :
++- ✅ Deviner du premier coup
++- ✅ Deviner après plusieurs essais
++- ✅ Épuiser les 5 essais sans trouver
++- ✅ Changer `NombreSecret` en 10
++- ✅ Changer `MaxEssais` en 3
+ 
+-Pour aller plus loin (optionnel)
++### Pour aller plus loin (optionnel)
+ 
+-1. Générer un nombre aléatoire (nécessite les packages math/rand et time)
++**1. Nombre aléatoire**
+ 
+ ```go
+ import (
+@@ -475,49 +448,46 @@ import (
+ )
+ 
+ func main() {
+-    rand.Seed(time.Now().UnixNano())  // Initialise le hasard
+-    NombreSecret := rand.Intn(100) + 1 // entre 1 et 100
++    rand.Seed(time.Now().UnixNano())
++    nombreSecret := rand.Intn(100) + 1  // Entre 1 et 100
+     // ... reste du code identique
+ }
+ ```
+ 
+-2. Valider que l'entrée est bien un nombre (avec strconv)
++**2. Validation des entrées**
+ 
+ ```go
+-import (
+-    "fmt"
+-    "strconv"
+-)
+-
+-// Pour lire une ligne complète et la convertir
+ var input string
+ fmt.Print("Devinez le nombre : ")
+ fmt.Scanln(&input)
+ tentative, err := strconv.Atoi(input)
+ if err != nil {
+     fmt.Println("Veuillez entrer un nombre valide !")
+-    continue  // On recommence l'essai
++    continue
+ }
+ ```
+ 
+-3. Ajouter un mode "difficile" avec moins d'essais
++**3. Mode difficile** (moins d'essais)
+ 
+-4. Proposer de rejouer à la fin avec une boucle for qui englobe tout le jeu
++**4. Rejouer à la fin** (boucle englobante)
+ 
+-5. Ajouter un indice après 3 essais ("Le nombre est pair" ou "Le nombre est multiple de 3")
++**5. Ajouter des indices** après 3 essais
+ 
+ ---
+ 
+-Félicitations !
++## Récapitulatif des acquis
++
++À la fin de ce module, vous savez :
+ 
+-Vous maîtrisez maintenant les conditions (if, switch), les boucles (for sous toutes ses formes), et la gestion d'erreur basique en Go.
++- ✅ Comprendre les packages et les importer (`fmt`, `errors`, `strconv`...)
++- ✅ Prendre des décisions avec `if`/`else if`/`else`
++- ✅ Utiliser `switch` pour des cas multiples
++- ✅ Créer des boucles avec `for` (classique, while, infini)
++- ✅ Utiliser `break` et `continue`
++- ✅ Gérer des erreurs simples avec `if err != nil`
+ 
+-Récap des acquis :
++---
+ 
+-· ✅ Comprendre les packages et les importer (fmt, errors, strconv...)
+-· ✅ Prendre des décisions avec if/else if/else
+-· ✅ Utiliser switch pour des cas multiples
+-· ✅ Créer des boucles avec for
+-· ✅ Gérer des erreurs simples avec if err != nil
++➡️ **Module 4 :** Nous découvrirons les fonctions, les retours multiples, et les pointeurs.
+ 
+-➡️ Dans le Module 4, nous découvrirons les fonctions : créer ses propres blocs réutilisables, retourner des valeurs multiples, et comprendre les pointeurs.
+\ No newline at end of file
++**Félicitations !** Vous maîtrisez maintenant le contrôle de flux en Go. 🚀
+diff --git a/cours/4_fonctions_et_methodes.md b/cours/4_fonctions_et_methodes.md
+new file mode 100644
+index 0000000..8ccaeff
+--- /dev/null
++++ b/cours/4_fonctions_et_methodes.md
+@@ -0,0 +1,592 @@
++# Module 4 – Fonctions
++
++Bienvenue dans ce quatrième module ! À la fin de ce module, vous saurez structurer votre code avec des fonctions réutilisables, comprendre les retours multiples, les fonctions anonymes, et même créer vos propres méthodes sur des structures.
++
++---
++
++## 0. Pourquoi les fonctions ?
++
++Jusqu'ici, tout votre code était dans `main()`. Pour un petit programme, ça va. Mais dès que votre programme grandit :
++
++- **Difficile à lire** (100 lignes dans main)
++- **Code dupliqué** (même calcul à plusieurs endroits)
++- **Difficile à tester**
++
++Les fonctions résolvent ces problèmes :
++
++```go
++// ❌ Sans fonction : code dupliqué
++prix1 := 100 * 1.20  // TVA 20%
++prix2 := 200 * 1.20
++prix3 := 150 * 1.20
++
++// ✅ Avec fonction : on écrit le calcul une fois
++func ajouterTVA(prix float64) float64 {
++    return prix * 1.20
++}
++prix1 := ajouterTVA(100)
++prix2 := ajouterTVA(200)
++prix3 := ajouterTVA(150)
++```
++
++---
++
++## 1. Définition de fonctions
++
++### 1.1. Syntaxe de base
++
++```go
++func nomDeLaFonction(parametres) typeDeRetour {
++    // code
++    return valeur
++}
++```
++
++**Exemple simple :**
++
++```go
++func direBonjour() {
++    fmt.Println("Bonjour !")
++}
++
++func addition(a int, b int) int {
++    return a + b
++}
++
++// Quand les paramètres ont le même type, on peut les grouper
++func soustraction(a, b int) int {
++    return a - b
++}
++
++func main() {
++    direBonjour()                    // Bonjour !
++    resultat := addition(5, 3)       // 8
++    fmt.Println(resultat)
++}
++```
++
++### 1.2. Retour multiple (très courant en Go)
++
++Une fonction peut retourner plusieurs valeurs. C'est la manière standard de gérer les erreurs.
++
++```go
++import "errors"
++
++func diviser(a, b float64) (float64, error) {
++    if b == 0 {
++        return 0, errors.New("division par zéro impossible")
++    }
++    return a / b, nil  // nil = pas d'erreur
++}
++
++func main() {
++    resultat, err := diviser(10, 2)
++    if err != nil {
++        fmt.Println("Erreur :", err)
++    } else {
++        fmt.Println("Résultat :", resultat)  // 5
++    }
++
++    // Test avec division par zéro
++    resultat, err = diviser(10, 0)
++    if err != nil {
++        fmt.Println("Erreur :", err)  // Erreur : division par zéro impossible
++    }
++}
++```
++
++💡 **Vous reconnaissez ce pattern ?** C'est exactement ce que fait `strconv.Atoi()` !
++
++```go
++nombre, err := strconv.Atoi("42")   // Retourne (int, error)
++```
++
++### 1.3. Retour nommé
++
++Go permet de nommer les valeurs de retour. Utile pour la documentation.
++
++```go
++func calculerCercle(rayon float64) (aire, perimetre float64) {
++    aire = 3.14 * rayon * rayon
++    perimetre = 2 * 3.14 * rayon
++    return  // return nu (retourne aire et perimetre)
++}
++
++func main() {
++    a, p := calculerCercle(5)
++    fmt.Printf("Aire: %.2f, Périmètre: %.2f\n", a, p)
++}
++```
++
++⚠️ À utiliser avec modération. Le retour explicite est souvent plus lisible.
++
++---
++
++## 2. Paramètres variadiques (`...`)
++
++Une fonction peut accepter un nombre variable d'arguments.
++
++```go
++func somme(nombres ...int) int {
++    total := 0
++    for _, n := range nombres {
++        total += n
++    }
++    return total
++}
++
++func main() {
++    fmt.Println(somme(1, 2))       // 3
++    fmt.Println(somme(1, 2, 3))    // 6
++    fmt.Println(somme(1, 2, 3, 4)) // 10
++    fmt.Println(somme())           // 0 (zéro argument fonctionne aussi)
++}
++```
++
++**Astuce :** Passer une slice à une fonction variadique
++
++```go
++nombres := []int{1, 2, 3, 4, 5}
++resultat := somme(nombres...)  // Les trois petits points "déballent" la slice
++fmt.Println(resultat)          // 15
++```
++
++---
++
++## 3. Fonctions anonymes et closures
++
++### 3.1. Assigner une fonction à une variable
++
++En Go, les fonctions sont des **valeurs** comme les autres. On peut les stocker dans des variables.
++
++```go
++func main() {
++    // Fonction anonyme assignée à une variable
++    carre := func(x int) int {
++        return x * x
++    }
++
++    fmt.Println(carre(5))  // 25
++
++    // On peut aussi passer une fonction en paramètre
++    appliquer := func(f func(int) int, valeur int) int {
++        return f(valeur)
++    }
++
++    resultat := appliquer(carre, 4)
++    fmt.Println(resultat)  // 16
++}
++```
++
++### 3.2. Closure (fermeture)
++
++Une closure est une fonction qui "capture" des variables de son environnement.
++
++```go
++func compteur() func() int {
++    i := 0
++    return func() int {
++        i++
++        return i
++    }
++}
++
++func main() {
++    c1 := compteur()
++    c2 := compteur()
++
++    fmt.Println(c1())  // 1
++    fmt.Println(c1())  // 2
++    fmt.Println(c1())  // 3
++
++    fmt.Println(c2())  // 1 (indépendant !)
++    fmt.Println(c2())  // 2
++}
++```
++
++💡 **Utilité des closures :**
++- Générateurs (comme le compteur)
++- Fonctions de configuration
++- Éviter les variables globales
++
++---
++
++## 4. Structures (`struct`) et méthodes
++
++### 4.1. Déclarer une structure
++
++Une `struct` est un regroupement de champs (comme un objet simple).
++
++```go
++// Déclaration d'une structure Personne
++type Personne struct {
++    Nom   string
++    Age   int
++    Ville string
++}
++
++func main() {
++    // Créer une personne (plusieurs façons)
++
++    // Méthode 1 : avec les champs dans l'ordre
++    p1 := Personne{"Alice", 30, "Paris"}
++
++    // Méthode 2 : avec les noms des champs (recommandée)
++    p2 := Personne{
++        Nom:   "Bob",
++        Age:   25,
++        Ville: "Lyon",
++    }
++
++    // Méthode 3 : champ par champ
++    var p3 Personne
++    p3.Nom = "Charlie"
++    p3.Age = 35
++    p3.Ville = "Marseille"
++
++    // Accéder aux champs avec .
++    fmt.Println(p1.Nom)  // Alice
++    fmt.Println(p2.Age)  // 25
++    fmt.Println(p3.Ville) // Marseille
++}
++```
++
++### 4.2. Ajouter des méthodes avec un receiver
++
++Une méthode est une fonction attachée à un type (une `struct` par exemple).
++
++```go
++type Rectangle struct {
++    Largeur, Hauteur float64
++}
++
++// Méthode avec receiver par valeur (copie)
++func (r Rectangle) Aire() float64 {
++    return r.Largeur * r.Hauteur
++}
++
++// Méthode avec receiver par pointeur (modifie l'original)
++func (r *Rectangle) Agrandir(facteur float64) {
++    r.Largeur *= facteur
++    r.Hauteur *= facteur
++}
++
++func main() {
++    rect := Rectangle{Largeur: 10, Hauteur: 5}
++
++    fmt.Println(rect.Aire())  // 50
++
++    rect.Agrandir(2)
++    fmt.Println(rect.Largeur) // 20
++    fmt.Println(rect.Hauteur) // 10
++    fmt.Println(rect.Aire())  // 200
++}
++```
++
++**Receiver par valeur vs par pointeur :**
++
++| Receiver | Modifie l'original ? | Performance |
++|----------|---------------------|-------------|
++| `(r Rectangle)` | ❌ Non (copie) | Copie la structure |
++| `(r *Rectangle)` | ✅ Oui | Passe une référence |
++
++💡 **Règle simple :** Si vous modifiez la structure ou si elle est grosse → utilisez `*`. Sinon, la valeur suffit.
++
++### 4.3. Exemple complet : Personne avec méthode
++
++```go
++type Personne struct {
++    Nom  string
++    Age  int
++}
++
++// Méthode qui affiche les infos
++func (p Personne) SePresenter() {
++    fmt.Printf("Bonjour, je m'appelle %s et j'ai %d ans.\n", p.Nom, p.Age)
++}
++
++// Méthode qui fête son anniversaire (modifie l'âge)
++func (p *Personne) Anniversaire() {
++    p.Age++
++    fmt.Printf("Joyeux anniversaire %s ! Vous avez maintenant %d ans.\n", p.Nom, p.Age)
++}
++
++func main() {
++    alice := Personne{Nom: "Alice", Age: 30}
++    alice.SePresenter()     // Bonjour, je m'appelle Alice et j'ai 30 ans.
++    alice.Anniversaire()    // Joyeux anniversaire Alice ! Vous avez maintenant 31 ans.
++}
++```
++
++---
++
++## TP final – Module 4 – Calcul d'IMC
++
++### Énoncé
++
++Créez un programme qui calcule l'Indice de Masse Corporelle (IMC) en utilisant :
++
++1. **Une fonction** `IMC(poids float64, taille float64) float64` qui retourne l'IMC
++2. **Une structure** `Personne` avec les champs : `Nom`, `Poids`, `Taille`
++3. **Une méthode** `AfficherIMC()` attachée à `Personne` qui calcule et affiche l'IMC avec une interprétation
++
++**Rappel formule IMC :** `poids / (taille * taille)` avec taille en mètres
++
++**Interprétation :**
++- IMC < 18.5 → "Insuffisance pondérale"
++- 18.5 ≤ IMC < 25 → "Corpulence normale"
++- 25 ≤ IMC < 30 → "Surpoids"
++- IMC ≥ 30 → "Obésité"
++
++### Exemple de sortie attendue :
++
++```
++=== Calcul d'IMC ===
++
++Personne : Alice
++Poids : 65.0 kg
++Taille : 1.65 m
++IMC : 23.88 - Corpulence normale
++```
++
++### Étapes à suivre
++
++**Étape 1 – Créer le fichier**
++
++Créez un dossier `module4` et un fichier `imc.go`.
++
++**Étape 2 – Structure de base**
++
++```go
++package main
++
++import "fmt"
++
++func main() {
++    // Votre code ici
++}
++```
++
++**Étape 3 – Écrire la fonction IMC**
++
++```go
++func IMC(poids, taille float64) float64 {
++    // Calcule et retourne l'IMC
++}
++```
++
++**Étape 4 – Déclarer la structure Personne**
++
++```go
++type Personne struct {
++    Nom   string
++    Poids float64 // en kg
++    Taille float64 // en mètres
++}
++```
++
++**Étape 5 – Ajouter la méthode AfficherIMC()**
++
++```go
++func (p Personne) AfficherIMC() {
++    // Calcule l'IMC avec la fonction IMC()
++    // Affiche l'IMC avec 2 décimales
++    // Affiche l'interprétation
++}
++```
++
++**Étape 6 – Dans main(), créer une personne et appeler la méthode**
++
++```go
++func main() {
++    personne := Personne{
++        Nom:    "Alice",
++        Poids:  65.0,
++        Taille: 1.65,
++    }
++
++    personne.AfficherIMC()
++}
++```
++
++### À vous de jouer !
++
++Essayez de coder la solution par vous-même avant de regarder la proposition ci-dessous.
++
++---
++
++.
++.
++.
++.
++.
++.
++.
++.
++.
++.
++
++---
++
++### Proposition de correction
++
++```go
++package main
++
++import "fmt"
++
++// Fonction IMC
++func IMC(poids, taille float64) float64 {
++    return poids / (taille * taille)
++}
++
++// Structure Personne
++type Personne struct {
++    Nom    string
++    Poids  float64
++    Taille float64
++}
++
++// Méthode AfficherIMC
++func (p Personne) AfficherIMC() {
++    imc := IMC(p.Poids, p.Taille)
++
++    // Interprétation
++    var interpretation string
++    switch {
++    case imc < 18.5:
++        interpretation = "Insuffisance pondérale"
++    case imc < 25:
++        interpretation = "Corpulence normale"
++    case imc < 30:
++        interpretation = "Surpoids"
++    default:
++        interpretation = "Obésité"
++    }
++
++    // Affichage
++    fmt.Println("=== Calcul d'IMC ===")
++    fmt.Println()
++    fmt.Printf("Personne : %s\n", p.Nom)
++    fmt.Printf("Poids : %.1f kg\n", p.Poids)
++    fmt.Printf("Taille : %.2f m\n", p.Taille)
++    fmt.Printf("IMC : %.2f - %s\n", imc, interpretation)
++}
++
++func main() {
++    // Création d'une personne
++    personne := Personne{
++        Nom:    "Alice",
++        Poids:  65.0,
++        Taille: 1.65,
++    }
++
++    personne.AfficherIMC()
++}
++```
++
++### Variante avec plusieurs personnes
++
++```go
++func main() {
++    personnes := []Personne{
++        {"Alice", 65.0, 1.65},
++        {"Bob", 85.0, 1.80},
++        {"Charlie", 45.0, 1.70},
++        {"Diana", 95.0, 1.60},
++    }
++
++    for _, p := range personnes {
++        p.AfficherIMC()
++        fmt.Println()
++    }
++}
++```
++
++### Tests supplémentaires
++
++```bash
++# Exécution
++go run imc.go
++
++# Test avec différentes valeurs
++# Personne très mince : poids=50, taille=1.70 → IMC ~17.30
++# Personne très forte : poids=120, taille=1.70 → IMC ~41.52
++```
++
++---
++
++## Pour aller plus loin (optionnel)
++
++### 1. Méthode avec pointeur pour modifier
++
++```go
++func (p *Personne) ChangerPoids(nouveauPoids float64) {
++    p.Poids = nouveauPoids
++    fmt.Printf("%s pèse maintenant %.1f kg\n", p.Nom, p.Poids)
++}
++
++// Utilisation
++personne.ChangerPoids(70.0)
++```
++
++### 2. Validation des entrées
++
++```go
++func (p Personne) AfficherIMC() {
++    if p.Poids <= 0 || p.Taille <= 0 {
++        fmt.Println("Erreur : poids ou taille invalide")
++        return
++    }
++    // ... reste du code
++}
++```
++
++### 3. Ajouter un champ DateNaissance
++
++```go
++import "time"
++
++type Personne struct {
++    Nom          string
++    Poids        float64
++    Taille       float64
++    DateNaissance time.Time
++}
++
++func (p Personne) Age() int {
++    now := time.Now()
++    age := now.Year() - p.DateNaissance.Year()
++    if now.YearDay() < p.DateNaissance.YearDay() {
++        age--
++    }
++    return age
++}
++```
++
++---
++
++## Récapitulatif des acquis
++
++À la fin de ce module, vous savez :
++
++- ✅ Définir vos propres fonctions
++- ✅ Utiliser le retour multiple (notamment `(valeur, error)`)
++- ✅ Créer des fonctions variadiques avec `...`
++- ✅ Écrire des fonctions anonymes et des closures
++- ✅ Déclarer des structures (`struct`)
++- ✅ Ajouter des méthodes avec des receivers (par valeur ou par pointeur)
++
++---
++
++## Prochain module (aperçu)
++
++Dans le Module 5, nous découvrirons :
++- Les interfaces
++- La gestion avancée des erreurs
++- La manipulation de fichiers
++- Les goroutines (concurrence légère)
++
++---
++
++**Félicitations !** Vous structurez maintenant votre code comme un vrai développeur Go. 🚀
+diff --git a/cours/5_structures_et_pointeurs.md b/cours/5_structures_et_pointeurs.md
+new file mode 100644
+index 0000000..6d2ff71
+--- /dev/null
++++ b/cours/5_structures_et_pointeurs.md
+@@ -0,0 +1,743 @@
++# Module 5 – Structures et pointeurs
++
++Bienvenue dans ce cinquième module ! À la fin de ce module, vous saurez manipuler des données complexes avec les structures avancées, comprendre les pointeurs et la mémoire, et utiliser les collections dynamiques (slices et maps).
++
++---
++
++## 0. Rappel : La mémoire en Go
++
++Avant de comprendre les pointeurs, il faut comprendre comment Go stocke les données.
++
++```go
++// Quand vous écrivez :
++age := 25
++
++// En mémoire :
++// [age] -> 25 (stocké à un endroit précis)
++```
++
++Chaque variable a :
++- **Une valeur** (ce qu'elle contient)
++- **Une adresse** (où elle se trouve en mémoire)
++
++```go
++age := 25
++fmt.Println(age)      // 25 (la valeur)
++fmt.Println(&age)     // 0xc0000140a0 (l'adresse, exemple)
++```
++
++Le symbole `&` donne l'adresse mémoire. Le symbole `*` donne la valeur à une adresse.
++
++---
++
++## 1. Structures avancées (`struct`)
++
++### 1.1. Struct imbriqué
++
++Une structure peut contenir d'autres structures.
++
++```go
++// Sous-structure
++type Adresse struct {
++    Rue      string
++    Ville    string
++    CodePostal string
++}
++
++// Structure principale qui contient Adresse
++type Personne struct {
++    Nom     string
++    Age     int
++    Adresse Adresse  // Struct imbriqué
++}
++
++func main() {
++    p := Personne{
++        Nom: "Alice",
++        Age: 30,
++        Adresse: Adresse{
++            Rue:      "123 Rue de Paris",
++            Ville:    "Lyon",
++            CodePostal: "69001",
++        },
++    }
++
++    // Accès aux champs imbriqués
++    fmt.Println(p.Nom)              // Alice
++    fmt.Println(p.Adresse.Ville)    // Lyon
++    fmt.Println(p.Adresse.Rue)      // 123 Rue de Paris
++}
++```
++
++### 1.2. Struct avec tags (pour JSON, validation, etc.)
++
++Les tags sont des métadonnées attachées aux champs.
++
++```go
++import "encoding/json"
++
++type Personne struct {
++    Nom  string `json:"nom"`      // En JSON, s'appellera "nom"
++    Age  int    `json:"age"`
++    Email string `json:"email,omitempty"` // Omis si vide
++}
++
++func main() {
++    p := Personne{Nom: "Bob", Age: 25}
++
++    // Convertir en JSON
++    jsonData, _ := json.Marshal(p)
++    fmt.Println(string(jsonData)) // {"nom":"Bob","age":25}
++}
++```
++
++💡 Les tags sont très utilisés avec les bases de données et les API.
++
++### 1.3. Struct anonyme (ponctuel)
++
++Pour une utilisation unique, pas besoin de nommer la structure.
++
++```go
++func main() {
++    // Structure anonyme
++    point := struct {
++        X, Y int
++    }{10, 20}
++
++    fmt.Println(point.X, point.Y)  // 10 20
++}
++```
++
++---
++
++## 2. Pointeurs
++
++### 2.1. Qu'est-ce qu'un pointeur ?
++
++Un pointeur est une variable qui contient **l'adresse mémoire** d'une autre variable.
++
++```go
++var x int = 42
++var p *int = &x   // p pointe vers x
++
++fmt.Println(x)    // 42 (valeur de x)
++fmt.Println(&x)   // 0xc0000140a0 (adresse de x)
++fmt.Println(p)    // 0xc0000140a0 (adresse pointée)
++fmt.Println(*p)   // 42 (valeur à l'adresse pointée)
++```
++
++**Schéma visuel :**
++
++```
++Variable x : [42] à l'adresse 0xc0000140a0
++Pointeur p : [0xc0000140a0] (contient l'adresse de x)
++
++Quand on écrit *p, on va à l'adresse 0xc0000140a0 et on lit 42
++```
++
++### 2.2. Créer et utiliser des pointeurs
++
++```go
++// Déclaration
++var ptr *int        // pointeur vers int (nil par défaut)
++fmt.Println(ptr)    // <nil>
++
++// Créer un pointeur vers une nouvelle valeur
++nombre := 100
++ptr = &nombre
++
++// Modifier la valeur via le pointeur
++*ptr = 200
++fmt.Println(nombre)  // 200 (la variable originale a changé !)
++```
++
++### 2.3. `new()` – Créer un pointeur vers une valeur zéro
++
++```go
++p := new(int)   // p est un *int, pointant vers 0
++fmt.Println(*p) // 0
++
++*p = 42
++fmt.Println(*p) // 42
++```
++
++### 2.4. Passage par valeur vs par référence
++
++**Passage par valeur** (par défaut) : Go copie la valeur.
++
++```go
++func doubler(v int) {
++    v = v * 2
++    fmt.Println("Dans fonction:", v)  // 20
++}
++
++func main() {
++    x := 10
++    doubler(x)
++    fmt.Println("Dans main:", x)  // 10 (pas changé !)
++}
++```
++
++**Passage par référence** (avec pointeur) : on modifie l'original.
++
++```go
++func doubler(v *int) {
++    *v = *v * 2
++    fmt.Println("Dans fonction:", *v)  // 20
++}
++
++func main() {
++    x := 10
++    doubler(&x)
++    fmt.Println("Dans main:", x)  // 20 (modifié !)
++}
++```
++
++### 2.5. Pointeurs sur structures
++
++C'est très courant en Go de passer des structures par pointeur.
++
++```go
++type Personne struct {
++    Nom string
++    Age int
++}
++
++// Receiver par pointeur (modifie l'original)
++func (p *Personne) FeterAnniversaire() {
++    p.Age++
++}
++
++// Receiver par valeur (ne modifie pas l'original)
++func (p Personne) Afficher() {
++    fmt.Printf("%s a %d ans\n", p.Nom, p.Age)
++}
++
++func main() {
++    alice := Personne{Nom: "Alice", Age: 30}
++
++    alice.Afficher()              // Alice a 30 ans
++    alice.FeterAnniversaire()
++    alice.Afficher()              // Alice a 31 ans
++}
++```
++
++⚠️ **Règle d'or :** Si une méthode doit modifier la structure → receiver par pointeur (`*Personne`). Sinon, receiver par valeur suffit.
++
++---
++
++## 3. Tableaux et Slices
++
++### 3.1. Tableaux (taille fixe)
++
++Le tableau a une taille **déterminée à la compilation** et ne peut pas changer.
++
++```go
++// Déclaration
++var nombres [5]int           // tableau de 5 entiers (tous à 0)
++couleurs := [3]string{"rouge", "vert", "bleu"}
++
++// Accès
++nombres[0] = 10
++fmt.Println(nombres[0])  // 10
++fmt.Println(len(nombres)) // 5 (taille fixe)
++
++// ❌ Impossible d'ajouter un 6ème élément
++// nombres[5] = 20  // Erreur de compilation !
++```
++
++**Quand utiliser un tableau ?** Presque jamais. Les slices sont plus flexibles.
++
++### 3.2. Slices (taille dynamique)
++
++Une slice est une vue dynamique sur un tableau. C'est ce qu'on utilise 99% du temps.
++
++```go
++// Créer une slice (plusieurs façons)
++var vide []int                    // slice vide (nil)
++nombres := []int{10, 20, 30}      // avec initialisation
++makeslice := make([]int, 3)       // avec make (3 éléments à 0)
++
++// Ajouter des éléments avec append
++nombres = append(nombres, 40)     // [10, 20, 30, 40]
++nombres = append(nombres, 50, 60) // [10, 20, 30, 40, 50, 60]
++
++// Concaténer deux slices
++autres := []int{70, 80}
++nombres = append(nombres, autres...) // ... pour "déballer"
++
++// Longueur et capacité
++fmt.Println(len(nombres))  // 8 (nombre d'éléments)
++fmt.Println(cap(nombres))  // capacité (taille sous-jacente, >= len)
++```
++
++### 3.3. len() et cap() – Comprendre la capacité
++
++```go
++slice := make([]int, 3, 5)  // len=3, cap=5
++fmt.Println(slice)          // [0, 0, 0]
++fmt.Println(len(slice))     // 3
++fmt.Println(cap(slice))     // 5
++
++slice = append(slice, 10)   // len=4, cap=5
++slice = append(slice, 20)   // len=5, cap=5
++slice = append(slice, 30)   // len=6, cap=10 (double automatiquement)
++```
++
++💡 **Pourquoi la capacité ?** Pour éviter de réallouer trop souvent. Go double la capacité quand c'est nécessaire.
++
++### 3.4. Découpage (slicing)
++
++```go
++nombres := []int{0, 1, 2, 3, 4, 5}
++
++a := nombres[1:4]   // [1, 2, 3] (index 1 à 3)
++b := nombres[:3]    // [0, 1, 2] (début à 2)
++c := nombres[3:]    // [3, 4, 5] (3 à fin)
++d := nombres[:]     // copie superficielle (tous les éléments)
++```
++
++⚠️ **Attention :** Un slice ne copie pas les données, il crée une vue. Modifier un slice modifie l'original !
++
++```go
++original := []int{1, 2, 3}
++copieVue := original[0:2]
++copieVue[0] = 99
++fmt.Println(original)  // [99, 2, 3] (modifié !)
++
++// Pour une vraie copie :
++vraieCopie := make([]int, len(original))
++copy(vraieCopie, original)
++```
++
++### 3.5. Parcourir une slice avec range
++
++```go
++fruits := []string{"pomme", "banane", "cerise"}
++
++// Avec index et valeur
++for i, fruit := range fruits {
++    fmt.Printf("%d: %s\n", i, fruit)
++}
++
++// Juste la valeur
++for _, fruit := range fruits {
++    fmt.Println(fruit)
++}
++```
++
++---
++
++## 4. Maps (dictionnaires)
++
++Une map associe des **clés** à des **valeurs** (comme un dictionnaire).
++
++### 4.1. Créer une map
++
++```go
++// Méthode 1 : make()
++ages := make(map[string]int)
++
++// Méthode 2 : littérale
++scores := map[string]int{
++    "Alice": 95,
++    "Bob":   87,
++    "Charlie": 92,
++}
++
++// Méthode 3 : var (nil map, attention !)
++var vide map[string]int  // nil map, ne peut pas recevoir d'éléments
++```
++
++### 4.2. Ajouter, lire, supprimer
++
++```go
++ages := make(map[string]int)
++
++// Ajouter ou modifier
++ages["Alice"] = 30
++ages["Bob"] = 25
++fmt.Println(ages)  // map[Alice:30 Bob:25]
++
++// Lire une valeur
++fmt.Println(ages["Alice"])   // 30
++
++// Lire avec vérification d'existence
++valeur, existe := ages["Charlie"]
++if existe {
++    fmt.Println("Charlie a", valeur)
++} else {
++    fmt.Println("Charlie n'existe pas")
++}
++
++// Supprimer
++delete(ages, "Bob")
++fmt.Println(ages)  // map[Alice:30]
++```
++
++### 4.3. Parcourir une map
++
++```go
++scores := map[string]int{
++    "Alice": 95,
++    "Bob": 87,
++    "Charlie": 92,
++}
++
++for nom, score := range scores {
++    fmt.Printf("%s a eu %d\n", nom, score)
++}
++```
++
++⚠️ **L'ordre n'est pas garanti !** Les maps ne sont pas ordonnées.
++
++### 4.4. Map de slices ou de structures
++
++```go
++// Map de slices
++etudiantsParCours := map[string][]string{
++    "Maths":   {"Alice", "Bob"},
++    "Physique": {"Charlie"},
++}
++etudiantsParCours["Maths"] = append(etudiantsParCours["Maths"], "David")
++
++// Map de structures
++type Contact struct {
++    Email string
++    Phone string
++}
++
++annuaire := map[string]Contact{
++    "Alice": {Email: "alice@email.com", Phone: "0612345678"},
++}
++```
++
++---
++
++## TP final – Module 5 – Gestion de contacts
++
++### Énoncé
++
++Créez un programme de gestion de contacts avec :
++
++1. **Structure `Contact`** avec les champs : `Nom` (string) et `Numero` (string)
++2. **Une slice de contacts** pour stocker tous les contacts
++3. **Une fonction `ajouterContact()`** qui demande à l'utilisateur les infos et ajoute le contact à la slice
++4. **Une fonction `afficherTous()`** qui affiche tous les contacts
++5. **Dans `main()`** : demander à l'utilisateur d'ajouter 2 contacts, puis les afficher
++
++### Exemple de sortie attendue :
++
++```
++=== Gestion de contacts ===
++
++--- Ajout du contact 1/2 ---
++Nom : Alice
++Numéro : 0612345678
++✓ Contact ajouté !
++
++--- Ajout du contact 2/2 ---
++Nom : Bob
++Numéro : 0787654321
++✓ Contact ajouté !
++
++=== Liste des contacts ===
++1. Alice - 0612345678
++2. Bob - 0787654321
++```
++
++### Étapes à suivre
++
++**Étape 1 – Créer le fichier**
++
++Créez un dossier `module5` et un fichier `contacts.go`.
++
++**Étape 2 – Structure de base et imports**
++
++```go
++package main
++
++import "fmt"
++
++// Structure Contact
++type Contact struct {
++    Nom    string
++    Numero string
++}
++
++func main() {
++    // Votre code ici
++}
++```
++
++**Étape 3 – Écrire la fonction `ajouterContact()`**
++
++```go
++func ajouterContact(contacts []Contact) []Contact {
++    var nom, numero string
++
++    fmt.Print("Nom : ")
++    fmt.Scanln(&nom)
++    fmt.Print("Numéro : ")
++    fmt.Scanln(&numero)
++
++    nouveau := Contact{Nom: nom, Numero: numero}
++    contacts = append(contacts, nouveau)
++
++    fmt.Println("✓ Contact ajouté !")
++    return contacts
++}
++```
++
++**Étape 4 – Écrire la fonction `afficherTous()`**
++
++```go
++func afficherTous(contacts []Contact) {
++    if len(contacts) == 0 {
++        fmt.Println("Aucun contact.")
++        return
++    }
++
++    fmt.Println("=== Liste des contacts ===")
++    for i, contact := range contacts {
++        fmt.Printf("%d. %s - %s\n", i+1, contact.Nom, contact.Numero)
++    }
++}
++```
++
++**Étape 5 – Écrire le main**
++
++```go
++func main() {
++    contacts := []Contact{}  // Slice vide
++
++    fmt.Println("=== Gestion de contacts ===\n")
++
++    // Ajouter 2 contacts
++    for i := 1; i <= 2; i++ {
++        fmt.Printf("--- Ajout du contact %d/2 ---\n", i)
++        contacts = ajouterContact(contacts)
++        fmt.Println()
++    }
++
++    // Afficher tous les contacts
++    afficherTous(contacts)
++}
++```
++
++### À vous de jouer !
++
++Essayez de coder la solution par vous-même avant de regarder la proposition ci-dessous.
++
++---
++
++.
++.
++.
++.
++.
++.
++.
++.
++.
++.
++
++---
++
++### Proposition de correction
++
++```go
++package main
++
++import "fmt"
++
++// Structure Contact
++type Contact struct {
++    Nom    string
++    Numero string
++}
++
++// Ajouter un contact (retourne la nouvelle slice)
++func ajouterContact(contacts []Contact) []Contact {
++    var nom, numero string
++
++    fmt.Print("Nom : ")
++    fmt.Scanln(&nom)
++    fmt.Print("Numéro : ")
++    fmt.Scanln(&numero)
++
++    nouveau := Contact{
++        Nom:    nom,
++        Numero: numero,
++    }
++
++    contacts = append(contacts, nouveau)
++    fmt.Println("✓ Contact ajouté !")
++
++    return contacts
++}
++
++// Afficher tous les contacts
++func afficherTous(contacts []Contact) {
++    if len(contacts) == 0 {
++        fmt.Println("Aucun contact.")
++        return
++    }
++
++    fmt.Println("\n=== Liste des contacts ===")
++    for i, contact := range contacts {
++        fmt.Printf("%d. %s - %s\n", i+1, contact.Nom, contact.Numero)
++    }
++}
++
++func main() {
++    contacts := []Contact{}  // Slice initiale vide
++
++    fmt.Println("=== Gestion de contacts ===\n")
++
++    // Ajouter 2 contacts
++    for i := 1; i <= 2; i++ {
++        fmt.Printf("--- Ajout du contact %d/2 ---\n", i)
++        contacts = ajouterContact(contacts)
++        fmt.Println()
++    }
++
++    // Afficher tous les contacts
++    afficherTous(contacts)
++}
++```
++
++### Version améliorée (avec pointeur)
++
++```go
++// Version avec pointeur sur slice (moins de copie)
++func ajouterContact(contacts *[]Contact) {
++    var nom, numero string
++
++    fmt.Print("Nom : ")
++    fmt.Scanln(&nom)
++    fmt.Print("Numéro : ")
++    fmt.Scanln(&numero)
++
++    nouveau := Contact{Nom: nom, Numero: numero}
++    *contacts = append(*contacts, nouveau)
++
++    fmt.Println("✓ Contact ajouté !")
++}
++
++func main() {
++    contacts := []Contact{}
++
++    for i := 1; i <= 2; i++ {
++        fmt.Printf("--- Ajout du contact %d/2 ---\n", i)
++        ajouterContact(&contacts)  // Passage par pointeur
++        fmt.Println()
++    }
++
++    afficherTous(contacts)
++}
++```
++
++### Version avec map (optionnel)
++
++```go
++// Version avec map (recherche par nom)
++type Annuaire struct {
++    contacts map[string]string  // nom -> numéro
++}
++
++func (a *Annuaire) Ajouter(nom, numero string) {
++    if a.contacts == nil {
++        a.contacts = make(map[string]string)
++    }
++    a.contacts[nom] = numero
++}
++
++func (a Annuaire) Afficher() {
++    fmt.Println("\n=== Annuaire ===")
++    for nom, numero := range a.contacts {
++        fmt.Printf("%s : %s\n", nom, numero)
++    }
++}
++
++func (a Annuaire) Chercher(nom string) (string, bool) {
++    numero, existe := a.contacts[nom]
++    return numero, existe
++}
++```
++
++### Tests à effectuer
++
++```bash
++# Exécution
++go run contacts.go
++
++# Testez les cas :
++# ✅ Ajout de 2 contacts
++# ✅ Vérifiez l'affichage
++# ✅ Essayez avec des noms composés (utilisez bufio si problème)
++```
++
++### Pour aller plus loin (optionnel)
++
++1. **Rechercher un contact** par nom
++2. **Supprimer un contact**
++3. **Sauvegarder dans un fichier** (module 6)
++4. **Menu interactif** avec options multiples
++
++```go
++// Exemple de menu interactif
++func main() {
++    contacts := []Contact{}
++
++    for {
++        fmt.Println("\n1. Ajouter un contact")
++        fmt.Println("2. Afficher tous les contacts")
++        fmt.Println("3. Quitter")
++        fmt.Print("Choix : ")
++
++        var choix int
++        fmt.Scanln(&choix)
++
++        switch choix {
++        case 1:
++            contacts = ajouterContact(contacts)
++        case 2:
++            afficherTous(contacts)
++        case 3:
++            fmt.Println("Au revoir !")
++            return
++        default:
++            fmt.Println("Choix invalide")
++        }
++    }
++}
++```
++
++---
++
++## Récapitulatif des acquis
++
++À la fin de ce module, vous savez :
++
++- ✅ Créer des structures imbriquées
++- ✅ Comprendre et utiliser les pointeurs (`*`, `&`)
++- ✅ Différence entre passage par valeur et par référence
++- ✅ Utiliser des slices (dynamiques) plutôt que des tableaux (fixes)
++- ✅ Manipuler des maps (dictionnaires clé-valeur)
++- ✅ Ajouter des éléments avec `append()`
++- ✅ Connaître `len()` et `cap()`
++
++---
++
++## Prochain module (aperçu)
++
++Dans le Module 6, nous découvrirons :
++- Les interfaces
++- La gestion avancée des erreurs
++- La manipulation de fichiers
++- Les goroutines (concurrence légère)
++
++---
++
++**Félicitations !** Vous maîtrisez maintenant les structures de données essentielles de Go. 🚀
+diff --git a/go.mod b/go.mod
+new file mode 100644
+index 0000000..84df017
+--- /dev/null
++++ b/go.mod
+@@ -0,0 +1,3 @@
++module formation_golang
++
++go 1.22.2
+diff --git a/main.go b/main.go
+index c7c92bc..a750476 100644
+--- a/main.go
++++ b/main.go
+@@ -1,17 +1,73 @@
+ package main
++
+ import (
+-	"strconv"
+ 	"fmt"
++	"math"
+ )
+ 
+ func main() {
+-	num, err := strconv.Atoi("42")
++	person := NewPerson("Andy", 83.55, 1.82)
++
++	fmt.Println(person.String())
++	fmt.Printf("IMC : %.2f \n", person.IMC())
++	fmt.Println("Catégorie :", person.IMCLabel())
++}
+ 
+-	if err != nil {
+-		fmt.Printf("l'erreur est : %s", err)
+-	}else{
+-		fmt.Printf("la valeur convertie est: %d", num)
++// =======================
++// DOMAIN (STRUCT)
++// =======================
++
++type Person struct {
++	name   string
++	weight float64
++	height float64
++}
++
++// =======================
++// CONSTRUCTOR (idiom Go)
++// =======================
++
++func NewPerson(name string, weight, height float64) Person {
++	return Person{
++		name:   name,
++		weight: weight,
++		height: height,
+ 	}
+ }
+ 
+-	
++// =======================
++// BUSINESS LOGIC
++// =======================
++
++func (p Person) IMC() float64 {
++	if p.height <= 0 {
++		return 0
++	}
++	return p.weight / math.Pow(p.height, 2)
++}
++
++func (p Person) IMCLabel() string {
++	imc := p.IMC()
++
++	switch {
++	case imc < 18.5:
++		return "Insuffisance pondérale"
++	case imc < 25:
++		return "Corpulence normale"
++	case imc < 30:
++		return "Surpoids"
++	default:
++		return "Obésité"
++	}
++}
++
++// =======================
++// PRESENTATION (clean separation)
++// =======================
++
++func (p Person) String() string {
++	return fmt.Sprintf(
++		"=== Personne ===\nNom: %s\nPoids: %.2f kg\nTaille: %.2f m",
++		p.name, p.weight, p.height,
++	)
++}

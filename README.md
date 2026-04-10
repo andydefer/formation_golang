@@ -1,4 +1,3 @@
-
 # 🚀 Formation Go - Cours complet du langage Golang
 
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://go.dev/)
@@ -7,16 +6,22 @@
 
 Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dépôt contient un plan de cours structuré, des modules progressifs et des travaux pratiques pour maîtriser Go, de zéro à un niveau avancé.
 
+---
+
 ## 📋 Table des matières
 
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
 - [Structure du cours](#-structure-du-cours)
-- [Modules](#-modules)
+- [Modules (1 à 5)](#-modules-1-à-5)
+- [Modules suivants (aperçu)](#-modules-suivants-à-perçu)
 - [Projet final](#-projet-final)
 - [Installation](#-installation)
 - [Comment utiliser ce cours](#-comment-utiliser-ce-cours)
+- [TP par module](#-tp-par-module)
 - [Ressources complémentaires](#-ressources-complémentaires)
+
+---
 
 ## 🎯 À propos
 
@@ -24,10 +29,13 @@ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique. 
 
 - **Concepts théoriques** expliqués simplement
 - **Exemples concrets** et bonnes pratiques
-- **Travaux pratiques** (TP) avec corrigés
+- **Travaux pratiques (TP)** avec corrigés
 - **Pièges à éviter** et astuces
 
-Le cours couvre les fondamentaux jusqu'aux concepts avancés comme la concurrence, les API REST, les tests et les génériques.
+**Contenu actuel :** Modules 1 à 5 (fondamentaux et approfondissement)
+**À venir :** Modules 6 à 16 (avancé à professionnel)
+
+---
 
 ## 📚 Prérequis
 
@@ -35,78 +43,144 @@ Le cours couvre les fondamentaux jusqu'aux concepts avancés comme la concurrenc
 - Un ordinateur avec accès à Internet
 - Aucune connaissance préalable de Go n'est requise
 
+---
+
 ## 🏗️ Structure du cours
 
 Le cours est découpé en **16 modules progressifs** + un **projet final intégrateur** :
 
 ```
-cours/
-├── 0_plan_du_cours.md          # Plan détaillé du cours
-├── 1_introduction_et_mise_en_place.md
-├── 2_types_et_variables.md
-├── 3_controle_des_flux.md
-├── 4_fonctions_et_methodes.md
-├── 5_structures_et_pointeurs.md
-├── 6_packages_et_modularite.md
-├── 7_gestion_des_erreurs.md
-├── 8_interfaces_et_polymorphisme.md
-├── 9_concurrence_base.md
-├── 10_entrees_sorties_fichiers.md
-├── 11_concurrence_avancee.md
-├── 12_package_context.md
-├── 13_web_et_api.md
-├── 14_tests_et_bonnes_pratiques.md
-├── 15_generiques.md
-└── 16_organisation_projet.md
+formation_golang/
+├── README.md                          # Ce fichier
+├── 01_introduction_et_mise_en_place.md
+├── 02_types_et_variables.md
+├── 03_controle_de_flux.md
+├── 04_fonctions_et_methodes.md
+├── 05_structures_et_collections.md
+├── 06_packages_et_modularite.md        # À venir
+├── 07_gestion_des_erreurs.md           # À venir
+├── 08_interfaces_et_polymorphisme.md   # À venir
+├── 09_concurrence_base.md              # À venir
+├── 10_entrees_sorties_fichiers.md      # À venir
+├── 11_concurrence_avancee.md           # À venir
+├── 12_package_context.md               # À venir
+├── 13_web_et_api.md                    # À venir
+├── 14_tests_et_bonnes_pratiques.md     # À venir
+├── 15_generiques.md                    # À venir
+└── 16_organisation_projet.md           # À venir
 ```
 
-## 📖 Modules
+---
 
-### Fondamentaux (Modules 1-3)
-| Module | Description |
-|--------|-------------|
-| **Module 1** | Introduction, installation et premier programme "Hello, World!" |
-| **Module 2** | Types de base, variables, constantes et conversions |
-| **Module 3** | Conditions (if/switch) et boucles (for) |
+## 📖 Modules (1 à 5)
 
-### Approfondissement (Modules 4-7)
-| Module | Description |
-|--------|-------------|
-| **Module 4** | Fonctions, paramètres, retours multiples, méthodes sur struct |
-| **Module 5** | Structures, pointeurs, slices, maps |
-| **Module 6** | Packages, modularité et organisation du code |
-| **Module 7** | Gestion d'erreurs, panic/recover, logging |
+### Module 1 – Introduction et mise en place
+**Objectif** : Installer Go, écrire et exécuter son premier programme.
 
-### Avancé (Modules 8-12)
-| Module | Description |
-|--------|-------------|
-| **Module 8** | Interfaces, polymorphisme implicite, assertions de type |
-| **Module 9** | Goroutines, channels, WaitGroup |
-| **Module 10** | Lecture/écriture fichiers, CSV, arguments CLI |
-| **Module 11** | Canaux bufferisés, Mutex, patterns de concurrence |
-| **Module 12** | Package context, timeouts, annulation |
+| Sous-partie | Description |
+|-------------|-------------|
+| 1.1 | Historique et caractéristiques de Go |
+| 1.2 | Domaines d'utilisation (backend, CLI, cloud, outils) |
+| 2 | Installation et configuration (Linux/Windows/Mac/Termux) |
+| 3 | Structure d'un programme Go (`package main`, `import`, `func main()`) |
+| 4 | Premier programme : Hello, World! |
+| 5 | Compilation et exécution (`go run` vs `go build`) |
 
-### Professionnel (Modules 13-16)
-| Module | Description |
-|--------|-------------|
-| **Module 13** | Serveur HTTP, API REST, JSON |
-| **Module 14** | Tests unitaires, benchmarks, documentation |
-| **Module 15** | Génériques (Go 1.18+) |
-| **Module 16** | Organisation de projet, outils, compilation croisée |
+**TP** : Afficher prénom et âge → exécuter avec `go run`, puis `go build`
+
+---
+
+### Module 2 – Types et variables
+**Objectif** : Déclarer des variables et manipuler les types de base.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 1 | Types de base : `int`, `float64`, `string`, `bool` |
+| 2 | Déclaration de variables (`var`, `:=`, multiples) |
+| 3 | Constantes (`const`) et `iota` pour les énumérations |
+| 4 | Conversion de types (`int(x)`, `float64(x)`) |
+
+**Pièges à éviter** : Division entière (`5/2 = 2`), conversion `float64` → `int` (troncature)
+
+**TP** : Mini-calculateur (somme, différence, produit, quotient)
+
+---
+
+### Module 3 – Contrôle de flux
+**Objectif** : Maîtriser les conditions, les boucles et la gestion d'erreurs simple.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 0 | Packages standards : `fmt`, `errors`, `strconv`, `math/rand`, `time` |
+| 1 | Conditions : `if`, `else if`, `else`, `switch` |
+| 2 | Boucles : `for` classique, `for` comme `while`, `break`, `continue`, `for range` |
+| 3 | Gestion d'erreurs : `errors.New()`, `if err != nil`, `strconv.Atoi()` |
+
+**TP** : Jeu de devinette (nombre secret, 5 essais, indices "trop petit/grand")
+
+---
+
+### Module 4 – Fonctions et méthodes
+**Objectif** : Structurer le code avec des fonctions réutilisables.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 1 | Définition de fonctions (paramètres, retour, retour multiple, retour nommé) |
+| 2 | Paramètres variadiques (`...int`) |
+| 3 | Fonctions anonymes et closures |
+| 4 | Structures (`struct`) et méthodes (receiver par valeur ou par pointeur) |
+
+**TP** : Calcul d'IMC (fonction `IMC()`, structure `Personne`, méthode `AfficherIMC()`)
+
+---
+
+### Module 5 – Structures et collections
+**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 1 | Structures avancées (struct imbriqué, tags JSON) |
+| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence) |
+| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()` |
+| 4 | Maps (dictionnaires) – création, ajout, lecture, suppression, vérification |
+
+**TP** : Gestion de contacts (structure `Contact`, slice, `ajouterContact()`, `afficherTous()`)
+
+---
+
+## 📖 Modules suivants (aperçu)
+
+| Module | Titre | Description |
+|--------|-------|-------------|
+| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
+| 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
+| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
+| 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
+| 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args` |
+| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex` |
+| 12 | Package `context` | Annulation, timeout |
+| 13 | Web et API | Serveur HTTP, JSON, routes |
+| 14 | Tests et bonnes pratiques | `testing`, benchmarks |
+| 15 | Génériques (Go 1.18+) | `[T any]`, contraintes |
+| 16 | Organisation de projet | `cmd/`, `pkg/`, `go fmt`, compilation croisée |
+
+---
 
 ## 🎓 Projet final
 
 **Outil CLI de téléchargement parallèle**
 
-À la fin du cours, vous développerez un outil complet qui combine toutes les compétences acquises :
+À la fin du cours (module 16), vous développerez un outil complet qui combine toutes les compétences acquises :
 
 - ✅ Lecture d'URLs depuis un fichier CSV
-- ✅ Téléchargement concurrent de fichiers
-- ✅ Annulation globale avec context (timeout/Ctrl+C)
+- ✅ Téléchargement concurrent de fichiers (goroutines)
+- ✅ Annulation globale avec `context` (timeout ou Ctrl+C)
 - ✅ Barre de progression
-- ✅ Logs des téléchargements
+- ✅ Logs des téléchargements (succès/échec)
 - ✅ Tests unitaires
-- ✅ Organisation professionnelle (cmd/, pkg/)
+- ✅ Organisation professionnelle (`cmd/`, `pkg/`)
+
+---
 
 ## 🔧 Installation
 
@@ -144,10 +218,12 @@ git clone https://github.com/andydefer/formation_golang.git
 cd formation_golang
 ```
 
+---
+
 ## 💡 Comment utiliser ce cours
 
-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 16)
-2. **Pratiquez** : Faites chaque TP sans regarder la correction
+1. **Par module** : Suivez l'ordre recommandé (Module 1 → 5, puis la suite)
+2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
 3. **Expérimentez** : Modifiez les exemples, testez vos idées
 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
 
@@ -166,35 +242,44 @@ go fmt ./...
 # Vérifier les erreurs potentielles
 go vet ./...
 
-# Lancer les tests
+# Lancer les tests (modules 14+)
 go test ./...
 
 # Télécharger les dépendances
 go mod tidy
 ```
 
-## 📚 TP par module
+---
 
-Chaque module contient un TP pratique :
+## 📚 TP par module (Modules 1 à 5)
 
-| Module | TP |
-|--------|-----|
-| 1 | Afficher prénom et âge |
-| 2 | Mini-calculateur |
-| 3 | Jeu de devinette |
-| 4 | Calcul d'IMC avec structure Personne |
-| 5 | Gestion de contacts |
-| 6 | Création d'un package mathutil |
-| 7 | Lecture de fichier avec gestion d'erreur |
-| 8 | Interface Animal (Chien/Chat) |
-| 9 | Téléchargement parallèle simulé |
-| 10 | Stockage de notes en CSV |
-| 11 | Producteur-consommateur |
-| 12 | Timeout sur recherche longue |
-| 13 | API REST de tâches |
-| 14 | Tests unitaires sur le calculateur |
-| 15 | Fonction générique InverseSlice |
-| 16 | Restructuration du gestionnaire de contacts |
+| Module | TP | Concepts clés |
+|--------|-----|---------------|
+| **1** | Afficher prénom et âge | `package main`, `fmt.Println()`, `go run` / `go build` |
+| **2** | Mini-calculateur | Variables, constantes, conversion de types (`float64()`) |
+| **3** | Jeu de devinette | `if`/`else`, boucle `for`, `fmt.Scanln()`, `break` |
+| **4** | Calcul d'IMC | Fonctions, `struct`, méthodes, receiver |
+| **5** | Gestion de contacts | Slices, `append()`, maps, pointeurs |
+
+### Exemple de réalisation (Module 5)
+
+```go
+type Contact struct {
+    Nom    string
+    Numero string
+}
+
+func ajouterContact(contacts []Contact) []Contact {
+    var nom, numero string
+    fmt.Print("Nom : ")
+    fmt.Scanln(&nom)
+    fmt.Print("Numéro : ")
+    fmt.Scanln(&numero)
+    return append(contacts, Contact{Nom: nom, Numero: numero})
+}
+```
+
+---
 
 ## 🔗 Ressources complémentaires
 
@@ -219,15 +304,21 @@ Chaque module contient un TP pratique :
 - [r/golang](https://www.reddit.com/r/golang/)
 - [Go Discord](https://discord.gg/golang)
 
+---
+
 ## 📈 Progression recommandée
 
 ```
-Semaine 1-2  : Modules 1-3 (Fondamentaux)
-Semaine 3-4  : Modules 4-7 (Approfondissement)
-Semaine 5-6  : Modules 8-12 (Avancé)
-Semaine 7-8  : Modules 13-16 (Professionnel)
-Semaine 9-10 : Projet final
+Semaine 1   : Module 1 (Introduction) + Module 2 (Types et variables)
+Semaine 2   : Module 3 (Contrôle de flux)
+Semaine 3   : Module 4 (Fonctions et méthodes)
+Semaine 4   : Module 5 (Structures et collections)
+Semaine 5-6 : Modules 6-10 (Packages à Fichiers)
+Semaine 7-8 : Modules 11-16 (Concurrence avancée à Organisation)
+Semaine 9-10: Projet final
 ```
+
+---
 
 ## 🤝 Contribution
 
@@ -239,9 +330,13 @@ Les corrections, suggestions et améliorations sont les bienvenues !
 4. Poussez vers la branche (`git push origin amelioration/ma-modification`)
 5. Ouvrez une Pull Request
 
+---
+
 ## 📝 Licence
 
 Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+---
 
 ## ✨ Remerciements
 
@@ -256,13 +351,3 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 N'hésitez pas à ouvrir une issue si vous avez des questions ou des suggestions.
 
 *Dernière mise à jour : Avril 2026*
-
-
-Ce README.md est conçu pour :
-
-1. **Présenter clairement** le contenu et la structure du cours
-2. **Guider l'apprenant** de l'installation à la réalisation du projet final
-3. **Être visuellement attractif** avec des badges, tableaux et émojis
-4. **Fournir des ressources** pour approfondir
-5. **Encourager la pratique** avec la liste des TP par module
-6. **Être professionnel** tout en restant accessible aux débutants
