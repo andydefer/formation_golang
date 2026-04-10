@@ -1,0 +1,606 @@
+Tu es un expert en revue de code et en conventions de commits (Conventional Commits).
+
+À partir du diff Git ci-dessous, fais les choses suivantes :
+
+1. Propose un nom de commit clair et concis en anglais
+   avec le format <type>(<scope>): <description>,
+   en respectant les Conventional Commits
+   (ex: feat:, fix:, refactor:, test:, chore:, docs:).
+
+2. Rédige un résumé du travail effectué en quelques phrases,
+   orienté métier et technique.
+
+3. Donne une liste d'exemples concrets de changements, en t'appuyant sur le diff :
+   - méthodes ajoutées, modifiées ou supprimées
+   - responsabilités déplacées ou clarifiées
+   - améliorations de validation, de logique ou de structure
+   - impacts fonctionnels éventuels
+
+Contraintes :
+   - Ne décris que ce qui est réellement visible dans le diff
+   - Sois précis, factuel et structuré
+   - Évite les suppositions
+   - Utilise un ton professionnel
+
+4. SI et SEULEMENT SI les changements sont cassants (breaking changes) :
+   - Génère une entrée de CHANGELOG conforme à Keep a Changelog et SemVer.
+   - Le changelog doit apparaître APRES les recommandations ci-dessus.
+   - Utilise STRICTEMENT la structure suivante :
+
+     ## [X.0.0] - YYYY-MM-DD
+     ### Changed
+     - Description claire du changement cassant
+
+     ### Removed (si applicable)
+     - API, méthode ou comportement supprimé
+
+     ### Security (si applicable)
+     - Impact sécurité lié au changement
+
+   - Ne génère PAS de changelog si aucun breaking change n'est détecté.
+   - N'invente PAS de version.
+
+Voici le diff :
+
+diff --git a/README.md b/README.md
+index ba61a9c..8ce1774 100644
+--- a/README.md
++++ b/README.md
+@@ -13,7 +13,7 @@ Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dép
+ - [À propos](#-à-propos)
+ - [Prérequis](#-prérequis)
+ - [Structure du cours](#-structure-du-cours)
+-- [Modules (1 à 5)](#-modules-1-à-5)
++- [Modules (1 à 6)](#-modules-1-à-6)
+ - [Modules suivants (aperçu)](#-modules-suivants-à-perçu)
+ - [Projet final](#-projet-final)
+ - [Installation](#-installation)
+@@ -32,8 +32,8 @@ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique.
+ - **Travaux pratiques (TP)** avec corrigés
+ - **Pièges à éviter** et astuces
+ 
+-**Contenu actuel :** Modules 1 à 5 (fondamentaux et approfondissement)
+-**À venir :** Modules 6 à 16 (avancé à professionnel)
++**Contenu actuel :** Modules 1 à 6 (fondamentaux, approfondissement et modularité)
++**À venir :** Modules 7 à 16 (avancé à professionnel)
+ 
+ ---
+ 
+@@ -56,8 +56,8 @@ formation_golang/
+ ├── 02_types_et_variables.md
+ ├── 03_controle_de_flux.md
+ ├── 04_fonctions_et_methodes.md
+-├── 05_structures_et_collections.md
+-├── 06_packages_et_modularite.md        # À venir
++├── 05_structures_et_pointeurs.md
++├── 06_packages_et_modularite.md
+ ├── 07_gestion_des_erreurs.md           # À venir
+ ├── 08_interfaces_et_polymorphisme.md   # À venir
+ ├── 09_concurrence_base.md              # À venir
+@@ -72,7 +72,7 @@ formation_golang/
+ 
+ ---
+ 
+-## 📖 Modules (1 à 5)
++## 📖 Modules (1 à 6)
+ 
+ ### Module 1 – Introduction et mise en place
+ **Objectif** : Installer Go, écrire et exécuter son premier programme.
+@@ -134,25 +134,40 @@ formation_golang/
+ 
+ ---
+ 
+-### Module 5 – Structures et collections
+-**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
++### Module 5 – Structures et pointeurs
++**Objectif** : Manipuler des données complexes avec les structures avancées, les pointeurs et la mémoire.
+ 
+ | Sous-partie | Description |
+ |-------------|-------------|
+-| 1 | Structures avancées (struct imbriqué, tags JSON) |
+-| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence) |
+-| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()` |
++| 1 | Structures avancées (struct imbriqué, tags JSON, struct anonyme) |
++| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence, `new()`) |
++| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()`, slicing |
+ | 4 | Maps (dictionnaires) – création, ajout, lecture, suppression, vérification |
+ 
+ **TP** : Gestion de contacts (structure `Contact`, slice, `ajouterContact()`, `afficherTous()`)
+ 
+ ---
+ 
++### Module 6 – Packages et modularité
++**Objectif** : Organiser son code en plusieurs fichiers et créer des packages réutilisables.
++
++| Sous-partie | Description |
++|-------------|-------------|
++| 0 | Pourquoi les packages ? (problèmes de code non structuré) |
++| 1 | Qu'est-ce qu'un package ? (structure, package main vs autres) |
++| 2 | Exporter avec la majuscule (public vs private, règles de casse) |
++| 3 | Importer des packages (syntaxe, alias, dot, blank import) |
++| 4 | Organisation d'un projet Go (structure simple vs professionnelle, `cmd/`, `internal/`, `pkg/`) |
++| 5 | Packages standards couramment utilisés (fmt, os, strings, json, http, etc.) |
++
++**TP** : Création d'un package `mathutil` avec fonctions `Addition`, `Multiplication`, `Factorielle`, `EstPair`
++
++---
++
+ ## 📖 Modules suivants (aperçu)
+ 
+ | Module | Titre | Description |
+ |--------|-------|-------------|
+-| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
+ | 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
+ | 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
+ | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
+@@ -222,7 +237,7 @@ cd formation_golang
+ 
+ ## 💡 Comment utiliser ce cours
+ 
+-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 5, puis la suite)
++1. **Par module** : Suivez l'ordre recommandé (Module 1 → 6, puis la suite)
+ 2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
+ 3. **Expérimentez** : Modifiez les exemples, testez vos idées
+ 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
+@@ -242,16 +257,22 @@ go fmt ./...
+ # Vérifier les erreurs potentielles
+ go vet ./...
+ 
+-# Lancer les tests (modules 14+)
+-go test ./...
++# Initialiser un module
++go mod init monmodule
++
++# Ajouter une dépendance
++go get github.com/user/package
+ 
+-# Télécharger les dépendances
++# Nettoyer les dépendances
+ go mod tidy
++
++# Lancer les tests (modules 14+)
++go test ./...
+ ```
+ 
+ ---
+ 
+-## 📚 TP par module (Modules 1 à 5)
++## 📚 TP par module (Modules 1 à 6)
+ 
+ | Module | TP | Concepts clés |
+ |--------|-----|---------------|
+@@ -260,22 +281,35 @@ go mod tidy
+ | **3** | Jeu de devinette | `if`/`else`, boucle `for`, `fmt.Scanln()`, `break` |
+ | **4** | Calcul d'IMC | Fonctions, `struct`, méthodes, receiver |
+ | **5** | Gestion de contacts | Slices, `append()`, maps, pointeurs |
++| **6** | Package `mathutil` | Création de package, exportation (majuscule), `go mod init` |
+ 
+-### Exemple de réalisation (Module 5)
++### Exemple de réalisation (Module 6)
+ 
+ ```go
+-type Contact struct {
+-    Nom    string
+-    Numero string
++// mathutil/mathutil.go
++package mathutil
++
++func Addition(a, b int) int {
++    return a + b
++}
++
++func Multiplication(a, b int) int {
++    return a * b
+ }
++```
++
++```go
++// main.go
++package main
++
++import (
++    "fmt"
++    "module6/mathutil"
++)
+ 
+-func ajouterContact(contacts []Contact) []Contact {
+-    var nom, numero string
+-    fmt.Print("Nom : ")
+-    fmt.Scanln(&nom)
+-    fmt.Print("Numéro : ")
+-    fmt.Scanln(&numero)
+-    return append(contacts, Contact{Nom: nom, Numero: numero})
++func main() {
++    fmt.Printf("5 + 3 = %d\n", mathutil.Addition(5, 3))
++    fmt.Printf("4 × 2 = %d\n", mathutil.Multiplication(4, 2))
+ }
+ ```
+ 
+@@ -312,10 +346,11 @@ func ajouterContact(contacts []Contact) []Contact {
+ Semaine 1   : Module 1 (Introduction) + Module 2 (Types et variables)
+ Semaine 2   : Module 3 (Contrôle de flux)
+ Semaine 3   : Module 4 (Fonctions et méthodes)
+-Semaine 4   : Module 5 (Structures et collections)
+-Semaine 5-6 : Modules 6-10 (Packages à Fichiers)
+-Semaine 7-8 : Modules 11-16 (Concurrence avancée à Organisation)
+-Semaine 9-10: Projet final
++Semaine 4   : Module 5 (Structures et pointeurs)
++Semaine 5   : Module 6 (Packages et modularité)
++Semaine 6-7 : Modules 7-10 (Erreurs à Fichiers)
++Semaine 8-9 : Modules 11-16 (Concurrence avancée à Organisation)
++Semaine 10  : Projet final
+ ```
+ 
+ ---
+diff --git a/cours/0_plan_du_cours.md b/cours/0_plan_du_cours.md
+index 94baadc..576d637 100755
+--- a/cours/0_plan_du_cours.md
++++ b/cours/0_plan_du_cours.md
+@@ -105,28 +105,31 @@
+ 
+ ---
+ 
+-## Module 5 – Structures et collections
+-**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
+-
+-1. Structures avancées (`struct`)
+-   1.1. Struct imbriqué (une structure dans une autre)
+-   1.2. Tags JSON (`json:"nom"`)
+-2. Pointeurs
+-   2.1. `*T` et `&variable` (adresses mémoire)
+-   2.2. Passage par valeur vs par référence
+-   2.3. `new()` pour créer un pointeur vers une valeur zéro
+-3. Tableaux et slices
+-   3.1. Tableaux (taille fixe) – usage rare
+-   3.2. Slices (taille dynamique) – usage quotidien
+-   3.3. `append()` pour ajouter des éléments
+-   3.4. `len()` et `cap()` (longueur et capacité)
+-   3.5. Découpage (slicing) : `[debut:fin]`
+-   3.6. `copy()` pour une vraie copie
+-4. Maps (dictionnaires)
+-   4.1. Création avec `make(map[K]V)` ou littérale
+-   4.2. Ajout, lecture, suppression (`delete()`)
+-   4.3. Vérification d'existence avec `valeur, ok := map["clé"]`
+-   4.4. Parcourir une map avec `for range`
++## Module 5 – Structures et pointeurs
++**Objectif** : Manipuler des données complexes avec les structures avancées, les pointeurs et la mémoire.
++
++1. Rappel : La mémoire en Go (valeurs et adresses)
++2. Structures avancées (`struct`)
++   2.1. Struct imbriqué (une structure dans une autre)
++   2.2. Tags JSON (`json:"nom"`)
++   2.3. Struct anonyme (utilisation ponctuelle)
++3. Pointeurs
++   3.1. `*T` et `&variable` (adresses mémoire)
++   3.2. Passage par valeur vs par référence
++   3.3. `new()` pour créer un pointeur vers une valeur zéro
++   3.4. Pointeurs sur structures et receivers
++4. Tableaux et slices
++   4.1. Tableaux (taille fixe) – usage rare
++   4.2. Slices (taille dynamique) – usage quotidien
++   4.3. `append()` pour ajouter des éléments
++   4.4. `len()` et `cap()` (longueur et capacité)
++   4.5. Découpage (slicing) : `[debut:fin]`
++   4.6. `copy()` pour une vraie copie
++5. Maps (dictionnaires)
++   5.1. Création avec `make(map[K]V)` ou littérale
++   5.2. Ajout, lecture, suppression (`delete()`)
++   5.3. Vérification d'existence avec `valeur, ok := map["clé"]`
++   5.4. Parcourir une map avec `for range`
+ 
+ **TP final** :
+ > Gestion de contacts :
+@@ -138,11 +141,50 @@
+ 
+ ---
+ 
++## Module 6 – Packages et modularité
++**Objectif** : Organiser son code en plusieurs fichiers et créer des packages réutilisables.
++
++0. Pourquoi les packages ?
++   - Problèmes du code non structuré
++   - Avantages de la modularité
++1. Qu'est-ce qu'un package ?
++   1.1. Structure d'un package (dossier + fichiers)
++   1.2. Le package `main` (point d'entrée)
++   1.3. Créer un package réutilisable
++2. Exporter avec la majuscule
++   2.1. Règle fondamentale (majuscule = public, minuscule = private)
++   2.2. Exportation des fonctions, types, champs de struct
++   2.3. Pièges fréquents (champs de struct oubliés)
++3. Importer des packages
++   3.1. Syntaxe d'importation
++   3.2. Alias d'importation
++   3.3. Import "dot" (à éviter)
++   3.4. Import "blank" (`_`) pour les effets de bord
++4. Organisation d'un projet Go
++   4.1. Structure simple (petit projet)
++   4.2. Structure professionnelle (`cmd/`, `internal/`, `pkg/`)
++   4.3. Le fichier `go.mod` (module, dépendances)
++   4.4. Commandes utiles : `go mod init`, `go get`, `go mod tidy`
++5. Packages standards couramment utilisés
++   5.1. `fmt`, `os`, `io`, `bufio`
++   5.2. `strings`, `strconv`, `errors`
++   5.3. `time`, `math`, `math/rand`
++   5.4. `encoding/json`, `net/http`, `sync`, `context`, `testing`
++
++**TP final** :
++> Création d'un package `mathutil` :
++> - Fonction `Addition(a, b int) int`
++> - Fonction `Multiplication(a, b int) int`
++> - Fonction `Factorielle(n int) int`
++> - Fonction `EstPair(n int) bool`
++> - Dans `main.go`, importer et utiliser le package
++
++---
++
+ ## Modules suivants (aperçu)
+ 
+ | Module | Titre | Contenu principal |
+ |--------|-------|-------------------|
+-| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
+ | 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
+ | 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
+ | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
+diff --git a/main.go b/main.go
+index a750476..dcba0e6 100644
+--- a/main.go
++++ b/main.go
+@@ -1,73 +1,216 @@
+ package main
+ 
+ import (
++	"bufio"
++	"errors"
+ 	"fmt"
+-	"math"
++	"os"
++	"strings"
+ )
+ 
+-func main() {
+-	person := NewPerson("Andy", 83.55, 1.82)
++// =======================
++// DOMAIN
++// =======================
+ 
+-	fmt.Println(person.String())
+-	fmt.Printf("IMC : %.2f \n", person.IMC())
+-	fmt.Println("Catégorie :", person.IMCLabel())
++type Contact struct {
++	ID     int
++	Name   string
++	Number string
+ }
+ 
+ // =======================
+-// DOMAIN (STRUCT)
++// REPOSITORY (IN MEMORY)
+ // =======================
+ 
+-type Person struct {
+-	name   string
+-	weight float64
+-	height float64
++type PhoneBook struct {
++	contacts []Contact
++	nextID   int
++}
++
++func NewPhoneBook(capacity int) *PhoneBook {
++	return &PhoneBook{
++		contacts: make([]Contact, 0, capacity),
++		nextID:   1,
++	}
++}
++
++// Create
++func (p *PhoneBook) Add(name, number string) {
++	if p.Exists(name) {
++		fmt.Println("⚠️ Contact déjà existant")
++		return
++	}
++
++	c := Contact{
++		ID:     p.nextID,
++		Name:   name,
++		Number: number,
++	}
++
++	p.nextID++
++	p.contacts = append(p.contacts, c)
++}
++
++// Read all
++func (p *PhoneBook) List() []Contact {
++	return p.contacts
++}
++
++// Search
++func (p *PhoneBook) Find(name string) *Contact {
++	for i := range p.contacts {
++		if strings.EqualFold(p.contacts[i].Name, name) {
++			return &p.contacts[i]
++		}
++	}
++	return nil
++}
++
++// Delete
++func (p *PhoneBook) Delete(name string) bool {
++	for i, c := range p.contacts {
++		if strings.EqualFold(c.Name, name) {
++			p.contacts = append(p.contacts[:i], p.contacts[i+1:]...)
++			return true
++		}
++	}
++	return false
++}
++
++// Exists
++func (p *PhoneBook) Exists(name string) bool {
++	return p.Find(name) != nil
+ }
+ 
+ // =======================
+-// CONSTRUCTOR (idiom Go)
++// INPUT LAYER
+ // =======================
+ 
+-func NewPerson(name string, weight, height float64) Person {
+-	return Person{
+-		name:   name,
+-		weight: weight,
+-		height: height,
++func readInput(reader *bufio.Reader, label string) (string, error) {
++	fmt.Print(label)
++
++	input, err := reader.ReadString('\n')
++	if err != nil {
++		return "", err
+ 	}
++
++	input = strings.TrimSpace(input)
++
++	if input == "" {
++		return "", errors.New("champ vide interdit")
++	}
++
++	return input, nil
++}
++
++func isExit(input string) bool {
++	return strings.EqualFold(input, "finir")
+ }
+ 
+ // =======================
+-// BUSINESS LOGIC
++// BUSINESS
+ // =======================
+ 
+-func (p Person) IMC() float64 {
+-	if p.height <= 0 {
+-		return 0
+-	}
+-	return p.weight / math.Pow(p.height, 2)
++func isValidNumber(n string) bool {
++	return len(n) >= 6
++}
++
++// =======================
++// UI
++// =======================
++
++func printMenu() {
++	fmt.Println("\n===== ANNUAIRE =====")
++	fmt.Println("1. Ajouter contact")
++	fmt.Println("2. Lister contacts")
++	fmt.Println("3. Rechercher contact")
++	fmt.Println("4. Supprimer contact")
++	fmt.Println("5. Quitter")
++	fmt.Print("Choix: ")
+ }
+ 
+-func (p Person) IMCLabel() string {
+-	imc := p.IMC()
+-
+-	switch {
+-	case imc < 18.5:
+-		return "Insuffisance pondérale"
+-	case imc < 25:
+-		return "Corpulence normale"
+-	case imc < 30:
+-		return "Surpoids"
+-	default:
+-		return "Obésité"
++func printContacts(list []Contact) {
++	fmt.Println("\n=== LISTE CONTACTS ===")
++
++	if len(list) == 0 {
++		fmt.Println("Aucun contact")
++		return
++	}
++
++	for _, c := range list {
++		fmt.Printf("ID:%d | %s - %s\n", c.ID, c.Name, c.Number)
+ 	}
+ }
+ 
+ // =======================
+-// PRESENTATION (clean separation)
++// MAIN FLOW
+ // =======================
+ 
+-func (p Person) String() string {
+-	return fmt.Sprintf(
+-		"=== Personne ===\nNom: %s\nPoids: %.2f kg\nTaille: %.2f m",
+-		p.name, p.weight, p.height,
+-	)
++func main() {
++	reader := bufio.NewReader(os.Stdin)
++	phonebook := NewPhoneBook(10)
++
++	for {
++		printMenu()
++
++		choice, _ := reader.ReadString('\n')
++		choice = strings.TrimSpace(choice)
++
++		switch choice {
++
++		case "1":
++			name, err := readInput(reader, "Nom: ")
++			if err != nil {
++				fmt.Println("Erreur:", err)
++				continue
++			}
++
++			if isExit(name) {
++				continue
++			}
++
++			number, err := readInput(reader, "Numéro: ")
++			if err != nil {
++				fmt.Println("Erreur:", err)
++				continue
++			}
++
++			if !isValidNumber(number) {
++				fmt.Println("Numéro invalide")
++				continue
++			}
++
++			phonebook.Add(name, number)
++
++		case "2":
++			printContacts(phonebook.List())
++
++		case "3":
++			name, _ := readInput(reader, "Nom à rechercher: ")
++			c := phonebook.Find(name)
++
++			if c == nil {
++				fmt.Println("Contact introuvable")
++			} else {
++				fmt.Printf("Trouvé: %s - %s\n", c.Name, c.Number)
++			}
++
++		case "4":
++			name, _ := readInput(reader, "Nom à supprimer: ")
++			ok := phonebook.Delete(name)
++
++			if ok {
++				fmt.Println("Contact supprimé")
++			} else {
++				fmt.Println("Contact introuvable")
++			}
++
++		case "5":
++			fmt.Println("Bye 👋")
++			return
++
++		default:
++			fmt.Println("Choix invalide")
++		}
++	}
+ }

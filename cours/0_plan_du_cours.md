@@ -105,28 +105,31 @@
 
 ---
 
-## Module 5 – Structures et collections
-**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
+## Module 5 – Structures et pointeurs
+**Objectif** : Manipuler des données complexes avec les structures avancées, les pointeurs et la mémoire.
 
-1. Structures avancées (`struct`)
-   1.1. Struct imbriqué (une structure dans une autre)
-   1.2. Tags JSON (`json:"nom"`)
-2. Pointeurs
-   2.1. `*T` et `&variable` (adresses mémoire)
-   2.2. Passage par valeur vs par référence
-   2.3. `new()` pour créer un pointeur vers une valeur zéro
-3. Tableaux et slices
-   3.1. Tableaux (taille fixe) – usage rare
-   3.2. Slices (taille dynamique) – usage quotidien
-   3.3. `append()` pour ajouter des éléments
-   3.4. `len()` et `cap()` (longueur et capacité)
-   3.5. Découpage (slicing) : `[debut:fin]`
-   3.6. `copy()` pour une vraie copie
-4. Maps (dictionnaires)
-   4.1. Création avec `make(map[K]V)` ou littérale
-   4.2. Ajout, lecture, suppression (`delete()`)
-   4.3. Vérification d'existence avec `valeur, ok := map["clé"]`
-   4.4. Parcourir une map avec `for range`
+1. Rappel : La mémoire en Go (valeurs et adresses)
+2. Structures avancées (`struct`)
+   2.1. Struct imbriqué (une structure dans une autre)
+   2.2. Tags JSON (`json:"nom"`)
+   2.3. Struct anonyme (utilisation ponctuelle)
+3. Pointeurs
+   3.1. `*T` et `&variable` (adresses mémoire)
+   3.2. Passage par valeur vs par référence
+   3.3. `new()` pour créer un pointeur vers une valeur zéro
+   3.4. Pointeurs sur structures et receivers
+4. Tableaux et slices
+   4.1. Tableaux (taille fixe) – usage rare
+   4.2. Slices (taille dynamique) – usage quotidien
+   4.3. `append()` pour ajouter des éléments
+   4.4. `len()` et `cap()` (longueur et capacité)
+   4.5. Découpage (slicing) : `[debut:fin]`
+   4.6. `copy()` pour une vraie copie
+5. Maps (dictionnaires)
+   5.1. Création avec `make(map[K]V)` ou littérale
+   5.2. Ajout, lecture, suppression (`delete()`)
+   5.3. Vérification d'existence avec `valeur, ok := map["clé"]`
+   5.4. Parcourir une map avec `for range`
 
 **TP final** :
 > Gestion de contacts :
@@ -138,11 +141,50 @@
 
 ---
 
+## Module 6 – Packages et modularité
+**Objectif** : Organiser son code en plusieurs fichiers et créer des packages réutilisables.
+
+0. Pourquoi les packages ?
+   - Problèmes du code non structuré
+   - Avantages de la modularité
+1. Qu'est-ce qu'un package ?
+   1.1. Structure d'un package (dossier + fichiers)
+   1.2. Le package `main` (point d'entrée)
+   1.3. Créer un package réutilisable
+2. Exporter avec la majuscule
+   2.1. Règle fondamentale (majuscule = public, minuscule = private)
+   2.2. Exportation des fonctions, types, champs de struct
+   2.3. Pièges fréquents (champs de struct oubliés)
+3. Importer des packages
+   3.1. Syntaxe d'importation
+   3.2. Alias d'importation
+   3.3. Import "dot" (à éviter)
+   3.4. Import "blank" (`_`) pour les effets de bord
+4. Organisation d'un projet Go
+   4.1. Structure simple (petit projet)
+   4.2. Structure professionnelle (`cmd/`, `internal/`, `pkg/`)
+   4.3. Le fichier `go.mod` (module, dépendances)
+   4.4. Commandes utiles : `go mod init`, `go get`, `go mod tidy`
+5. Packages standards couramment utilisés
+   5.1. `fmt`, `os`, `io`, `bufio`
+   5.2. `strings`, `strconv`, `errors`
+   5.3. `time`, `math`, `math/rand`
+   5.4. `encoding/json`, `net/http`, `sync`, `context`, `testing`
+
+**TP final** :
+> Création d'un package `mathutil` :
+> - Fonction `Addition(a, b int) int`
+> - Fonction `Multiplication(a, b int) int`
+> - Fonction `Factorielle(n int) int`
+> - Fonction `EstPair(n int) bool`
+> - Dans `main.go`, importer et utiliser le package
+
+---
+
 ## Modules suivants (aperçu)
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
 | 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
 | 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
 | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |

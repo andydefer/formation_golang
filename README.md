@@ -13,7 +13,7 @@ Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dép�
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
 - [Structure du cours](#-structure-du-cours)
-- [Modules (1 à 5)](#-modules-1-à-5)
+- [Modules (1 à 6)](#-modules-1-à-6)
 - [Modules suivants (aperçu)](#-modules-suivants-à-perçu)
 - [Projet final](#-projet-final)
 - [Installation](#-installation)
@@ -32,8 +32,8 @@ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique. 
 - **Travaux pratiques (TP)** avec corrigés
 - **Pièges à éviter** et astuces
 
-**Contenu actuel :** Modules 1 à 5 (fondamentaux et approfondissement)
-**À venir :** Modules 6 à 16 (avancé à professionnel)
+**Contenu actuel :** Modules 1 à 6 (fondamentaux, approfondissement et modularité)
+**À venir :** Modules 7 à 16 (avancé à professionnel)
 
 ---
 
@@ -56,8 +56,8 @@ formation_golang/
 ├── 02_types_et_variables.md
 ├── 03_controle_de_flux.md
 ├── 04_fonctions_et_methodes.md
-├── 05_structures_et_collections.md
-├── 06_packages_et_modularite.md        # À venir
+├── 05_structures_et_pointeurs.md
+├── 06_packages_et_modularite.md
 ├── 07_gestion_des_erreurs.md           # À venir
 ├── 08_interfaces_et_polymorphisme.md   # À venir
 ├── 09_concurrence_base.md              # À venir
@@ -72,7 +72,7 @@ formation_golang/
 
 ---
 
-## 📖 Modules (1 à 5)
+## 📖 Modules (1 à 6)
 
 ### Module 1 – Introduction et mise en place
 **Objectif** : Installer Go, écrire et exécuter son premier programme.
@@ -134,17 +134,33 @@ formation_golang/
 
 ---
 
-### Module 5 – Structures et collections
-**Objectif** : Manipuler des données complexes avec les structures, slices et maps.
+### Module 5 – Structures et pointeurs
+**Objectif** : Manipuler des données complexes avec les structures avancées, les pointeurs et la mémoire.
 
 | Sous-partie | Description |
 |-------------|-------------|
-| 1 | Structures avancées (struct imbriqué, tags JSON) |
-| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence) |
-| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()` |
+| 1 | Structures avancées (struct imbriqué, tags JSON, struct anonyme) |
+| 2 | Pointeurs (`*T`, `&`, passage par valeur vs référence, `new()`) |
+| 3 | Tableaux (fixes) vs Slices (dynamiques) – `append()`, `len()`, `cap()`, slicing |
 | 4 | Maps (dictionnaires) – création, ajout, lecture, suppression, vérification |
 
 **TP** : Gestion de contacts (structure `Contact`, slice, `ajouterContact()`, `afficherTous()`)
+
+---
+
+### Module 6 – Packages et modularité
+**Objectif** : Organiser son code en plusieurs fichiers et créer des packages réutilisables.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 0 | Pourquoi les packages ? (problèmes de code non structuré) |
+| 1 | Qu'est-ce qu'un package ? (structure, package main vs autres) |
+| 2 | Exporter avec la majuscule (public vs private, règles de casse) |
+| 3 | Importer des packages (syntaxe, alias, dot, blank import) |
+| 4 | Organisation d'un projet Go (structure simple vs professionnelle, `cmd/`, `internal/`, `pkg/`) |
+| 5 | Packages standards couramment utilisés (fmt, os, strings, json, http, etc.) |
+
+**TP** : Création d'un package `mathutil` avec fonctions `Addition`, `Multiplication`, `Factorielle`, `EstPair`
 
 ---
 
@@ -152,7 +168,6 @@ formation_golang/
 
 | Module | Titre | Description |
 |--------|-------|-------------|
-| 6 | Packages et modularité | Créer ses propres packages, exporter avec majuscule |
 | 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
 | 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
 | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
@@ -222,7 +237,7 @@ cd formation_golang
 
 ## 💡 Comment utiliser ce cours
 
-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 5, puis la suite)
+1. **Par module** : Suivez l'ordre recommandé (Module 1 → 6, puis la suite)
 2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
 3. **Expérimentez** : Modifiez les exemples, testez vos idées
 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
@@ -242,16 +257,22 @@ go fmt ./...
 # Vérifier les erreurs potentielles
 go vet ./...
 
+# Initialiser un module
+go mod init monmodule
+
+# Ajouter une dépendance
+go get github.com/user/package
+
+# Nettoyer les dépendances
+go mod tidy
+
 # Lancer les tests (modules 14+)
 go test ./...
-
-# Télécharger les dépendances
-go mod tidy
 ```
 
 ---
 
-## 📚 TP par module (Modules 1 à 5)
+## 📚 TP par module (Modules 1 à 6)
 
 | Module | TP | Concepts clés |
 |--------|-----|---------------|
@@ -260,22 +281,35 @@ go mod tidy
 | **3** | Jeu de devinette | `if`/`else`, boucle `for`, `fmt.Scanln()`, `break` |
 | **4** | Calcul d'IMC | Fonctions, `struct`, méthodes, receiver |
 | **5** | Gestion de contacts | Slices, `append()`, maps, pointeurs |
+| **6** | Package `mathutil` | Création de package, exportation (majuscule), `go mod init` |
 
-### Exemple de réalisation (Module 5)
+### Exemple de réalisation (Module 6)
 
 ```go
-type Contact struct {
-    Nom    string
-    Numero string
+// mathutil/mathutil.go
+package mathutil
+
+func Addition(a, b int) int {
+    return a + b
 }
 
-func ajouterContact(contacts []Contact) []Contact {
-    var nom, numero string
-    fmt.Print("Nom : ")
-    fmt.Scanln(&nom)
-    fmt.Print("Numéro : ")
-    fmt.Scanln(&numero)
-    return append(contacts, Contact{Nom: nom, Numero: numero})
+func Multiplication(a, b int) int {
+    return a * b
+}
+```
+
+```go
+// main.go
+package main
+
+import (
+    "fmt"
+    "module6/mathutil"
+)
+
+func main() {
+    fmt.Printf("5 + 3 = %d\n", mathutil.Addition(5, 3))
+    fmt.Printf("4 × 2 = %d\n", mathutil.Multiplication(4, 2))
 }
 ```
 
@@ -312,10 +346,11 @@ func ajouterContact(contacts []Contact) []Contact {
 Semaine 1   : Module 1 (Introduction) + Module 2 (Types et variables)
 Semaine 2   : Module 3 (Contrôle de flux)
 Semaine 3   : Module 4 (Fonctions et méthodes)
-Semaine 4   : Module 5 (Structures et collections)
-Semaine 5-6 : Modules 6-10 (Packages à Fichiers)
-Semaine 7-8 : Modules 11-16 (Concurrence avancée à Organisation)
-Semaine 9-10: Projet final
+Semaine 4   : Module 5 (Structures et pointeurs)
+Semaine 5   : Module 6 (Packages et modularité)
+Semaine 6-7 : Modules 7-10 (Erreurs à Fichiers)
+Semaine 8-9 : Modules 11-16 (Concurrence avancée à Organisation)
+Semaine 10  : Projet final
 ```
 
 ---
