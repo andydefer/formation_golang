@@ -1,0 +1,9 @@
+# Ignorer dossier diff
+diff/
+
+# Ignorer fichier source principal
+main.go
+
+# Ignorer binaire compilé
+main
+
