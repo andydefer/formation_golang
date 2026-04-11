@@ -13,7 +13,7 @@ Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dép�
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
 - [Structure du cours](#-structure-du-cours)
-- [Modules (1 à 6)](#-modules-1-à-6)
+- [Modules (1 à 7)](#-modules-1-à-7)
 - [Modules suivants (aperçu)](#-modules-suivants-à-perçu)
 - [Projet final](#-projet-final)
 - [Installation](#-installation)
@@ -32,8 +32,8 @@ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique. 
 - **Travaux pratiques (TP)** avec corrigés
 - **Pièges à éviter** et astuces
 
-**Contenu actuel :** Modules 1 à 6 (fondamentaux, approfondissement et modularité)
-**À venir :** Modules 7 à 16 (avancé à professionnel)
+**Contenu actuel :** Modules 1 à 7 (fondamentaux, approfondissement, modularité et gestion d'erreurs)
+**À venir :** Modules 8 à 16 (avancé à professionnel)
 
 ---
 
@@ -58,7 +58,7 @@ formation_golang/
 ├── 04_fonctions_et_methodes.md
 ├── 05_structures_et_pointeurs.md
 ├── 06_packages_et_modularite.md
-├── 07_gestion_des_erreurs.md           # À venir
+├── 07_gestion_des_erreurs.md
 ├── 08_interfaces_et_polymorphisme.md   # À venir
 ├── 09_concurrence_base.md              # À venir
 ├── 10_entrees_sorties_fichiers.md      # À venir
@@ -72,7 +72,7 @@ formation_golang/
 
 ---
 
-## 📖 Modules (1 à 6)
+## 📖 Modules (1 à 7)
 
 ### Module 1 – Introduction et mise en place
 **Objectif** : Installer Go, écrire et exécuter son premier programme.
@@ -164,11 +164,29 @@ formation_golang/
 
 ---
 
+### Module 7 – Gestion des erreurs (niveau 1)
+**Objectif** : Maîtriser la philosophie Go de gestion des erreurs, utiliser `defer`, `panic`, `recover` et mettre en place du logging.
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 0 | Rappel : Pas d'exceptions en Go, les erreurs sont des valeurs |
+| 1 | Le pattern `if err != nil` (vérification immédiate) |
+| 2 | Création d'erreurs : `errors.New()`, `fmt.Errorf()`, wrapping avec `%w` |
+| 3 | Erreurs personnalisées avec `struct` |
+| 4 | Fonctions essentielles : `errors.Is()`, `errors.As()`, `errors.Unwrap()` |
+| 5 | `defer` – exécution différée (fermeture de ressources, LIFO) |
+| 6 | `panic` et `recover` (quand les utiliser, récupération) |
+| 7 | Logging avec le package `log` (configuration, niveaux, fichier de log) |
+| 8 | Bonnes pratiques pour des programmes robustes |
+
+**TP** : Calculateur robuste avec validation des entrées, gestion d'erreurs complète, logging dans un fichier et protection contre les panic
+
+---
+
 ## 📖 Modules suivants (aperçu)
 
 | Module | Titre | Description |
 |--------|-------|-------------|
-| 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
 | 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
 | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
 | 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args` |
@@ -237,7 +255,7 @@ cd formation_golang
 
 ## 💡 Comment utiliser ce cours
 
-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 6, puis la suite)
+1. **Par module** : Suivez l'ordre recommandé (Module 1 → 7, puis la suite)
 2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
 3. **Expérimentez** : Modifiez les exemples, testez vos idées
 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
@@ -272,7 +290,7 @@ go test ./...
 
 ---
 
-## 📚 TP par module (Modules 1 à 6)
+## 📚 TP par module (Modules 1 à 7)
 
 | Module | TP | Concepts clés |
 |--------|-----|---------------|
@@ -282,6 +300,7 @@ go test ./...
 | **4** | Calcul d'IMC | Fonctions, `struct`, méthodes, receiver |
 | **5** | Gestion de contacts | Slices, `append()`, maps, pointeurs |
 | **6** | Package `mathutil` | Création de package, exportation (majuscule), `go mod init` |
+| **7** | Calculateur robuste | Gestion d'erreurs, `defer`, logging, `panic`/`recover` |
 
 ### Exemple de réalisation (Module 6)
 
@@ -310,6 +329,51 @@ import (
 func main() {
     fmt.Printf("5 + 3 = %d\n", mathutil.Addition(5, 3))
     fmt.Printf("4 × 2 = %d\n", mathutil.Multiplication(4, 2))
+}
+```
+
+### Exemple de réalisation (Module 7)
+
+```go
+// calculator/calculator.go
+package calculator
+
+import "errors"
+
+var ErrDivisionParZero = errors.New("calculator: division par zéro")
+
+func Calcul(a, b float64, operateur string) (float64, error) {
+    switch operateur {
+    case "/":
+        if b == 0 {
+            return 0, ErrDivisionParZero
+        }
+        return a / b, nil
+    // ... autres opérations
+    }
+}
+```
+
+```go
+// main.go avec logging et recovery
+func main() {
+    defer func() {
+        if r := recover(); r != nil {
+            log.Printf("PANIC récupéré: %v", r)
+        }
+    }()
+
+    // Configuration du logging
+    fichier, _ := os.OpenFile("app.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+    log.SetOutput(fichier)
+
+    // Gestion des erreurs avec if err != nil
+    resultat, err := calculator.Calcul(a, b, op)
+    if err != nil {
+        log.Printf("Erreur: %v", err)
+        fmt.Println("Une erreur est survenue")
+        return
+    }
 }
 ```
 
@@ -348,9 +412,10 @@ Semaine 2   : Module 3 (Contrôle de flux)
 Semaine 3   : Module 4 (Fonctions et méthodes)
 Semaine 4   : Module 5 (Structures et pointeurs)
 Semaine 5   : Module 6 (Packages et modularité)
-Semaine 6-7 : Modules 7-10 (Erreurs à Fichiers)
-Semaine 8-9 : Modules 11-16 (Concurrence avancée à Organisation)
-Semaine 10  : Projet final
+Semaine 6   : Module 7 (Gestion des erreurs)
+Semaine 7-8 : Modules 8-10 (Interfaces à Fichiers)
+Semaine 9-10: Modules 11-16 (Concurrence avancée à Organisation)
+Semaine 11  : Projet final
 ```
 
 ---

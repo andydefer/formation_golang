@@ -181,20 +181,73 @@
 
 ---
 
+## Module 7 – Gestion des erreurs (niveau 1)
+**Objectif** : Maîtriser la philosophie Go de gestion des erreurs, utiliser `defer`, `panic`, `recover` et mettre en place du logging professionnel.
+
+0. Rappel : Pas d'exceptions en Go
+   - Comparaison avec Python/Java (try/catch)
+   - Philosophie : les erreurs sont des valeurs
+1. Le pattern `if err != nil`
+   1.1. Vérification immédiate des erreurs
+   1.2. Regroupement des vérifications
+   1.3. Style idiomatique (vérification inline)
+2. Création d'erreurs
+   2.1. `errors.New()` – erreur simple
+   2.2. `fmt.Errorf()` – erreur formatée
+   2.3. Wrapping avec `%w` (Go 1.13+)
+   2.4. Erreurs personnalisées avec `struct`
+   2.5. Bonnes pratiques (préfixe `Err`, exportation)
+3. Fonctions essentielles du package `errors`
+   3.1. `errors.Is()` – vérifier le type d'erreur
+   3.2. `errors.As()` – extraire une erreur personnalisée
+   3.3. `errors.Unwrap()` – déballer une erreur
+4. `defer` – exécution différée
+   4.1. Fermeture de ressources (fichiers, connexions)
+   4.2. Ordre d'exécution LIFO (Last In, First Out)
+   4.3. Piège classique : évaluation des arguments
+   4.4. Utilisation avec les mutex (déverrouillage automatique)
+5. `panic` et `recover`
+   5.1. Quand utiliser `panic` (erreurs irrécupérables)
+   5.2. `panic` – arrêt brutal du programme
+   5.3. `recover` – reprendre le contrôle après un panic
+   5.4. Cas d'usage typique : serveur HTTP avec recovery
+   5.5. Ce qu'il ne faut PAS faire avec panic
+6. Logging avec le package `log`
+   6.1. Utilisation basique (`log.Println`, `log.Printf`, `log.Fatal`, `log.Panic`)
+   6.2. Configuration du logger (`log.SetFlags`, `log.SetPrefix`, `log.SetOutput`)
+   6.3. Niveaux de log avec loggers personnalisés
+   6.4. Écriture des logs dans un fichier
+7. Bonnes pratiques pour des programmes robustes
+   7.1. Toujours traiter les erreurs (ne jamais utiliser `_`)
+   7.2. Ne pas utiliser `panic` pour les erreurs normales
+   7.3. Enrichir les erreurs avec du contexte (`fmt.Errorf`)
+   7.4. Définir les erreurs de package en tête de fichier
+   7.5. Valider les entrées utilisateur systématiquement
+
+**TP final** :
+> Calculateur robuste avec logging :
+> - Package `calculator` avec opérations de base (+, -, *, /)
+> - Gestion des erreurs : division par zéro, opérateur invalide
+> - Validation des entrées utilisateur (nombres valides)
+> - Logging des erreurs dans un fichier `app.log`
+> - Protection avec `defer` + `recover` pour éviter les crashs
+> - Formatage des logs avec date, heure et fichier source
+
+---
+
 ## Modules suivants (aperçu)
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 7 | Gestion des erreurs (niveau 1) | `panic`, `recover`, `defer`, logging |
-| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type |
+| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type, type switches |
 | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
-| 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args` |
-| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex` |
-| 12 | Package `context` | Annulation, timeout |
-| 13 | Web et API | Serveur HTTP, JSON, routes |
-| 14 | Tests et bonnes pratiques | `testing`, benchmarks |
-| 15 | Génériques (Go 1.18+) | `[T any]`, contraintes |
-| 16 | Organisation de projet | `cmd/`, `pkg/`, `go fmt`, compilation croisée |
+| 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args`, `bufio` |
+| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex`, `sync.RWMutex` |
+| 12 | Package `context` | Annulation, timeout, propagation |
+| 13 | Web et API | Serveur HTTP, JSON, routes, middleware |
+| 14 | Tests et bonnes pratiques | `testing`, table-driven tests, benchmarks, coverage |
+| 15 | Génériques (Go 1.18+) | `[T any]`, contraintes, types paramétrés |
+| 16 | Organisation de projet | `cmd/`, `pkg/`, `internal/`, `go fmt`, compilation croisée, CI/CD |
 
 ---
 
