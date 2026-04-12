@@ -235,11 +235,64 @@
 
 ---
 
+## Module 8 – Interfaces et polymorphisme
+**Objectif** : Comprendre et utiliser les interfaces, le cœur de la programmation orientée objet en Go.
+
+0. Pourquoi les interfaces ?
+   - Problème du code dupliqué
+   - Solution : code générique avec interfaces
+1. Qu'est-ce qu'une interface ?
+   1.1. Définition d'une interface (ensemble de signatures de méthodes)
+   1.2. Syntaxe de base
+   1.3. Exemple concret : `Forme` avec `Aire()` et `Perimetre()`
+2. Les interfaces implicites (le secret de Go)
+   2.1. Pas de mot-clé `implements`
+   2.2. Détection automatique par le compilateur
+   2.3. Avantages : découplage, tests simplifiés, évolution souple
+3. L'interface vide `interface{}`
+   3.1. Tous les types l'implémentent
+   3.2. Utilité : fonctions génériques (avant Go 1.18)
+   3.3. Limites : impossible d'appeler des méthodes directement
+4. Les interfaces embarquées (composition)
+   4.1. Composition d'interfaces entre elles
+   4.2. Exemple : `io.Reader`, `io.Writer`, `io.ReadWriteCloser`
+5. Assertion de type (type assertion)
+   5.1. Syntaxe : `x.(T)` – récupérer le type concret
+   5.2. Assertion simple (panic si échec)
+   5.3. Assertion avec vérification : `valeur, ok := x.(T)`
+6. Type switch (interrogation de type)
+   6.1. Syntaxe : `switch v := x.(type)`
+   6.2. Exemple : analyseur de données variées
+   6.3. Cas `default` pour les types non gérés
+7. Pattern "accept interfaces, return structs"
+   7.1. La règle d'or de la philosophie Go
+   7.2. Pourquoi accepter des interfaces en paramètre
+   7.3. Pourquoi retourner des structs concrets
+   7.4. Exemple concret : constructeur et fonctions génériques
+8. Interfaces et pointeurs vs valeurs
+   8.1. Règle : méthode sur pointeur ≠ méthode sur valeur
+   8.2. Tableau récapitulatif (receiver valeur vs pointeur)
+   8.3. Piège classique à éviter
+9. Interfaces du package standard à connaître
+   9.1. `fmt.Stringer` – contrôle l'affichage avec `String()`
+   9.2. `error` – l'interface d'erreur (déjà vue)
+   9.3. `io.Reader` et `io.Writer` – E/S fondamentales
+   9.4. `sort.Interface` – tri personnalisé (Len, Less, Swap)
+
+**TP final** :
+> Système de paiement avec interfaces :
+> - Interface `Payeur` avec méthodes `Payer(montant float64) error` et `GetNom() string`
+> - Implémentations : `CarteBancaire`, `PayPal`, `Crypto` (avec frais de 2%)
+> - Fonction `EffectuerPaiement(p Payeur, montant float64)` générique
+> - Fonction `AfficherInfos(p interface{})` avec type switch pour détails spécifiques
+> - Gestion des soldes et des erreurs (solde insuffisant)
+
+---
+
 ## Modules suivants (aperçu)
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 8 | Interfaces et polymorphisme | Interfaces implicites, assertion de type, type switches |
 | 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
 | 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args`, `bufio` |
 | 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex`, `sync.RWMutex` |
@@ -269,3 +322,4 @@ Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfac
 ---
 
 **Fin du plan de cours**
+
