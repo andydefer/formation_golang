@@ -289,11 +289,58 @@
 
 ---
 
+## Module 9 – Concurrence de base
+**Objectif** : Comprendre et maîtriser la concurrence en Go avec les goroutines, les channels et le `sync.WaitGroup`.
+
+0. Pourquoi la concurrence ?
+   - Problème : les tâches lentes bloquent tout (téléchargements, requêtes API, calculs)
+   - Solution : exécution parallèle pour meilleures performances
+   - Concurrence ≠ Parallélisme (structure vs exécution)
+1. Les goroutines (le "go" léger)
+   1.1. Qu'est-ce qu'une goroutine ? (fonction qui s'exécute simultanément)
+   1.2. Syntaxe : `go maFonction()`
+   1.3. Les goroutines sont légères (~2 Ko vs 1 Mo pour un thread)
+   1.4. Piège classique : le programme principal se termine trop tôt
+2. `sync.WaitGroup` – attendre que les goroutines finissent
+   2.1. Les trois méthodes : `Add(n)`, `Done()`, `Wait()`
+   2.2. Pattern standard avec boucle `for`
+   2.3. Piège classique : capture de la variable de boucle
+   2.4. Passage par paramètre vs closure
+3. Les channels (canaux) – communiquer entre goroutines
+   3.1. Philosophie : "Don't communicate by sharing memory, share memory by communicating"
+   3.2. Création : `make(chan T)`
+   3.3. Envoi : `ch <- valeur`
+   3.4. Réception : `valeur := <-ch`
+   3.5. Channels non bufferisés (synchrones) – l'envoi bloque jusqu'à réception
+   3.6. Channels bufferisés – `make(chan T, n)` – envoi bloque seulement si buffer plein
+4. Exemples concrets
+   4.1. Producteur / Consommateur
+   4.2. Calcul parallèle (somme des carrés)
+   4.3. Notation de direction : `chan<- T` (envoi uniquement), `<-chan T` (réception uniquement)
+5. Le `select` – attendre sur plusieurs channels
+   5.1. Syntaxe : `select { case <-ch1: ... case <-ch2: ... }`
+   5.2. `select` avec timeout (`time.After`)
+   5.3. `select` avec `default` (non bloquant)
+6. Fermeture des channels
+   6.1. Pourquoi fermer ? (`close(ch)`) – indique la fin des données
+   6.2. Vérifier si un channel est fermé : `v, ok := <-ch`
+   6.3. `for range` sur channel (s'arrête automatiquement à la fermeture)
+   6.4. Règle d'or : c'est l'expéditeur qui ferme, jamais le récepteur
+
+**TP final** :
+> Téléchargement parallèle :
+> - Simulation de téléchargement avec `time.Sleep()`
+> - Lancement de plusieurs téléchargements en parallèle avec goroutines
+> - Collecte des résultats via channel
+> - Affichage en temps réel de la progression
+> - Calcul du temps total gagné par rapport à l'exécution séquentielle
+
+---
+
 ## Modules suivants (aperçu)
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 9 | Concurrence de base | Goroutines, channels, `WaitGroup` |
 | 10 | Entrées/Sorties et fichiers | Lire/écrire des fichiers, `os.Args`, `bufio` |
 | 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex`, `sync.RWMutex` |
 | 12 | Package `context` | Annulation, timeout, propagation |
@@ -322,4 +369,3 @@ Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfac
 ---
 
 **Fin du plan de cours**
-
