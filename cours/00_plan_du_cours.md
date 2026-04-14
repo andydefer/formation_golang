@@ -337,7 +337,7 @@
 
 ---
 
-## Module 10 – Entrées/Sorties et fichiers ✅
+## Module 10 – Entrées/Sorties et fichiers
 **Objectif** : Lire et écrire des fichiers, utiliser les arguments de ligne de commande, et manipuler les flux d'entrée/sortie standards.
 
 1. Les flux standards (stdin, stdout, stderr)
@@ -372,33 +372,106 @@
 
 ---
 
+## Module 11 – Concurrence avancée ✅
+**Objectif** : Protéger les données partagées avec les mutex, éviter les conditions de course, utiliser les patterns avancés de concurrence (worker pool, fan-in/fan-out, pipeline, rate limiting, circuit breaker).
+
+0. Pourquoi la concurrence avancée ?
+   - Problème : les données partagées non protégées (conditions de course)
+   - Solutions de synchronisation (mutex, RWMutex, Once, Cond)
+1. `sync.Mutex` – exclusion mutuelle
+   - 1.1. Utilisation basique (Lock/Unlock)
+   - 1.2. Règles d'utilisation et pièges à éviter
+   - 1.3. Ne jamais copier un mutex
+2. `sync.RWMutex` – lecture/écriture
+   - 2.1. `RLock()` / `RUnlock()` pour les lectures
+   - 2.2. `Lock()` / `Unlock()` pour les écritures
+   - 2.3. Quand utiliser RWMutex (lectures fréquentes)
+3. `sync.Once` – initialisation unique
+   - 3.1. Pattern du singleton
+   - 3.2. Initialisation de ressources coûteuses
+4. `sync.Map` – map concurrente
+   - 4.1. `Store()`, `Load()`, `Delete()`, `Range()`
+   - 4.2. Quand l'utiliser (et quand l'éviter)
+5. `sync.Cond` – attente conditionnelle
+   - 5.1. `Wait()`, `Signal()`, `Broadcast()`
+   - 5.2. Producteur-consommateur avec Cond
+6. Détection des conditions de course
+   - 6.1. `go run -race` – détecteur intégré
+   - 6.2. Interpréter les rapports de race
+7. Éviter les deadlocks (interblocages)
+   - 7.1. Qu'est-ce qu'un deadlock ?
+   - 7.2. Outils de détection
+   - 7.3. Bonnes pratiques anti-deadlock
+8. Patterns avancés de concurrence
+   - 8.1. Worker Pool (pool de workers)
+   - 8.2. Fan-Out / Fan-In (distribution et agrégation)
+   - 8.3. Pipeline (chaînage de traitements)
+   - 8.4. Rate Limiting (limitation de débit)
+   - 8.5. Circuit Breaker (protection contre les défaillances)
+
+**Pièges à éviter** :
+- Copier un mutex (toujours passer par pointeur)
+- Oublier `defer Unlock()` après `Lock()`
+- Deadlock par acquisition dans le mauvais ordre
+- Utiliser `sync.Map` pour tous les cas (souvent moins performant)
+
+**TP final** :
+> Cache concurrent avec expiration :
+> - Structure thread-safe avec `sync.RWMutex`
+> - Expiration automatique des entrées (TTL)
+> - Nettoyage périodique en arrière-plan
+> - Statistiques (hits/miss)
+> - Rafraîchissement du TTL à la lecture
+
+**Exemple de réalisation :**
+```go
+type Cache struct {
+    mu    sync.RWMutex
+    items map[string]Item
+    ttl   time.Duration
+}
+
+func (c *Cache) Get(key string) (interface{}, bool) {
+    c.mu.RLock()
+    defer c.mu.RUnlock()
+
+    item, exists := c.items[key]
+    if !exists || time.Now().After(item.expiration) {
+        return nil, false
+    }
+    return item.valeur, true
+}
+```
+
+---
+
 ## Modules suivants (aperçu)
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 11 | Concurrence avancée | Canaux bufferisés, `sync.Mutex`, `sync.RWMutex` |
 | 12 | Package `context` | Annulation, timeout, propagation |
 | 13 | Web et API | Serveur HTTP, JSON, routes, middleware |
 | 14 | Tests et bonnes pratiques | `testing`, table-driven tests, benchmarks, coverage |
 | 15 | Génériques (Go 1.18+) | `[T any]`, contraintes, types paramétrés |
-| 16 | Organisation de projet | `cmd/`, `pkg/`, `internal/`, `go fmt`, compilation croisée, CI/CD |
+| 16 | Organisation de projet | `cmd/`, `pkg/`, `internal/`, compilation croisée, CI/CD |
 
 ---
 
 ## Projet final intégrateur (après le module 16)
 
 **Capacités requises** :
-Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfaces, concurrence, context, web, tests, génériques, organisation).
+Tous les modules précédents (variables, fonctions, erreurs, fichiers, interfaces, concurrence de base, concurrence avancée, context, web, tests, génériques, organisation).
 
 **Énoncé** :
 > Développe un **outil CLI de téléchargement parallèle** avec :
-> - Lecture d'une liste d'URLs depuis un fichier CSV
-> - Téléchargement concurrent des fichiers (goroutines + channel de progression)
-> - Annulation globale possible via `context` (timeout ou Ctrl+C)
-> - Affichage d'une barre de progression simple
-> - Sauvegarde d'un log des téléchargements (succès/échec)
-> - Tests unitaires sur la fonction qui écrit le log
-> - Organisation du projet en `cmd/`, `pkg/`
+> - Lecture d'une liste d'URLs depuis un fichier CSV (Module 10)
+> - Téléchargement concurrent des fichiers (Module 9)
+> - Protection des compteurs avec mutex (Module 11)
+> - Annulation globale possible via `context` (Module 12)
+> - Affichage d'une barre de progression simple (Module 9)
+> - Sauvegarde d'un log des téléchargements (succès/échec) (Module 7)
+> - Tests unitaires sur la fonction qui écrit le log (Module 14)
+> - Organisation du projet en `cmd/`, `pkg/` (Module 16)
 
 ---
 

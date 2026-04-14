@@ -1,7 +1,3 @@
-Voici la **version Go (Golang) équivalente et propre de ton prompt PHP/Laravel**, adaptée à l’écosystème Go, aux standards **idiomatiques**, **Clean Code**, et aux pratiques open-source.
-
----
-
 # 🎯 PROMPT COMPLET – Refactor & Documentation d’un package Go
 
 ## 🎯 Rôle
@@ -179,7 +175,7 @@ Si duplication détectée :
 * extraire en fonction helper privée
 * garder simplicité
 * documenter clairement
-* donne un seul fichier, sans découpage artificiel.
+* DONNE MOI UN SEUL FICHIER EN SORTIE !!!! SANS DECOUPAGE ARTIFICIEL
 
 
 ---
@@ -187,13 +183,3 @@ Si duplication détectée :
 # ▶️ DÉMARRAGE
 
 Voici le code Go à analyser et améliorer :
-
----
-
-## 💬 Si tu veux aller plus loin
-
-Je peux aussi te faire :
-
-* version **ultra stricte “Google Go Style Guide reviewer”**
-* version **interview senior backend Go**
-* ou version **LLM agent pour refactor automatique de repos GitHub** 😏

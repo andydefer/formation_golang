@@ -13,7 +13,7 @@ Bienvenue dans ce cours complet d'apprentissage du langage Go (Golang). Ce dép�
 - [À propos](#-à-propos)
 - [Prérequis](#-prérequis)
 - [Structure du cours](#-structure-du-cours)
-- [Modules (1 à 10)](#-modules-1-à-10)
+- [Modules (1 à 11)](#-modules-1-à-11)
 - [Modules suivants (aperçu)](#-modules-suivants-aperçu)
 - [Projet final](#-projet-final)
 - [Installation](#-installation)
@@ -32,8 +32,8 @@ Ce cours est conçu pour vous apprendre Go de manière progressive et pratique. 
 - **Travaux pratiques (TP)** avec corrigés
 - **Pièges à éviter** et astuces
 
-**Contenu actuel :** Modules 1 à 10 (fondamentaux, approfondissement, modularité, gestion d'erreurs, interfaces, concurrence de base et entrées/sorties)
-**À venir :** Modules 11 à 16 (avancé à professionnel)
+**Contenu actuel :** Modules 1 à 11 (fondamentaux, approfondissement, modularité, gestion d'erreurs, interfaces, concurrence de base, entrées/sorties et concurrence avancée)
+**À venir :** Modules 12 à 16 (avancé à professionnel)
 
 ---
 
@@ -60,19 +60,19 @@ formation_golang/
 ├── 06_packages_et_modularite.md
 ├── 07_gestion_des_erreurs.md
 ├── 08_interfaces_et_polymorphisme.md
-├── 09_concurrence_base.md             # ✅ Disponible
-├── 10_entrees_sorties_fichiers.md     # ✅ Disponible
-├── 11_concurrence_avancee.md           # À venir
-├── 12_package_context.md               # À venir
-├── 13_web_et_api.md                    # À venir
-├── 14_tests_et_bonnes_pratiques.md     # À venir
-├── 15_generiques.md                    # À venir
-└── 16_organisation_projet.md           # À venir
+├── 09_concurrence_base.md
+├── 10_entrees_sorties_fichiers.md
+├── 11_concurrence_avancee.md
+├── 12_package_context.md              # À venir
+├── 13_web_et_api.md                   # À venir
+├── 14_tests_et_bonnes_pratiques.md    # À venir
+├── 15_generiques.md                   # À venir
+└── 16_organisation_projet.md          # À venir
 ```
 
 ---
 
-## 📖 Modules (1 à 10)
+## 📖 Modules (1 à 11)
 
 ### Module 1 – Introduction et mise en place
 **Objectif** : Installer Go, écrire et exécuter son premier programme.
@@ -241,7 +241,7 @@ formation_golang/
 
 ---
 
-### Module 10 – Entrées/Sorties et fichiers 🆕
+### Module 10 – Entrées/Sorties et fichiers
 **Objectif** : Lire et écrire des fichiers, utiliser les arguments de ligne de commande, et manipuler les flux d'entrée/sortie standards.
 
 | Sous-partie | Description |
@@ -268,21 +268,57 @@ formation_golang/
 - Statistiques avec flag `-stats`
 - Sortie vers fichier avec `-output`
 
+---
+
+### Module 11 – Concurrence avancée 🆕
+**Objectif** : Protéger les données partagées avec les mutex, éviter les conditions de course, utiliser les patterns avancés de concurrence (worker pool, fan-in/fan-out, pipeline, rate limiting, circuit breaker).
+
+| Sous-partie | Description |
+|-------------|-------------|
+| 0 | Pourquoi la concurrence avancée ? (conditions de course, données non protégées) |
+| 1 | `sync.Mutex` – exclusion mutuelle (Lock/Unlock, règles d'utilisation) |
+| 2 | `sync.RWMutex` – lecture/écriture (RLock/RUnlock, performances) |
+| 3 | `sync.Once` – initialisation unique (singleton, ressources coûteuses) |
+| 4 | `sync.Map` – map concurrente (Store, Load, Delete, Range) |
+| 5 | `sync.Cond` – attente conditionnelle (Wait, Signal, Broadcast) |
+| 6 | Pattern Worker Pool (jobs channel, workers, résultats) |
+| 7 | Pattern Fan-Out / Fan-In (distribution et agrégation) |
+| 8 | Pattern Pipeline (chaînage de traitements) |
+| 9 | Pattern Rate Limiting (limitation de débit, token bucket) |
+| 10 | Pattern Circuit Breaker (protection contre les défaillances) |
+| 11 | Détection des conditions de course (`go run -race`) |
+| 12 | Éviter les deadlocks (interblocages, bonnes pratiques) |
+
+**Pièges à éviter** :
+- Copier un mutex (toujours passer par pointeur)
+- Oublier `defer Unlock()` après `Lock()`
+- Deadlock par acquisition dans le mauvais ordre
+- Utiliser `sync.Map` pour tous les cas (souvent moins performant)
+
+**TP** : Cache concurrent avec expiration
+- Structure thread-safe avec `sync.RWMutex`
+- Expiration automatique des entrées (TTL)
+- Nettoyage périodique en arrière-plan
+- Statistiques (hits/miss)
+- Rafraîchissement du TTL à la lecture
+
 **Exemple de réalisation :**
 ```go
-func main() {
-    filePath := flag.String("file", "", "Fichier de log")
-    level := flag.String("level", "INFO", "Niveau minimum")
-    flag.Parse()
+type Cache struct {
+    mu    sync.RWMutex
+    items map[string]Item
+    ttl   time.Duration
+}
 
-    file, _ := os.Open(*filePath)
-    defer file.Close()
+func (c *Cache) Get(key string) (interface{}, bool) {
+    c.mu.RLock()
+    defer c.mu.RUnlock()
 
-    scanner := bufio.NewScanner(file)
-    for scanner.Scan() {
-        ligne := scanner.Text()
-        // Filtrer et afficher
+    item, exists := c.items[key]
+    if !exists || time.Now().After(item.expiration) {
+        return nil, false
     }
+    return item.valeur, true
 }
 ```
 
@@ -292,7 +328,6 @@ func main() {
 
 | Module | Titre | Description |
 |--------|-------|-------------|
-| 11 | Concurrence avancée | `sync.Mutex`, `sync.RWMutex`, patterns avancés |
 | 12 | Package `context` | Annulation de goroutines, timeout, propagation |
 | 13 | Web et API | Serveur HTTP, JSON, routes, middleware |
 | 14 | Tests et bonnes pratiques | `testing`, table-driven tests, benchmarks, coverage |
@@ -308,7 +343,8 @@ func main() {
 À la fin du cours (module 16), vous développerez un outil complet qui combine toutes les compétences acquises :
 
 - ✅ Lecture d'URLs depuis un fichier CSV (Module 10)
-- ✅ Téléchargement concurrent de fichiers (Module 9)
+- ✅ Téléchargement concurrent de fichiers (Modules 9 et 11)
+- ✅ Protection des compteurs avec mutex (Module 11)
 - ✅ Annulation globale avec `context` (Module 12)
 - ✅ Barre de progression avec channels (Module 9)
 - ✅ Logs des téléchargements (Module 7)
@@ -357,7 +393,7 @@ cd formation_golang
 
 ## 💡 Comment utiliser ce cours
 
-1. **Par module** : Suivez l'ordre recommandé (Module 1 → 10, puis la suite)
+1. **Par module** : Suivez l'ordre recommandé (Module 1 → 11, puis la suite)
 2. **Pratiquez** : Faites chaque TP **sans regarder la correction** d'abord
 3. **Expérimentez** : Modifiez les exemples, testez vos idées
 4. **Compilez** : Utilisez `go run` pour tester, `go build` pour produire des exécutables
@@ -367,6 +403,9 @@ cd formation_golang
 ```bash
 # Exécuter un programme
 go run mon_fichier.go
+
+# Détecter les conditions de course
+go run -race mon_fichier.go
 
 # Générer un exécutable
 go build mon_fichier.go
@@ -392,7 +431,7 @@ go test ./...
 
 ---
 
-## 📚 TP par module (Modules 1 à 10)
+## 📚 TP par module (Modules 1 à 11)
 
 | Module | TP | Concepts clés |
 |--------|-----|----------------|
@@ -405,51 +444,42 @@ go test ./...
 | **7** | Calculateur robuste | Gestion d'erreurs, `defer`, logging, `panic`/`recover` |
 | **8** | Système de paiement | Interfaces, implémentation implicite, type switch, polymorphisme |
 | **9** | Téléchargement parallèle | Goroutines, `WaitGroup`, channels, `select`, parallélisme |
-| **10** | Analyseur de logs 🆕 | `flag`, `bufio.Scanner`, fichiers, `os.Stdout`/`os.Stderr` |
+| **10** | Analyseur de logs | `flag`, `bufio.Scanner`, fichiers, `os.Stdout`/`os.Stderr` |
+| **11** | Cache concurrent avec expiration 🆕 | `sync.RWMutex`, `sync.Once`, TTL, nettoyage automatique |
 
-### Exemple de réalisation (Module 10)
+### Exemple de réalisation (Module 11)
 
 ```go
-// Analyseur de logs avec flags et filtrage
-package main
+// Cache concurrent avec expiration
+type Cache struct {
+    mu    sync.RWMutex
+    items map[string]Item
+    ttl   time.Duration
+}
 
-import (
-    "bufio"
-    "flag"
-    "fmt"
-    "os"
-    "strings"
-)
+type Item struct {
+    valeur     interface{}
+    expiration time.Time
+}
 
-func main() {
-    filePath := flag.String("file", "", "Fichier de log")
-    level := flag.String("level", "INFO", "Niveau minimum")
-    showStats := flag.Bool("stats", false, "Afficher les stats")
-    flag.Parse()
+func (c *Cache) Get(key string) (interface{}, bool) {
+    c.mu.RLock()
+    defer c.mu.RUnlock()
 
-    file, _ := os.Open(*filePath)
-    defer file.Close()
-
-    stats := map[string]int{"INFO": 0, "WARN": 0, "ERROR": 0}
-    scanner := bufio.NewScanner(file)
-
-    for scanner.Scan() {
-        ligne := scanner.Text()
-        parts := strings.SplitN(ligne, " ", 3)
-        if len(parts) < 3 {
-            continue
-        }
-        niveau := parts[2]
-        stats[niveau]++
-
-        if niveau == *level || (*level == "INFO" && niveau != "ERROR") {
-            fmt.Println(ligne)
-        }
+    item, exists := c.items[key]
+    if !exists || time.Now().After(item.expiration) {
+        return nil, false
     }
+    return item.valeur, true
+}
 
-    if *showStats {
-        fmt.Printf("\nSTATS - INFO: %d, WARN: %d, ERROR: %d\n",
-            stats["INFO"], stats["WARN"], stats["ERROR"])
+func (c *Cache) Set(key string, value interface{}) {
+    c.mu.Lock()
+    defer c.mu.Unlock()
+
+    c.items[key] = Item{
+        valeur:     value,
+        expiration: time.Now().Add(c.ttl),
     }
 }
 ```
@@ -463,10 +493,12 @@ func main() {
 - [Tour of Go (interactif)](https://go.dev/tour/)
 - [Effective Go](https://go.dev/doc/effective_go)
 - [Package documentation](https://pkg.go.dev/)
+- [Race Detector](https://go.dev/doc/articles/race_detector)
 
 ### Livres recommandés
 - "The Go Programming Language" - Alan A. A. Donovan & Brian W. Kernighan
 - "Go in Action" - William Kennedy
+- "Concurrency in Go" - Katherine Cox-Buday
 
 ### Outils recommandés
 - **VS Code** + extension Go
@@ -492,10 +524,10 @@ Semaine 5   : Module 6 (Packages et modularité)
 Semaine 6   : Module 7 (Gestion des erreurs)
 Semaine 7   : Module 8 (Interfaces et polymorphisme)
 Semaine 8   : Module 9 (Concurrence de base)
-Semaine 9   : Module 10 (Entrées/Sorties et fichiers) 🆕
-Semaine 10  : Modules 11-12 (Concurrence avancée à Context)
-Semaine 11  : Modules 13-14 (Web à Tests)
-Semaine 12  : Modules 15-16 (Génériques à Organisation) + Projet final
+Semaine 9   : Module 10 (Entrées/Sorties et fichiers)
+Semaine 10  : Module 11 (Concurrence avancée) 🆕
+Semaine 11  : Modules 12-13 (Context à Web)
+Semaine 12  : Modules 14-16 (Tests à Organisation) + Projet final
 ```
 
 ---
@@ -531,4 +563,3 @@ Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de
 N'hésitez pas à ouvrir une issue si vous avez des questions ou des suggestions.
 
 *Dernière mise à jour : Avril 2026*
-
