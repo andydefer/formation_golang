@@ -1,0 +1,20 @@
+[INFO] 2024-01-15 10:30:45 User login success from 192.168.1.1
+[WARN] 2024-01-15 10:31:20 High memory usage (85%)
+[ERROR] 2024-01-15 10:32:01 Database connection failed: timeout
+[INFO] 2024-01-15 10:33:15 File uploaded: report.pdf (2.3MB)
+[WARN] 2024-01-15 10:34:00 Slow response time: 3.5s
+[ERROR] 2024-01-15 10:35:30 API timeout after 30s
+[INFO] 2024-01-15 10:36:45 Cache hit ratio: 78%
+[WARN] 2024-01-15 10:37:12 Disk usage: 92%
+[ERROR] 2024-01-15 10:38:00 Failed to send email: SMTP error
+[INFO] 2024-01-15 10:39:30 Backup completed successfully
+[WARN] 2024-01-15 10:40:15 Rate limit approaching: 950/1000
+[ERROR] 2024-01-15 10:41:00 Invalid token in request
+
+=== STATISTIQUES ===
+WARN: 4 lignes
+ERROR: 4 lignes
+INFO: 4 lignes
+TOTAL: 12 lignes
+FILTRÉ: 12 lignes
+=== FIN STATS ===

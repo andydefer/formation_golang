@@ -1,0 +1,12 @@
+2024-01-15 10:30:45 INFO User login success from 192.168.1.1
+2024-01-15 10:31:20 WARN High memory usage (85%)
+2024-01-15 10:32:01 ERROR Database connection failed: timeout
+2024-01-15 10:33:15 INFO File uploaded: report.pdf (2.3MB)
+2024-01-15 10:34:00 WARN Slow response time: 3.5s
+2024-01-15 10:35:30 ERROR API timeout after 30s
+2024-01-15 10:36:45 INFO Cache hit ratio: 78%
+2024-01-15 10:37:12 WARN Disk usage: 92%
+2024-01-15 10:38:00 ERROR Failed to send email: SMTP error
+2024-01-15 10:39:30 INFO Backup completed successfully
+2024-01-15 10:40:15 WARN Rate limit approaching: 950/1000
+2024-01-15 10:41:00 ERROR Invalid token in request
