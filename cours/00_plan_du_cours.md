@@ -372,7 +372,7 @@
 
 ---
 
-## Module 11 – Concurrence avancée ✅
+## Module 11 – Concurrence avancée
 **Objectif** : Protéger les données partagées avec les mutex, éviter les conditions de course, utiliser les patterns avancés de concurrence (worker pool, fan-in/fan-out, pipeline, rate limiting, circuit breaker).
 
 0. Pourquoi la concurrence avancée ?
@@ -409,12 +409,6 @@
    - 8.4. Rate Limiting (limitation de débit)
    - 8.5. Circuit Breaker (protection contre les défaillances)
 
-**Pièges à éviter** :
-- Copier un mutex (toujours passer par pointeur)
-- Oublier `defer Unlock()` après `Lock()`
-- Deadlock par acquisition dans le mauvais ordre
-- Utiliser `sync.Map` pour tous les cas (souvent moins performant)
-
 **TP final** :
 > Cache concurrent avec expiration :
 > - Structure thread-safe avec `sync.RWMutex`
@@ -423,25 +417,106 @@
 > - Statistiques (hits/miss)
 > - Rafraîchissement du TTL à la lecture
 
-**Exemple de réalisation :**
-```go
-type Cache struct {
-    mu    sync.RWMutex
-    items map[string]Item
-    ttl   time.Duration
-}
+---
 
-func (c *Cache) Get(key string) (interface{}, bool) {
-    c.mu.RLock()
-    defer c.mu.RUnlock()
+## Module 12 – Package `context`
+**Objectif** : Maîtriser le package `context` pour gérer l'annulation, les timeouts, et la propagation de valeurs à travers la chaîne d'appels.
 
-    item, exists := c.items[key]
-    if !exists || time.Now().After(item.expiration) {
-        return nil, false
-    }
-    return item.valeur, true
-}
-```
+0. Pourquoi le package `context` ?
+   - Problème : comment arrêter une goroutine ?
+   - Solutions : annulation manuelle, timeout, deadline
+1. Créer des contextes
+   - 1.1. `context.Background()` et `context.TODO()` (contextes racines)
+   - 1.2. Contextes dérivés : `WithCancel`, `WithTimeout`, `WithDeadline`, `WithValue`
+   - 1.3. Règle d'or : toujours appeler `cancel()` (defer)
+2. Annuler des goroutines
+   - 2.1. Pattern basique avec `ctx.Done()`
+   - 2.2. Propagation d'annulation en cascade
+   - 2.3. Annulation avec `select` dans une boucle
+3. Timeout et Deadline
+   - 3.1. `WithTimeout` – timeout relatif
+   - 3.2. `WithDeadline` – deadline absolue
+   - 3.3. Combinaison de timeouts
+4. Propager des valeurs avec `WithValue`
+   - 4.1. Utilisation basique
+   - 4.2. Règles importantes (type personnalisé pour les clés)
+   - 4.3. Pattern du trace ID
+5. `context` avec les packages standards
+   - 5.1. `net/http` – serveur et client
+   - 5.2. `database/sql` – requêtes avec contexte
+6. Erreurs et vérifications
+   - 6.1. `ctx.Err()` : `DeadlineExceeded` ou `Canceled`
+   - 6.2. `errors.Is()` pour identifier la cause
+   - 6.3. Vérifier l'existence d'une deadline avec `ctx.Deadline()`
+7. Patterns avancés
+   - 7.1. Groupe de goroutines annulables
+   - 7.2. Timeout personnalisé avec channel
+   - 7.3. Contexte avec valeur de requête (exemple complet)
+8. Pièges et bonnes pratiques
+   - 8.1. Oublier d'appeler `cancel()` → fuite mémoire
+   - 8.2. Passer un contexte `nil` → panic
+   - 8.3. Stocker des mutex dans le contexte
+   - 8.4. Règles récapitulatives
+
+**TP final** :
+> Téléchargement parallèle annulable :
+> - Timeout global avec flag `-timeout`
+> - Annulation manuelle par appui sur `Entrée`
+> - Propagation de l'annulation à tous les téléchargements
+> - Affichage de la progression en temps réel
+
+---
+
+## Module 13 – Web et API
+**Objectif** : Créer des serveurs HTTP, des API REST, manipuler du JSON, utiliser les middleware, et comprendre les bases du développement web avec Go.
+
+0. Pourquoi le web avec Go ?
+   - Simplicité (pas de framework requis)
+   - Performance et concurrence native
+   - Déploiement en un seul binaire
+1. Le package `net/http` – Les bases
+   - 1.1. Premier serveur HTTP (`http.HandleFunc` + `http.ListenAndServe`)
+   - 1.2. Comprendre `http.ResponseWriter` et `*http.Request`
+   - 1.3. Différentes façons d'écrire une réponse
+2. Routes et méthodes HTTP
+   - 2.1. Détection des méthodes (`r.Method`)
+   - 2.2. Routes paramétrées (sans framework)
+   - 2.3. Structure plus propre avec `http.ServeMux`
+3. JSON – La base des API modernes
+   - 3.1. Encoder (Marshal) – Go → JSON
+   - 3.2. Décoder (Unmarshal) – JSON → Go
+   - 3.3. Utiliser `json.NewEncoder` (plus efficace)
+   - 3.4. Tags JSON avancés (`omitempty`, `-`, `string`)
+4. API REST complète
+   - 4.1. Structure d'une API (modèle, stockage, handlers)
+   - 4.2. Endpoints CRUD (GET, POST, PUT, DELETE)
+   - 4.3. Tests avec `curl`
+5. Middleware
+   - 5.1. Qu'est-ce qu'un middleware ?
+   - 5.2. Structure d'un middleware
+   - 5.3. Middleware de logging
+   - 5.4. Middleware d'authentification
+   - 5.5. Middleware CORS
+   - 5.6. Middleware de récupération (recovery)
+   - 5.7. Chaînage de middleware
+6. Servir des fichiers statiques
+   - 6.1. Serveur de fichiers simple (`http.FileServer`)
+   - 6.2. Single Page Application (SPA)
+7. Serveur HTTP avancé
+   - 7.1. Configuration personnalisée (`http.Server`)
+   - 7.2. Arrêt gracieux (graceful shutdown)
+   - 7.3. HTTPS / TLS
+8. Client HTTP
+   - 8.1. Requêtes simples (`http.Get`, `http.Post`)
+   - 8.2. Client configurable (`http.Client`)
+   - 8.3. Requête avec contexte et timeout
+
+**TP final** :
+> API de gestion de tâches (Todo API) :
+> - CRUD complet sur les tâches
+> - Middleware : logging + authentification basique
+> - Filtrage par statut (complétées/non complétées)
+> - Endpoint `PATCH /todos/{id}/toggle` pour basculer le statut
 
 ---
 
@@ -449,8 +524,6 @@ func (c *Cache) Get(key string) (interface{}, bool) {
 
 | Module | Titre | Contenu principal |
 |--------|-------|-------------------|
-| 12 | Package `context` | Annulation, timeout, propagation |
-| 13 | Web et API | Serveur HTTP, JSON, routes, middleware |
 | 14 | Tests et bonnes pratiques | `testing`, table-driven tests, benchmarks, coverage |
 | 15 | Génériques (Go 1.18+) | `[T any]`, contraintes, types paramétrés |
 | 16 | Organisation de projet | `cmd/`, `pkg/`, `internal/`, compilation croisée, CI/CD |
